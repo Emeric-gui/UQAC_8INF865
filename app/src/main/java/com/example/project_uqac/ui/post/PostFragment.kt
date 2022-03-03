@@ -1,0 +1,55 @@
+package com.example.project_uqac.ui.post
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.example.project_uqac.R
+import com.example.project_uqac.databinding.FragmentPostBinding
+import com.example.project_uqac.ui.post.PostViewModel
+
+class PostFragment : Fragment() {
+
+    private lateinit var dashboardViewModel: PostViewModel
+    private var _binding: FragmentPostBinding? = null
+
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        dashboardViewModel =
+            ViewModelProvider(this).get(PostViewModel::class.java)
+
+        _binding = FragmentPostBinding.inflate(inflater, container, false)
+        val root: View = binding.root
+
+        val textView: TextView = binding.textPost
+        dashboardViewModel.text.observe(viewLifecycleOwner, Observer {
+            textView.text = it
+        })
+
+        val btn = root.findViewById<Button>(R.id.button1)
+        btn.text = "yolo"
+        btn.setOnClickListener {
+            btn.text = "weeee"
+        }
+        return root
+    }
+
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+}

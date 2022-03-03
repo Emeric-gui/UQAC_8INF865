@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.24739583333333334" />
+        <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.24739583333333334" />
+        <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.24739583333333334" />
+        <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.24739583333333334" />
+        <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/activity_main.xml" value="0.2957427536231884" />
+        <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_dashboard.xml" value="0.2957427536231884" />
+        <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_discussions.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_home.xml" value="0.2957427536231884" />
+        <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_my_account.xml" value="0.23125" />
+        <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_notifications.xml" value="0.2957427536231884" />
+        <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_post.xml" value="0.24365942028985507" />
+        <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_search.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/frame.xml" value="0.23125" />
+        <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/frame_textview.xml" value="0.24635416666666668" />
+        <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/menu/bottom_nav_menu.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.24739583333333334" />
+        <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.24739583333333334" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
