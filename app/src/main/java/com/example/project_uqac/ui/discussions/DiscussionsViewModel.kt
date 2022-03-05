@@ -1,4 +1,4 @@
-package com.example.project_uqac.ui.search
+package com.example.project_uqac.ui.discussions
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

@@ -12,7 +12,7 @@ import com.example.project_uqac.databinding.FragmentSearchBinding
 
 class SearchFragment : Fragment() {
 
-    private lateinit var dashboardViewModel: DiscussionsViewModel
+    private lateinit var dashboardViewModel: SearchViewModel
     private var _binding: FragmentSearchBinding? = null
 
     // This property is only valid between onCreateView and
@@ -25,7 +25,7 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         dashboardViewModel =
-            ViewModelProvider(this).get(DiscussionsViewModel::class.java)
+            ViewModelProvider(this).get(SearchViewModel::class.java)
 
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         val root: View = binding.root

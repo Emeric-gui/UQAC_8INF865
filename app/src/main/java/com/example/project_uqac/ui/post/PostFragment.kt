@@ -11,7 +11,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.project_uqac.R
 import com.example.project_uqac.databinding.FragmentPostBinding
-import com.example.project_uqac.ui.post.PostViewModel
 
 class PostFragment : Fragment() {
 
