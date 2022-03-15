@@ -4,18 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.project_uqac.R
 import com.example.project_uqac.databinding.FragmentSearchBinding
-import com.example.project_uqac.ui.Article
-import com.example.project_uqac.ui.ArticlesAdapter
-import com.example.project_uqac.ui.home.Post
-import com.example.project_uqac.ui.home.PostAdapter
+import com.example.project_uqac.ui.article.Article
+import com.example.project_uqac.ui.article.ArticlesAdapter
 
 class SearchFragment : Fragment() {
 
@@ -52,8 +48,6 @@ class SearchFragment : Fragment() {
         rvArticles.adapter = adapter
         // Set layout manager to position the items
         rvArticles.layoutManager = LinearLayoutManager(view?.context)
-        // That's all!
-
 
 
         return root

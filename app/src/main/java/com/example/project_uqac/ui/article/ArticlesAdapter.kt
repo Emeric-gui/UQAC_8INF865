@@ -1,11 +1,13 @@
-package com.example.project_uqac.ui
+package com.example.project_uqac.ui.article
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.project_uqac.R
+import com.squareup.picasso.Picasso
 
 
 class ArticlesAdapter (private val mArticles: List<Article>) : RecyclerView.Adapter<ArticlesAdapter.ViewHolder>()
@@ -19,21 +21,22 @@ class ArticlesAdapter (private val mArticles: List<Article>) : RecyclerView.Adap
         val lieuTextView: TextView = itemView.findViewById<TextView>(R.id.itemLieu)
         val dateTextView: TextView = itemView.findViewById<TextView>(R.id.itemDate)
         val descriptionTextView: TextView = itemView.findViewById<TextView>(R.id.itemDescription)
+        val imageImageView: ImageView = itemView.findViewById<ImageView>(R.id.imageView)
     }
 
     // ... constructor and member variables
     // Usually involves inflating a layout from XML and returning the holder
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticlesAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val context = parent.context
         val inflater = LayoutInflater.from(context)
         // Inflate the custom layout
-        val articleView = inflater.inflate(R.layout.item_search, parent, false)
+        val articleView = inflater.inflate(R.layout.item_article, parent, false)
         // Return a new holder instance
         return ViewHolder(articleView)
     }
 
     // Involves populating data into the item through holder
-    override fun onBindViewHolder(viewHolder: ArticlesAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         // Get the data model based on position
         val article: Article = mArticles[position]
         // Set item views based on your views and data model
@@ -45,6 +48,7 @@ class ArticlesAdapter (private val mArticles: List<Article>) : RecyclerView.Adap
         dateView.text = article.date
         val descriptionView = viewHolder.descriptionTextView
         descriptionView.text = article.description
+        Picasso.get().load(article.image).into(viewHolder.imageImageView)
 
     }
 
