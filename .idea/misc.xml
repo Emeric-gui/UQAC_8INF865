@@ -21,7 +21,11 @@
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.24739583333333334" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.24739583333333334" />
         <entry key="app/src/main/res/drawable/customborder.xml" value="0.201" />
-        <entry key="app/src/main/res/layout/fragment_search.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.182518115942029" />
+        <entry key="app/src/main/res/layout/fragment_filter.xml" value="0.11574074074074074" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.12349397590361445" />
+        <entry key="app/src/main/res/layout/fragment_search.xml" value="0.16225921630859375" />
+        <entry key="app/src/main/res/layout/item_search.xml" value="0.311083984375" />
       </map>
     </option>
   </component>
