@@ -43,7 +43,7 @@
                         app:cardCornerRadius="20dp">
 
                         <ImageView
-                            android:id="@+id/imageView"
+                            android:id="@+id/imageViewArticle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -65,7 +65,7 @@
                             android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/itemTitre"
+                                android:id="@+id/itemTitreObjectArticle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="5dp"
@@ -74,7 +74,7 @@
                                 android:text="Titre" />
 
                             <TextView
-                                android:id="@+id/itemLieu"
+                                android:id="@+id/itemLastMessageArticle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="5dp"
@@ -83,7 +83,7 @@
                                 android:text="Lieu" />
 
                             <TextView
-                                android:id="@+id/itemDate"
+                                android:id="@+id/itemNameArticle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="5dp"
@@ -113,7 +113,7 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/itemDescription"
+                            android:id="@+id/itemDescriptionArticle"
                             android:layout_width="match_parent"
                             android:layout_height="70dp"
                             android:background="#FFFFFF"

@@ -8,7 +8,12 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.project_uqac.R
 import com.example.project_uqac.databinding.FragmentDiscussionsBinding
+import com.example.project_uqac.ui.conversation.Conversation
+import com.example.project_uqac.ui.conversation.ConversationsAdapter
 
 class DiscussionsFragment : Fragment() {
 
@@ -34,6 +39,17 @@ class DiscussionsFragment : Fragment() {
         dashboardViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
+
+        // Lookup the recyclerview in activity layout
+        val rvConversations = root.findViewById<View>(R.id.recyclerView) as RecyclerView
+        // Initialize contacts
+        var conversations = Conversation.createConversationList(19)
+        // Create adapter passing in the sample user data
+        val adapter = ConversationsAdapter(conversations)
+        // Attach the adapter to the recyclerview to populate items
+        rvConversations.adapter = adapter
+        // Set layout manager to position the items
+        rvConversations.layoutManager = LinearLayoutManager(view?.context)
         return root
     }
 
