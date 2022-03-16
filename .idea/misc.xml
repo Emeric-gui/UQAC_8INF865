@@ -22,12 +22,15 @@
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.24739583333333334" />
         <entry key="app/src/main/res/drawable/customborder.xml" value="0.201" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.182518115942029" />
-        <entry key="app/src/main/res/layout/fragment_filter.xml" value="0.11574074074074074" />
+        <entry key="app/src/main/res/layout/fragment_discussions.xml" value="0.2760416666666667" />
+        <entry key="app/src/main/res/layout/fragment_filter.xml" value="0.3144751297800164" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_my_account.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_post.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.16225921630859375" />
         <entry key="app/src/main/res/layout/frame_textview.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/item_article.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_article.xml" value="0.32243041992187504" />
+        <entry key="app/src/main/res/layout/item_conversation.xml" value="0.2670807453416149" />
         <entry key="app/src/main/res/layout/item_search.xml" value="0.38364410400390625" />
       </map>
     </option>
