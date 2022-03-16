@@ -65,96 +65,94 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/LinearLayout3"
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="85dp"
+                android:fillViewport="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/LinearLayout">
 
                 <LinearLayout
-                    android:id="@+id/linearLayout2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal|center_vertical"
-                    android:orientation="horizontal">
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="20dp">
 
-                    <TextView
-                        android:id="@+id/textView2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Ville" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginVertical="20dp"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/textView4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Rayon" />
+
+                        <SeekBar
+                            android:id="@+id/seekBar"
+                            android:layout_width="250dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:progressTint="#7700FF"
+                            android:thumbTint="#AAAAAA" />
+
+                        <TextView
+                            android:id="@+id/textView5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="VAR" />
+
+                        <TextView
+                            android:id="@+id/textView6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="km" />
+
+                    </LinearLayout>
 
                     <androidx.cardview.widget.CardView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        app:cardCornerRadius="10dp">
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:cardCornerRadius="50dp">
 
-                        <Spinner
-                            android:id="@+id/spinner"
-                            android:layout_width="150dp"
-                            android:layout_height="wrap_content"
-                            android:padding="5dp" />
+                        <com.google.android.gms.maps.MapView
+                            android:id="@+id/mapView2"
+                            android:layout_width="match_parent"
+                            android:layout_height="400dp" />
                     </androidx.cardview.widget.CardView>
 
-                </LinearLayout>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="20dp"
+                        app:cardCornerRadius="50dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginVertical="20dp"
-                    android:gravity="center_horizontal"
-                    android:orientation="horizontal">
+                        <CalendarView
+                            android:id="@+id/calendarView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:minDate="01/01/2019"
+                            android:selectedWeekBackgroundColor="#857700FF" />
+                    </androidx.cardview.widget.CardView>
 
-                    <TextView
-                        android:id="@+id/textView4"
+                    <Button
+                        android:id="@+id/button3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Rayon" />
-
-                    <SeekBar
-                        android:id="@+id/seekBar"
-                        android:layout_width="250dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:progressTint="#7700FF"
-                        android:thumbTint="#AAAAAA" />
-
-                    <TextView
-                        android:id="@+id/textView5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="VAR" />
-
-                    <TextView
-                        android:id="@+id/textView6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="km" />
+                        android:layout_marginVertical="20dp"
+                        android:text="Valider" />
 
                 </LinearLayout>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <CalendarView
-                        android:id="@+id/calendarView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:minDate="01/01/2019"
-                        android:selectedWeekBackgroundColor="#857700FF" />
-                </androidx.cardview.widget.CardView>
-
-            </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
