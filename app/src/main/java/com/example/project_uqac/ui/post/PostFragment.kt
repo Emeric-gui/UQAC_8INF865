@@ -37,11 +37,11 @@ class PostFragment : Fragment() {
             textView.text = it
         })
 
-        val btn = root.findViewById<Button>(R.id.button1)
-        btn.text = "yolo"
-        btn.setOnClickListener {
-            btn.text = "weeee"
-        }
+        //val btn = root.findViewById<Button>(R.id.button1)
+        //btn.text = "yolo"
+        //btn.setOnClickListener {
+        //    btn.text = "weeee"
+        //}
         return root
     }
 
