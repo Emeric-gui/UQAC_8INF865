@@ -23,8 +23,10 @@
     <LinearLayout
         android:id="@+id/linearLayout_search"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="50dp"
+        android:gravity="center_horizontal|center_vertical"
         android:orientation="horizontal"
+        android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -32,36 +34,36 @@
         <Button
             android:id="@+id/button12h"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_height="35dp"
             android:layout_weight="1"
+            android:autoSizeTextType="uniform"
             android:backgroundTint="#E0E0E0"
-            android:text="12h"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="1 jour"
             android:textColor="#5B5B5B"
             app:cornerRadius="20dp" />
 
         <Button
             android:id="@+id/button24h"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="10dp"
             android:layout_weight="1"
+            android:autoSizeTextType="uniform"
             android:backgroundTint="#E0E0E0"
-            android:text="24h"
+            android:text="3 jours"
             android:textColor="#5B5B5B"
             app:cornerRadius="20dp" />
 
         <Button
             android:id="@+id/button7j"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_height="35dp"
             android:layout_weight="1"
+            android:autoSizeTextType="uniform"
             android:backgroundTint="#E0E0E0"
-            android:text="7j"
+            android:text="7 jours"
             android:textColor="#5B5B5B"
             app:cornerRadius="20dp" />
 
@@ -70,18 +72,21 @@
     <LinearLayout
         android:id="@+id/view"
         android:layout_width="match_parent"
-        android:layout_height="10dp"
+        android:layout_height="1dp"
         android:layout_marginHorizontal="8dp"
         android:layout_marginVertical="1dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="1dp"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout_search"
-        tools:layout_editor_absoluteX="8dp">
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout_search">
 
         <View
             android:id="@+id/view2"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="#5B5B5B"
+            android:layout_height="1dp"
+            android:background="#3D00BB"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout_search" />
     </LinearLayout>
 
@@ -95,21 +100,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view">
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </LinearLayout>
+            android:padding="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </LinearLayout>
 

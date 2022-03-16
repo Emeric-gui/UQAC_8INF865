@@ -24,7 +24,7 @@
         <entry key="app/src/main/res/drawable/post_border_custom.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/post_gradient_background.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.182518115942029" />
-        <entry key="app/src/main/res/layout/fragment_discussions.xml" value="0.2760416666666667" />
+        <entry key="app/src/main/res/layout/fragment_discussions.xml" value="0.18714555765595464" />
         <entry key="app/src/main/res/layout/fragment_filter.xml" value="0.19991912841796877" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_my_account.xml" value="0.1" />
@@ -34,8 +34,8 @@
         <entry key="app/src/main/res/layout/fragment_post_type.xml" value="0.1342451874366768" />
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.16225921630859375" />
         <entry key="app/src/main/res/layout/frame_textview.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/item_article.xml" value="0.32243041992187504" />
-        <entry key="app/src/main/res/layout/item_conversation.xml" value="0.2670807453416149" />
+        <entry key="app/src/main/res/layout/item_article.xml" value="0.3" />
+        <entry key="app/src/main/res/layout/item_conversation.xml" value="0.2599304767869274" />
         <entry key="app/src/main/res/layout/item_search.xml" value="0.38364410400390625" />
       </map>
     </option>
