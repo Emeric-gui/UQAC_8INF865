@@ -35,10 +35,10 @@ class DiscussionsFragment : Fragment() {
         _binding = FragmentDiscussionsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textDiscussions
-        dashboardViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
+        //val textView: TextView = binding.textDiscussions
+        //dashboardViewModel.text.observe(viewLifecycleOwner, Observer {
+         //   textView.text = it
+        //})
 
         // Lookup the recyclerview in activity layout
         val rvConversations = root.findViewById<View>(R.id.recyclerView) as RecyclerView
