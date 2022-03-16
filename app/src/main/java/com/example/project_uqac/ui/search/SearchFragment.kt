@@ -12,8 +12,9 @@ import com.example.project_uqac.R
 import com.example.project_uqac.databinding.FragmentSearchBinding
 import com.example.project_uqac.ui.article.Article
 import com.example.project_uqac.ui.article.ArticlesAdapter
+import com.example.project_uqac.ui.search.filter.DialogueFragmentFilter
 
-class SearchFragment : Fragment() {
+class SearchFragment  : Fragment()  {
 
     private lateinit var dashboardViewModel: SearchViewModel
     private var _binding: FragmentSearchBinding? = null
@@ -37,6 +38,13 @@ class SearchFragment : Fragment() {
         //dashboardViewModel.text.observe(viewLifecycleOwner, Observer {
         //    textView.text = it
         // })
+
+        val buttonFilter = root.findViewById<View>(R.id.button_filter)
+        buttonFilter.setOnClickListener(){
+            var dialogFragFilter = DialogueFragmentFilter()
+            dialogFragFilter.show(childFragmentManager, "customDialog")
+
+        }
 
         // Lookup the recyclerview in activity layout
         val rvArticles = root.findViewById<View>(R.id.recyclerView) as RecyclerView
