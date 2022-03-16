@@ -32,7 +32,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
-            android:id="@+id/button12h"
+            android:id="@+id/button1J"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:layout_weight="1"
@@ -44,7 +44,7 @@
             app:cornerRadius="20dp" />
 
         <Button
-            android:id="@+id/button24h"
+            android:id="@+id/button3J"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:layout_gravity="center"
@@ -66,6 +66,17 @@
             android:text="7 jours"
             android:textColor="#5B5B5B"
             app:cornerRadius="20dp" />
+
+        <ImageButton
+            android:id="@+id/imageButtonInformation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:background="#FFFFFF"
+            android:backgroundTintMode="src_atop"
+            android:hapticFeedbackEnabled="false"
+            android:src="@drawable/ic_action_information"
+            android:tint="#4A4A4A" />
 
     </LinearLayout>
 
