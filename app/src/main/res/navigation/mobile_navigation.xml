@@ -27,11 +27,11 @@
         android:id="@+id/navigation_discussions"
         android:name="com.example.project_uqac.ui.discussions.DiscussionsFragment"
         android:label="@string/title_discussions"
-        tools:layout="@layout/fragment_post" />
+        tools:layout="@layout/fragment_discussions" />
 
     <fragment
         android:id="@+id/navigation_my_account"
         android:name="com.example.project_uqac.ui.my_account.MyAccountFragment"
         android:label="@string/title_my_account"
-        tools:layout="@layout/fragment_post" />
+        tools:layout="@layout/fragment_login" />
 </navigation>

@@ -5,4 +5,7 @@
     <string name="title_post">Post</string>
     <string name="title_discussions">Discussions</string>
     <string name="title_my_account">My Account</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
 </resources>
