@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/post_fragment_navigation"
+    app:startDestination="@id/postFragmentNature">
+
+    <fragment
+        android:id="@+id/postFragmentDate"
+        android:name="com.example.project_uqac.ui.post.postFragmentDate"
+        android:label="fragment_post_date"
+        tools:layout="@layout/fragment_post_date" >
+        <action
+            android:id="@+id/action_postFragmentDate_to_postFragmentLieu"
+            app:destination="@id/postFragmentLieu" />
+    </fragment>
+    <fragment
+        android:id="@+id/postFragmentLieu"
+        android:name="com.example.project_uqac.ui.post.postFragmentLieu"
+        android:label="fragment_post_lieu"
+        tools:layout="@layout/fragment_post_lieu" >
+        <action
+            android:id="@+id/action_postFragmentLieu_to_myAccountFragment"
+            app:destination="@id/myAccountFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/postFragmentType"
+        android:name="com.example.project_uqac.ui.post.postFragmentType"
+        android:label="fragment_post_type"
+        tools:layout="@layout/fragment_post_type" >
+        <action
+            android:id="@+id/action_postFragmentType_to_postFragmentDescriptionObjet2"
+            app:destination="@id/postFragmentDescriptionObjet" />
+    </fragment>
+    <fragment
+        android:id="@+id/postFragmentDescriptionAnimal"
+        android:name="com.example.project_uqac.ui.post.postFragmentDescriptionAnimal"
+        android:label="fragment_post_description_animal"
+        tools:layout="@layout/fragment_post_description_animal" >
+        <action
+            android:id="@+id/action_postFragmentDescriptionAnimal_to_postFragmentDate"
+            app:destination="@id/postFragmentDate" />
+    </fragment>
+    <fragment
+        android:id="@+id/postFragmentDescriptionObjet"
+        android:name="com.example.project_uqac.ui.post.postFragmentDescriptionObjet"
+        android:label="fragment_post_description_objet"
+        tools:layout="@layout/fragment_post_description_objet" >
+        <action
+            android:id="@+id/action_postFragmentDescriptionObjet_to_postFragmentDate"
+            app:destination="@id/postFragmentDate"
+            app:launchSingleTop="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/postFragmentEspece"
+        android:name="com.example.project_uqac.ui.post.postFragmentEspece"
+        android:label="fragment_post_espece"
+        tools:layout="@layout/fragment_post_espece" >
+        <action
+            android:id="@+id/action_postFragmentEspece_to_postFragmentDescriptionAnimal"
+            app:destination="@id/postFragmentDescriptionAnimal" />
+    </fragment>
+    <fragment
+        android:id="@+id/postFragmentNature"
+        android:name="com.example.project_uqac.ui.post.postFragmentNature"
+        android:label="fragment_post_nature"
+        tools:layout="@layout/fragment_post_nature" >
+        <action
+            android:id="@+id/action_postFragmentNature_to_postFragmentType"
+            app:destination="@id/postFragmentType" />
+        <action
+            android:id="@+id/action_postFragmentNature_to_postFragmentEspece"
+            app:destination="@id/postFragmentEspece" />
+    </fragment>
+    <fragment
+        android:id="@+id/myAccountFragment"
+        android:name="com.example.project_uqac.ui.my_account.MyAccountFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" />
+</navigation>

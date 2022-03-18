@@ -40,21 +40,6 @@ class HomeFragment : Fragment() {
             textView.text = it
         })
 
-
-        //val posts: ArrayList<Post> = ArrayList()
-        //for (i in 1..100) {
-        //    posts.add(Post("Mon Giga Titre_" + i, "Ma giga description qui nique des grandes daronnes tellement elle est longue.", "https://picsum.photos/600/300?random&" + i))
-        //}
-//
-//        binding.recyclerView.layoutManager = LinearLayoutManager(this)
-//        binding.recyclerView.adapter = PostsAdapter(posts, this)
-
-        // Add the following lines to create RecyclerView
-        //val recyclerView = root.findViewById<RecyclerView>(R.id.recyclerView);
-        //recyclerView.setHasFixedSize(true);
-        //recyclerView.setLayoutManager(LinearLayoutManager(view?.getContext()));
-        //recyclerView.setAdapter(PostAdapter(posts, 1234));
-
         // Lookup the recyclerview in activity layout
         val rvArticles = root.findViewById<View>(R.id.recyclerView) as RecyclerView
         // Initialize contacts

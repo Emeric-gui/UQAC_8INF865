@@ -25,7 +25,8 @@
             app:boxCornerRadiusBottomStart="35dp"
             app:boxCornerRadiusTopEnd="35dp"
             app:boxCornerRadiusTopStart="35dp"
-            app:boxStrokeWidth="0dp">
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/Search_discussions"

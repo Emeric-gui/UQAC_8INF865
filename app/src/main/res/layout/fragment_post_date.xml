@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".ui.post.postFragmentDate">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,7 +28,15 @@
                 android:layout_height="match_parent"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
-                android:padding="20dp">
+                android:padding="10dp">
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp" />
 
                 <LinearLayout
                     android:layout_width="300dp"
@@ -56,7 +66,7 @@
                     android:orientation="vertical">
 
                     <CalendarView
-                        android:id="@+id/calendarView2"
+                        android:id="@+id/calendarViewPost"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
@@ -67,30 +77,34 @@
                     android:gravity="bottom|center_horizontal"
                     android:orientation="vertical">
 
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:cardCornerRadius="10dp">
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
 
-                        <ImageView
-                            android:id="@+id/imageView"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:background="#B7B7B7"
-                            app:srcCompat="@drawable/ic_action_arrows_right" />
-                    </androidx.cardview.widget.CardView>
+                        <ImageButton
+                            android:id="@+id/imageButtonprevDate"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:background="@drawable/round_button"
+                            android:src="@drawable/ic_action_arrows_left" />
 
-                    <ProgressBar
-                        android:id="@+id/progressBar"
-                        style="?android:attr/progressBarStyleHorizontal"
-                        android:layout_width="250dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="10dp" />
+                        <ImageButton
+                            android:id="@+id/imageButtonnextDate"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_marginLeft="15dp"
+                            android:background="@drawable/round_button"
+                            android:src="@drawable/ic_action_arrows_right" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
     </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
