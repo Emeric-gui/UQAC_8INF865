@@ -8,30 +8,31 @@ import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import com.example.project_uqac.R
 
-class PostFragmentType : Fragment() {
+class PostFragmentDateObjet : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view =  inflater.inflate(R.layout.fragment_post_type, container, false)
+        val view =  inflater.inflate(R.layout.fragment_post_date_objet, container, false)
 
-        val buttonPrev : ImageButton = view.findViewById(R.id.imageButtonprevtype)
+        val buttonPrev : ImageButton = view.findViewById(R.id.imageButtonprevDateObjet)
         buttonPrev.setOnClickListener(){
-            val fragment = PostFragmentNature()
-            val transaction = fragmentManager?.beginTransaction()
-            transaction?.replace(R.id.post_fragment_navigation, fragment)?.commit()
-        }
-
-        val buttonNext : ImageButton = view.findViewById(R.id.imageButtonnexttype)
-        buttonNext.setOnClickListener(){
             val fragment = PostFragmentDescriptionObjet()
             val transaction = fragmentManager?.beginTransaction()
             transaction?.replace(R.id.post_fragment_navigation, fragment)?.commit()
         }
 
+        val buttonNext : ImageButton = view.findViewById(R.id.imageButtonnextDateObjet)
+        buttonNext.setOnClickListener(){
+            val fragment = PostFragmentLieuObjet()
+            val transaction = fragmentManager?.beginTransaction()
+            transaction?.replace(R.id.post_fragment_navigation, fragment)?.commit()
+        }
+
         return view
+
     }
 
 }

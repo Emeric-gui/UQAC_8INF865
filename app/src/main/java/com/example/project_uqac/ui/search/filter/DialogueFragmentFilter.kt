@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.example.project_uqac.R
 import kotlinx.android.synthetic.main.fragment_filter.view.*
-import com.google.android.gms.maps.OnMapReadyCallback;
 
 class DialogueFragmentFilter:DialogFragment()  {
 

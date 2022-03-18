@@ -33,11 +33,14 @@
         <entry key="app/src/main/res/layout/fragment_my_account.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_post.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_post_date.xml" value="0.291198617612458" />
+        <entry key="app/src/main/res/layout/fragment_post_date_animal.xml" value="0.19791666666666666" />
         <entry key="app/src/main/res/layout/fragment_post_description.xml" value="0.1328125" />
         <entry key="app/src/main/res/layout/fragment_post_description_animal.xml" value="0.1328125" />
         <entry key="app/src/main/res/layout/fragment_post_description_objet.xml" value="0.1328125" />
         <entry key="app/src/main/res/layout/fragment_post_espece.xml" value="0.3292433537832311" />
         <entry key="app/src/main/res/layout/fragment_post_lieu.xml" value="0.1342451874366768" />
+        <entry key="app/src/main/res/layout/fragment_post_lieu_animal.xml" value="0.19791666666666666" />
+        <entry key="app/src/main/res/layout/fragment_post_lieu_objet.xml" value="0.19791666666666666" />
         <entry key="app/src/main/res/layout/fragment_post_nature.xml" value="0.13247213779128672" />
         <entry key="app/src/main/res/layout/fragment_post_type.xml" value="0.1342451874366768" />
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.16225921630859375" />
