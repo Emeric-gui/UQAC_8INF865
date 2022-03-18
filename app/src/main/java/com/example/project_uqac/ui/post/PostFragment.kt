@@ -4,14 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.project_uqac.R
 import com.example.project_uqac.databinding.FragmentPostBinding
-import kotlinx.android.synthetic.main.fragment_post.view.*
 
 class PostFragment : Fragment() {
 
@@ -40,7 +36,7 @@ class PostFragment : Fragment() {
         })
          */
 
-        childFragmentManager.beginTransaction().replace(R.id.post_fragment_navigation,postFragmentNature()).commit()
+        childFragmentManager.beginTransaction().replace(R.id.post_fragment_navigation,PostFragmentNature()).commit()
 
 
 
