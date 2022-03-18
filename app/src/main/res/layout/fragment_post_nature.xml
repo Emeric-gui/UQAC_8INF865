@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.post.postFragmentLieu">
+    tools:context=".ui.post.postFragmentNature">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,24 +26,23 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center_horizontal"
                 android:orientation="vertical"
                 android:padding="20dp">
 
                 <LinearLayout
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="20dp">
 
                     <TextView
-                        android:id="@+id/text_post_lieu"
+                        android:id="@+id/text_post"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
-                        android:text="Où l'avez vous trouvé?"
+                        android:text="Quel est la nature de ce que vous avez trouvé? "
                         android:textAlignment="center"
                         android:textSize="20sp" />
 
@@ -53,48 +52,52 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|center_vertical"
-                    android:layout_marginVertical="30dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="50dp"
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <com.google.android.gms.maps.MapView
-                        android:id="@+id/mapView"
-                        android:layout_width="300dp"
-                        android:layout_height="400dp" />
+                    <Button
+                        android:id="@+id/buttonObjet"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Objet" />
+
+                    <Button
+                        android:id="@+id/buttonAnimal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:text="Animal" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="vertical">
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="bottom|center_horizontal"
+                    android:gravity="bottom"
                     android:orientation="vertical">
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:cardCornerRadius="10dp">
-
-                        <Button
-                            android:id="@+id/button2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="#DBDBDB"
-                            android:backgroundTint="#DBDBDB"
-                            android:text="Publier" />
-                    </androidx.cardview.widget.CardView>
 
                     <ProgressBar
                         android:id="@+id/progressBar"
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="250dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="10dp" />
+                        android:layout_gravity="center" />
 
                 </LinearLayout>
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
     </LinearLayout>
+
 
 </FrameLayout>
