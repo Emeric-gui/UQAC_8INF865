@@ -96,6 +96,7 @@
                             android:id="@+id/buttonPublier"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
                             android:background="@drawable/round_button"
                             android:backgroundTint="#DBDBDB"
                             android:text="Publier" />
