@@ -28,7 +28,7 @@ class PostFragmentLieuAnimal : Fragment() {
 
         val buttonNext : Button = view.findViewById(R.id.buttonPublier)
         buttonNext.setOnClickListener(){
-            val fragment = MyAccountFragment()
+            val fragment = PostFragmentNature()
             val transaction = fragmentManager?.beginTransaction()
             transaction?.replace(R.id.post_fragment_navigation, fragment)?.commit()
         }
