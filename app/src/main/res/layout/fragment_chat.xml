@@ -21,19 +21,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="93dp"
-        tools:layout_editor_absoluteY="118dp"
-        tools:src="@tools:sample/avatars" />
 
     <Button
-        android:id="@+id/button3"
-        android:layout_width="196dp"
-        android:layout_height="69dp"
-        android:text="Button"
-        tools:layout_editor_absoluteX="107dp"
-        tools:layout_editor_absoluteY="272dp" />
+        android:id="@+id/button_Retour"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Retour" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

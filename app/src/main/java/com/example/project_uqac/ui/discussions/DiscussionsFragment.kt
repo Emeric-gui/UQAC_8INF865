@@ -16,6 +16,7 @@ import com.example.project_uqac.databinding.FragmentDiscussionsBinding
 import com.example.project_uqac.ui.conversation.Conversation
 import com.example.project_uqac.ui.conversation.ConversationsAdapter
 import com.example.project_uqac.ui.chat.ChatFragment
+import kotlinx.android.synthetic.main.fragment_chat.*
 
 class DiscussionsFragment : Fragment() {
 
@@ -66,6 +67,7 @@ class DiscussionsFragment : Fragment() {
         super.onAttach(context)
         _context=context
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
