@@ -6,12 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.project_uqac.R
 import com.example.project_uqac.databinding.FragmentLoginBinding
+import com.example.project_uqac.databinding.FragmentMyAccountBinding
+import com.example.project_uqac.ui.post.PostFragmentNature
 
 class MyAccountFragment : Fragment() {
 
     private lateinit var dashboardViewModel: MyAccountViewModel
-    private var _binding: FragmentLoginBinding? = null
+    private var _binding: FragmentMyAccountBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -25,7 +28,12 @@ class MyAccountFragment : Fragment() {
         dashboardViewModel =
             ViewModelProvider(this).get(MyAccountViewModel::class.java)
 
-        _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        _binding = FragmentMyAccountBinding.inflate(inflater, container, false)
+
+        childFragmentManager.beginTransaction().replace(
+            R.id.my_account_fragment_navigation,
+            MyAccountLogin()
+        ).commit()
 
         return binding.root
     }
