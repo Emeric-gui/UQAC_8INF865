@@ -17,12 +17,18 @@
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.24739583333333334" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.24739583333333334" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.24739583333333334" />
+        <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/drawable/layout_bg.xml" value="0.256" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/activity_main.xml" value="0.2957427536231884" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_dashboard.xml" value="0.2957427536231884" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_discussions.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_home.xml" value="0.2957427536231884" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_my_account.xml" value="0.23125" />
+        <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_my_account_delete_item.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_my_account_informations.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_my_account_logged.xml" value="0.21105072463768115" />
+        <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_my_account_my_posts.xml" value="0.21105072463768115" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_notifications.xml" value="0.2957427536231884" />
+        <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_popup_home.xml" value="0.24739583333333334" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_post.xml" value="0.24365942028985507" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_search.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/frame.xml" value="0.23125" />

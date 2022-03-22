@@ -1,4 +1,4 @@
-package com.example.project_uqac.ui.article
+package com.example.project_uqac.ui.my_account.myPosts
 
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +10,7 @@ import com.example.project_uqac.R
 import com.squareup.picasso.Picasso
 
 
-class ArticlesAdapter (private val mArticles: List<Article>) : RecyclerView.Adapter<ArticlesAdapter.ViewHolder>()
+class PostsAdapter (private val mArticles: List<Post>) : RecyclerView.Adapter<PostsAdapter.ViewHolder>()
 {
     private lateinit var mListener: onItemClickListener
 //    private lateinit var mInfos : addInfosOnAdapter
@@ -69,7 +69,7 @@ class ArticlesAdapter (private val mArticles: List<Article>) : RecyclerView.Adap
     // Involves populating data into the item through holder
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         // Get the data model based on position
-        val article: Article = mArticles[position]
+        val article: Post = mArticles[position]
         // Set item views based on your views and data model
         val titleView = viewHolder.titleTextView
         titleView.text = article.title
