@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -14,6 +15,7 @@ import com.example.project_uqac.R
 import com.example.project_uqac.databinding.FragmentHomeBinding
 import com.example.project_uqac.ui.article.Article
 import com.example.project_uqac.ui.article.ArticlesAdapter
+import com.example.project_uqac.ui.home.popupDiscussion.DialogFragmentDiscussion
 
 class HomeFragment : Fragment() {
 
@@ -48,6 +50,21 @@ class HomeFragment : Fragment() {
         val adapter = ArticlesAdapter(articles)
         // Attach the adapter to the recyclerview to populate items
         rvArticles.adapter = adapter
+
+
+        //addOnClick
+        adapter.setOnItemClickListener(object :ArticlesAdapter.onItemClickListener{
+            override fun onItemClick(position: Int) {
+                Toast.makeText(activity, "You click on item no. $position", Toast.LENGTH_SHORT).show()
+
+                //recuperer items
+                var dialogPage = DialogFragmentDiscussion()
+                dialogPage.show(childFragmentManager, "Custom Dialog")
+            }
+        })
+
+
+
         // Set layout manager to position the items
         rvArticles.layoutManager = LinearLayoutManager(view?.context)
 

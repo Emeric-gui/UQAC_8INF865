@@ -12,9 +12,31 @@ import com.squareup.picasso.Picasso
 
 class ArticlesAdapter (private val mArticles: List<Article>) : RecyclerView.Adapter<ArticlesAdapter.ViewHolder>()
 {
+    private lateinit var mListener: onItemClickListener
+//    private lateinit var mInfos : addInfosOnAdapter
+//
+//
+//    interface addInfosOnAdapter{
+//        fun addInfos(position: Int)
+//    }
+//
+    interface onItemClickListener{
+        fun onItemClick(position: Int)
+    }
+//
+//    fun setAddInfos(infos: addInfosOnAdapter){
+//        mInfos = infos
+//    }
+
+    fun setOnItemClickListener(listener: onItemClickListener){
+        mListener = listener
+    }
+
     // Provide a direct reference to each of the views within a data item
     // Used to cache the views within the item layout for fast access
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+//    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View, listener: onItemClickListener) : RecyclerView.ViewHolder(itemView) {
+
         // Your holder should contain and initialize a member variable
         // for any view that will be set as you render a row
         val titleTextView: TextView = itemView.findViewById<TextView>(R.id.itemTitreObjectArticle)
@@ -22,6 +44,13 @@ class ArticlesAdapter (private val mArticles: List<Article>) : RecyclerView.Adap
         val dateTextView: TextView = itemView.findViewById<TextView>(R.id.itemNameArticle)
         val descriptionTextView: TextView = itemView.findViewById<TextView>(R.id.itemDescriptionArticle)
         val imageImageView: ImageView = itemView.findViewById<ImageView>(R.id.imageViewArticle)
+
+
+        init {
+            itemView.setOnClickListener {
+                listener.onItemClick(adapterPosition)
+            }
+        }
     }
 
     // ... constructor and member variables
@@ -32,7 +61,9 @@ class ArticlesAdapter (private val mArticles: List<Article>) : RecyclerView.Adap
         // Inflate the custom layout
         val articleView = inflater.inflate(R.layout.item_article, parent, false)
         // Return a new holder instance
-        return ViewHolder(articleView)
+
+        return ViewHolder(articleView, mListener)
+//        return ViewHolder(articleView)
     }
 
     // Involves populating data into the item through holder
