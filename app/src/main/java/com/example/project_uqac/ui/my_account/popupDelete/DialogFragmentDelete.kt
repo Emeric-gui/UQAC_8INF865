@@ -1,6 +1,6 @@
 //fichier DialogFragmentDelete.kt
 
-package com.example.project_uqac.ui.home.popupDiscussion
+package com.example.project_uqac.ui.my_account.popupDelete
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -11,27 +11,28 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.example.project_uqac.R
-import com.example.project_uqac.databinding.FragmentSearchBinding
+import com.example.project_uqac.databinding.FragmentMyAccountBinding
+import kotlinx.android.synthetic.main.fragment_my_account_delete_item.view.*
 import kotlinx.android.synthetic.main.fragment_popup_home.view.*
 
 
-class DialogFragmentDiscussion:DialogFragment() {
+class DialogFragmentDelete:DialogFragment() {
 
-    private var _binding: FragmentSearchBinding? = null
+    private var _binding: FragmentMyAccountBinding? = null
 
     private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) :
             View? {
-        var rootView : View = inflater.inflate(R.layout.fragment_popup_home, container, false)
+        var rootView : View = inflater.inflate(R.layout.fragment_my_account_delete_item, container, false)
 
-        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        _binding = FragmentMyAccountBinding.inflate(inflater, container, false)
 
-        rootView.button_home_annuler.setOnClickListener(){
+        rootView.button_my_account_cancel.setOnClickListener(){
             dismiss()
         }
 
-        rootView.button_home_contacter.setOnClickListener(){
+        rootView.button_my_account_confirm.setOnClickListener(){
             Log.println(Log.DEBUG, "debug", "Appui sur contacter")
             dismiss()
         }

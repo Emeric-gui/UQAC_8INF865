@@ -14,5 +14,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="annuler">Annuler</string>
     <string name="contacter">Contacter</string>
+    <string name="confirm">Valider</string>
     <string name="etes_vous_s_r_que_c_est_votre_objet">Etes-vous sûr que c\'est votre objet ?</string>
+    <string name="delete_item">Voulez-vous vraiment supprimer l\'annonce ?</string>
 </resources>
