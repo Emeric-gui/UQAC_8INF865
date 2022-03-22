@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:layout_gravity="center"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="300dp"
+    android:layout_height="600dp"
+    android:layout_gravity="center_horizontal"
     android:backgroundTint="#FFFFFF"
     android:foregroundTint="#FFFFFF">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="300dp"
         android:layout_height="match_parent"
-        android:backgroundTint="#FFFFFF"
-        android:foregroundTint="#FFFFFF"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -22,10 +22,7 @@
             android:layout_height="85dp"
             android:background="#6C00F8"
             android:gravity="fill"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -60,96 +57,44 @@
 
         </LinearLayout>
 
-        <androidx.core.widget.NestedScrollView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="85dp"
-            android:fillViewport="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/LinearLayout">
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/filter_tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="20dp">
+                android:background="@color/colorLightGrey" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginVertical="20dp"
-                    android:gravity="center_horizontal"
-                    android:orientation="horizontal">
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/filter_viewer"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:layout_gravity="center"
+                android:foregroundGravity="center_vertical|center_horizontal"
+                android:padding="10dp"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-                    <TextView
-                        android:id="@+id/textView4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Rayon" />
+                <!--        <androidx.viewpager.widget.PagerTitleStrip-->
+                <!--            android:layout_width="match_parent"-->
+                <!--            android:layout_height="wrap_content"-->
+                <!--            android:layout_gravity="top"-->
+                <!--            android:background="@color/purple_500"-->
+                <!--            android:padding="13dp" />-->
 
-                    <SeekBar
-                        android:id="@+id/seekBar"
-                        android:layout_width="150dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:progressTint="#7700FF"
-                        android:thumbTint="#AAAAAA" />
+            </androidx.viewpager2.widget.ViewPager2>
 
-                    <TextView
-                        android:id="@+id/textView5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="VAR" />
+            <Button
+                android:id="@+id/button_valider"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Valider" />
 
-                    <TextView
-                        android:id="@+id/textView6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="km" />
+        </LinearLayout>
 
-                </LinearLayout>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:cardCornerRadius="50dp">
-
-                    <com.google.android.gms.maps.MapView
-                        android:id="@+id/mapView2"
-                        android:layout_width="match_parent"
-                        android:layout_height="400dp" />
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="20dp"
-                    app:cardCornerRadius="50dp">
-
-                    <CalendarView
-                        android:id="@+id/calendarView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="#EFF1F1"
-                        android:minDate="01/01/2019"
-                        android:selectedWeekBackgroundColor="#857700FF" />
-                </androidx.cardview.widget.CardView>
-
-                <Button
-                    android:id="@+id/button_valider"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="20dp"
-                    android:text="Valider" />
-
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
