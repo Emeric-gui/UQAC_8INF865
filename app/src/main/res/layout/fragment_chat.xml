@@ -1,112 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginStart="8dp"
-    android:layout_marginTop="16dp">
-
-    <TextView
-        android:id="@+id/text_gchat_date_other"
-        android:layout_width="wrap_content"
+    android:orientation="vertical"
+    android:clipToPadding="false"
+    android:focusableInTouchMode="true"
+    tools:context="com.example.project_uqac.ui.chat.ChatFragment">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
-        android:paddingStart="8dp"
-        android:paddingTop="4dp"
-        android:paddingEnd="8dp"
-        android:paddingBottom="4dp"
-        android:text="June 10"
-        android:textColor="#C0C0C0"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:paddingVertical="10dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="60dp"
+        android:clipToPadding="false">
 
-    <ImageView
-        android:id="@+id/image_gchat_profile_other"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:contentDescription="User Icon"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_gchat_date_other" />
+        <View
+            android:id="@+id/avatar"
+            android:layout_alignParentLeft="true"
+            android:scaleType="centerInside"
+            android:background="@drawable/circle"
+            android:layout_width="34dp"
+            android:layout_height="34dp" />
 
-    <TextView
-        android:id="@+id/text_gchat_user_other"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="Michel"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/image_gchat_profile_other"
-        app:layout_constraintTop_toBottomOf="@+id/text_gchat_date_other" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card_gchat_message_other"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:cardBackgroundColor="#eef1f6"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="0dp"
-        app:cardPreventCornerOverlap="false"
-        app:cardUseCompatPadding="true"
-        app:layout_constraintStart_toEndOf="@+id/image_gchat_profile_other"
-        app:layout_constraintTop_toBottomOf="@+id/text_gchat_user_other">
-
-        <LinearLayout
-            android:id="@+id/layout_gchat_container_other"
+        <TextView
+            android:id="@+id/name"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/avatar"
+            android:layout_alignTop="@+id/avatar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:paddingBottom="4dp"
+            android:text="Rose"/>
 
-            <TextView
-                android:id="@+id/text_gchat_message_other"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:maxWidth="260dp"
-                android:paddingLeft="12dp"
-                android:paddingTop="8dp"
-                android:paddingRight="12dp"
-                android:text="Message"
-                android:textColor="#000000"
-                android:textSize="16sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/message_body1"
+            android:layout_below="@+id/name"
+            android:layout_alignLeft="@+id/name"
+            android:background="@drawable/their_message"
+            android:paddingVertical="12dp"
+            android:paddingHorizontal="16dp"
+            android:elevation="2dp"
+            android:textSize="18dp"
+            android:text="Hey, je pense que tu as mon objet."
+            />
+    </RelativeLayout>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="10dp"
+        android:paddingRight="15dp"
+        android:paddingLeft="60dp"
+        android:clipToPadding="false">
 
-        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/message_body"
+            android:background="@drawable/my_message"
+            android:textColor="#fff"
+            android:padding="10dp"
+            android:elevation="2dp"
+            android:textSize="18dp"
+            android:layout_alignParentRight="true"
+            android:text="Prouve le !"
+            />
 
-    </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+    <ListView
+        android:layout_width="match_parent"
+        android:id="@+id/messages_view"
+        android:layout_weight="2"
+        android:divider="#fff"
+        android:layout_height="wrap_content"
+        />
 
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:orientation="horizontal">
 
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:ems="10"
+            android:hint="Write a message"
+            android:inputType="text"
+            android:paddingHorizontal="10dp"
+            android:text="" />
+
+        <ImageButton
+            android:id="@+id/sendMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:padding="20dp"
+            android:layout_marginHorizontal="10dp"
+            android:background="@drawable/ic_send_black_24dp"/>
+    </LinearLayout>
     <Button
         android:id="@+id/button_Retour"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Retour" />
 
-    <ImageView
-        android:id="@+id/image_gchat_profile_other1"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="356dp"
-        android:layout_marginTop="124dp"
-        android:contentDescription="User Icon"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_gchat_date_other" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="401dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="1dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Envoyer un message" />
-    </com.google.android.material.textfield.TextInputLayout>
+</LinearLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
 

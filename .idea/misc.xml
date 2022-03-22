@@ -3,8 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Android Studio Projet/UQAC_8INF865/app/src/main/res/layout/fragment_chat.xml" value="0.264" />
+        <entry key="..\:/Android Studio Projet/UQAC_8INF865/app/src/main/res/drawable/circle.xml" value="0.1525" />
+        <entry key="..\:/Android Studio Projet/UQAC_8INF865/app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.1525" />
+        <entry key="..\:/Android Studio Projet/UQAC_8INF865/app/src/main/res/drawable/ic_send_black_24dp.xml" value="0.1525" />
+        <entry key="..\:/Android Studio Projet/UQAC_8INF865/app/src/main/res/drawable/my_message.xml" value="0.1525" />
+        <entry key="..\:/Android Studio Projet/UQAC_8INF865/app/src/main/res/drawable/their_message.xml" value="0.1525" />
+        <entry key="..\:/Android Studio Projet/UQAC_8INF865/app/src/main/res/layout/fragment_chat.xml" value="0.1" />
         <entry key="..\:/Android Studio Projet/UQAC_8INF865/app/src/main/res/layout/fragment_discussions.xml" value="0.12545289855072464" />
+        <entry key="..\:/Android Studio Projet/UQAC_8INF865/app/src/main/res/layout/item_conversation.xml" value="0.11730072463768115" />
+        <entry key="..\:/Android Studio Projet/UQAC_8INF865/app/src/main/res/layout/my_message.xml" value="0.16927083333333334" />
+        <entry key="..\:/Android Studio Projet/UQAC_8INF865/app/src/main/res/layout/their_message.xml" value="0.16927083333333334" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.24739583333333334" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.24739583333333334" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.24739583333333334" />
