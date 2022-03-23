@@ -60,12 +60,16 @@ class SearchFragment  : Fragment()  {
 
         adapter.setOnItemClickListener(object :ArticlesAdapter.onItemClickListener{
             override fun onItemClick(position: Int) {
-                Toast.makeText(activity, "You click on item no. $position", Toast.LENGTH_SHORT).show()
-
                 //recuperer items
-                var dialogPage = DialogFragmentDiscussion()
-                dialogPage.show(childFragmentManager, "Custom Dialog")
+                val objet = adapter.getObjet(position)
+                val lieu = adapter.getLieu(position)
+                val date = adapter.getDate(position)
 
+                //creation du fragment de dialogue
+                val dialogPage = DialogFragmentDiscussion()
+                dialogPage.show(childFragmentManager, "Custom Dialog")
+                //ajout des infos dans le dialog
+                dialogPage.addInfos(lieu, objet, date)
             }
         })
 

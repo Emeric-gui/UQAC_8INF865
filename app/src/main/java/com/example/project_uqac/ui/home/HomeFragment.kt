@@ -1,6 +1,7 @@
 package com.example.project_uqac.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,15 +56,19 @@ class HomeFragment : Fragment() {
         //addOnClick
         adapter.setOnItemClickListener(object :ArticlesAdapter.onItemClickListener{
             override fun onItemClick(position: Int) {
-                Toast.makeText(activity, "You click on item no. $position", Toast.LENGTH_SHORT).show()
-
                 //recuperer items
-                var dialogPage = DialogFragmentDiscussion()
+                val objet = adapter.getObjet(position)
+                val lieu = adapter.getLieu(position)
+                val date = adapter.getDate(position)
+
+                //creation du fragment de dialogue
+                val dialogPage = DialogFragmentDiscussion()
+
+                //ajout des infos dans le dialog
                 dialogPage.show(childFragmentManager, "Custom Dialog")
+                dialogPage.addInfos(lieu, objet, date)
             }
         })
-
-
 
         // Set layout manager to position the items
         rvArticles.layoutManager = LinearLayoutManager(view?.context)
