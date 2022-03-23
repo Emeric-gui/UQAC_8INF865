@@ -6,20 +6,19 @@
     <string name="title_discussions">Discussions</string>
     <string name="title_my_account">My Account</string>
     <string name="login">Login</string>
+    <string name="name">Nom et Prénom</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="tab_my_acc_1">Inforamtions</string>
     <string name="tab_my_acc_2">My Posts</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-<<<<<<< HEAD
     <string name="Messagerie">Scaledrone chat</string>
     <string name="input_placeholder">Write a message</string>
-=======
     <string name="annuler">Annuler</string>
     <string name="contacter">Contacter</string>
     <string name="confirm">Valider</string>
     <string name="etes_vous_s_r_que_c_est_votre_objet">Etes-vous sûr que c\'est votre objet ?</string>
     <string name="delete_item">Voulez-vous vraiment supprimer l\'annonce ?</string>
->>>>>>> 126f2ec6b112df692cc010ff77b7ab53d4a746dc
+    <string name="delete_account">Supprimer mon compte</string>
 </resources>
