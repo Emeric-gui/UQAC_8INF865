@@ -64,11 +64,13 @@ class SearchFragment  : Fragment()  {
                 val objet = adapter.getObjet(position)
                 val lieu = adapter.getLieu(position)
                 val date = adapter.getDate(position)
+                val nom = adapter.getNom(position)
 
                 var args : Bundle = Bundle()
                 args.putString("objet", objet)
                 args.putString("lieu", lieu)
                 args.putString("date", date)
+                args.putString("nom", nom)
 
                 //creation du fragment de dialogue
                 val dialogPage = DialogFragmentDiscussion()

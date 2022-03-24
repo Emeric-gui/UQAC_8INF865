@@ -15,15 +15,10 @@ class ArticlesAdapter (private val mArticles: List<Article>) : RecyclerView.Adap
 {
     private lateinit var mListener: onItemClickListener
 
-    private lateinit var mObjet: ArrayList<String>
-    private lateinit var mLieu: ArrayList<String>
-    private lateinit var mDate: ArrayList<String>
-
-    init {
-        mObjet = ArrayList<String>()
-        mLieu = ArrayList<String>()
-        mDate = ArrayList<String>()
-    }
+    private var mObjet: ArrayList<String> = ArrayList()
+    private var mLieu: ArrayList<String> = ArrayList()
+    private var mDate: ArrayList<String> = ArrayList()
+    private var mNom : ArrayList<String> = ArrayList()
 
 
     interface onItemClickListener{
@@ -85,6 +80,12 @@ class ArticlesAdapter (private val mArticles: List<Article>) : RecyclerView.Adap
         val date = dateView.text
         mDate.add(date.toString())
 
+
+        //We don't display the name of the person
+        //but we save it
+        val person = article.nom
+        mNom.add(person)
+
         val descriptionView = viewHolder.descriptionTextView
         descriptionView.text = article.description
         Picasso.get().load(article.image).into(viewHolder.imageImageView)
@@ -106,5 +107,8 @@ class ArticlesAdapter (private val mArticles: List<Article>) : RecyclerView.Adap
 
     fun getDate(position: Int): String{
         return mDate.get(position)
+    }
+    fun getNom(position: Int): String{
+        return mNom.get(position)
     }
 }

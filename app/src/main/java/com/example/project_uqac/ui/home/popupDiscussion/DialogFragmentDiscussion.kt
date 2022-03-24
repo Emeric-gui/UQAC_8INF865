@@ -16,13 +16,15 @@ class DialogFragmentDiscussion:DialogFragment() {
     private lateinit var mObjet : String
     private lateinit var mLieu : String
     private lateinit var mDate : String
+    private lateinit var mNom : String
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         super.onCreateDialog(savedInstanceState)
 
         var builder : AlertDialog.Builder = AlertDialog.Builder(activity)
 
-        val texte = "Recapitulatif : \n-Objet : $mObjet\n-Lieu : $mLieu\n-Date : $mDate"
+        val texte = "Recapitulatif : \n-Objet : $mObjet\n-Lieu : $mLieu\n-Date : $mDate" +
+                "\nContact : $mNom"
 
         builder.setMessage(texte)
         builder.setTitle(R.string.verification_contact)
@@ -37,7 +39,14 @@ class DialogFragmentDiscussion:DialogFragment() {
             if (discuFrag != null) {
                 fr?.show(discuFrag)
             }else{
-                fr?.replace(R.id.nav_host_fragment_activity_main, ChatFragment())
+                var chat = ChatFragment()
+                var args = Bundle()
+                args.putString("objet", mObjet)
+                args.putString("lieu", mLieu)
+                args.putString("date", mDate)
+                args.putString("nom", mNom)
+                chat.arguments(args)
+                fr?.replace(R.id.nav_host_fragment_activity_main, chat)
             }
             fr?.commit()
         }
@@ -49,5 +58,6 @@ class DialogFragmentDiscussion:DialogFragment() {
         mObjet = args.getString("objet").toString()
         mLieu = args.getString("lieu").toString()
         mDate = args.getString("date").toString()
+        mNom = args.getString("nom").toString()
     }
 }
