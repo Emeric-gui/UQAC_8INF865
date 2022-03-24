@@ -25,20 +25,34 @@ class PostFragmentDateAnimal : Fragment() {
         val textDescription = requireArguments().getString("description")
         var progressBar : ProgressBar = view.findViewById(R.id.progressBar)
         progressBar.progress = 80
-        var varYear: Int = 0
         var varMonth: Int = 0
-        var varDayOfMonth: Int = 0
         var calendar: CalendarView = view.findViewById(R.id.calendarView_post_animal)
 
         val sdf = SimpleDateFormat("yyyyMMdd")
         var textDate: String = sdf.format(calendar.date)
 
         calendar.setOnDateChangeListener { view, year, month, dayOfMonth ->
-            val Date = dayOfMonth.toString() + "-" + (month + 1) + "-" + year
-            varYear = year
-            varMonth = month
-            varDayOfMonth = dayOfMonth
-            textDate = "$varYear$varMonth$varDayOfMonth"
+            varMonth = month + 1
+            if (varMonth <= 9)
+            {
+                val m : String = "0$varMonth";
+                if (dayOfMonth <= 9) {
+                    val d : String = "0$dayOfMonth";
+                    textDate= "$year$m$d"
+                }
+                else
+                {
+                    textDate= "$year$m$dayOfMonth"
+                }
+            }
+            else if (dayOfMonth <= 9) {
+                val d : String = "0$dayOfMonth";
+                textDate= "$year$varMonth$d"
+            }
+            else
+            {
+                textDate= "$year$varMonth$dayOfMonth"
+            }
         }
 
         val args = Bundle()

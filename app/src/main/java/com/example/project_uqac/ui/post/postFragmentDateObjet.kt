@@ -29,9 +29,7 @@ class PostFragmentDateObjet : Fragment() {
         val textDescription = requireArguments().getString("description")
         var progressBar : ProgressBar = view.findViewById(R.id.progressBar)
         progressBar.progress = 80
-        var varYear: Int = 0
         var varMonth: Int = 0
-        var varDayOfMonth: Int = 0
         var calendar: CalendarView = view.findViewById(R.id.calendarView_post_objet)
 
         val sdf = SimpleDateFormat("yyyyMMdd")
@@ -39,10 +37,10 @@ class PostFragmentDateObjet : Fragment() {
 
         calendar.setOnDateChangeListener { view, year, month, dayOfMonth ->
             varMonth = month + 1
-            if ((varMonth == 1) || (varMonth == 2)|| (varMonth == 3)|| (varMonth == 4)|| (varMonth == 5)|| (varMonth == 6)|| (varMonth == 7)|| (varMonth == 8)|| (varMonth == 9) )
+            if (varMonth <= 9)
             {
                 val m : String = "0$varMonth";
-                if ((dayOfMonth == 1) || (dayOfMonth == 2)|| (dayOfMonth == 3)|| (dayOfMonth == 4)|| (dayOfMonth == 5)|| (dayOfMonth == 6)|| (dayOfMonth == 7)|| (dayOfMonth == 8)|| (dayOfMonth == 9) ) {
+                if (dayOfMonth <= 9) {
                     val d : String = "0$dayOfMonth";
                     textDate= "$year$m$d"
                     }
@@ -51,7 +49,7 @@ class PostFragmentDateObjet : Fragment() {
                 textDate= "$year$m$dayOfMonth"
                 }
             }
-            else if ((dayOfMonth == 1) || (dayOfMonth == 2)|| (dayOfMonth == 3)|| (dayOfMonth == 4)|| (dayOfMonth == 5)|| (dayOfMonth == 6)|| (dayOfMonth == 7)|| (dayOfMonth == 8)|| (dayOfMonth == 9) ) {
+            else if (dayOfMonth <= 9) {
                 val d : String = "0$dayOfMonth";
                 textDate= "$year$varMonth$d"
             }
@@ -59,7 +57,7 @@ class PostFragmentDateObjet : Fragment() {
             {
                 textDate= "$year$varMonth$dayOfMonth"
             }
- }
+        }
 
         val args = Bundle()
 
