@@ -8,30 +8,34 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.project_uqac.R
+import com.example.project_uqac.ui.home.popupDiscussion.DialogFragmentDiscussion
 import com.squareup.picasso.Picasso
 
 
 class ArticlesAdapter (private val mArticles: List<Article>) : RecyclerView.Adapter<ArticlesAdapter.ViewHolder>()
 {
-    private lateinit var mListener: onItemClickListener
+    private lateinit var mListener: OnItemClickListener
+
 
     private var mObjet: ArrayList<String> = ArrayList()
     private var mLieu: ArrayList<String> = ArrayList()
     private var mDate: ArrayList<String> = ArrayList()
     private var mNom : ArrayList<String> = ArrayList()
+    
 
 
-    interface onItemClickListener{
+
+    interface OnItemClickListener{
         fun onItemClick(position: Int)
     }
 
-    fun setOnItemClickListener(listener: onItemClickListener){
+    fun setOnItemClickListener(listener: OnItemClickListener){
         mListener = listener
     }
 
     // Provide a direct reference to each of the views within a data item
     // Used to cache the views within the item layout for fast access
-    inner class ViewHolder(itemView: View, listener: onItemClickListener) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View, listener: OnItemClickListener) : RecyclerView.ViewHolder(itemView) {
 
         // Your holder should contain and initialize a member variable
         // for any view that will be set as you render a row
@@ -40,11 +44,10 @@ class ArticlesAdapter (private val mArticles: List<Article>) : RecyclerView.Adap
         val dateTextView: TextView = itemView.findViewById<TextView>(R.id.itemNameArticle)
         val descriptionTextView: TextView = itemView.findViewById<TextView>(R.id.itemDescriptionArticle)
         val imageImageView: ImageView = itemView.findViewById<ImageView>(R.id.imageViewArticle)
-
-
         init {
             itemView.setOnClickListener {
-                listener.onItemClick(adapterPosition)
+                listener.onItemClick(layoutPosition)
+
             }
         }
     }
@@ -62,6 +65,7 @@ class ArticlesAdapter (private val mArticles: List<Article>) : RecyclerView.Adap
 
     // Involves populating data into the item through holder
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+
         // Get the data model based on position
         val article: Article = mArticles[position]
         // Set item views based on your views and data model
@@ -70,13 +74,13 @@ class ArticlesAdapter (private val mArticles: List<Article>) : RecyclerView.Adap
         val objet = titleView.text
         mObjet.add(objet.toString())
 
-        val lieuView = viewHolder.lieuTextView
-        lieuView.text = article.lieu
-        val lieu = lieuView.text
-        mLieu.add(lieu.toString())
+        val marqueView = viewHolder.lieuTextView
+        marqueView.text = article.marque
+        val lieu = marqueView.text
+        mMarque.add(lieu.toString())
 
         val dateView = viewHolder.dateTextView
-        dateView.text = article.date
+        dateView.text = article.date.toString()
         val date = dateView.text
         mDate.add(date.toString())
 
@@ -98,15 +102,15 @@ class ArticlesAdapter (private val mArticles: List<Article>) : RecyclerView.Adap
     }
 
     fun getObjet(position: Int): String{
-        return mObjet.get(position)
+        return mObjet[position]
     }
 
     fun getLieu(position: Int): String{
-        return mLieu.get(position)
+        return mMarque[position]
     }
 
     fun getDate(position: Int): String{
-        return mDate.get(position)
+        return mDate[position]
     }
     fun getNom(position: Int): String{
         return mNom.get(position)

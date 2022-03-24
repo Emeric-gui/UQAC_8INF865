@@ -1,9 +1,14 @@
 package com.example.project_uqac.ui.search
 
 import android.os.Bundle
+import android.text.Editable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -15,6 +20,11 @@ import com.example.project_uqac.ui.article.Article
 import com.example.project_uqac.ui.article.ArticlesAdapter
 import com.example.project_uqac.ui.home.popupDiscussion.DialogFragmentDiscussion
 import com.example.project_uqac.ui.search.filter.DialogueFragmentFilter
+import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import kotlin.collections.ArrayList
 
 class SearchFragment  : Fragment()  {
 
@@ -48,19 +58,31 @@ class SearchFragment  : Fragment()  {
 
         }
 
+        val db = Firebase.firestore
+        val articles = ArrayList<Article>()
         // Lookup the recyclerview in activity layout
         val rvArticles = root.findViewById<View>(R.id.recyclerView) as RecyclerView
-        // Initialize contacts
-        var articles = Article.createContactsList(19)
-        // Create adapter passing in the sample user data
-        val adapter = ArticlesAdapter(articles)
-        // Attach the adapter to the recyclerview to populate items
-        rvArticles.adapter = adapter
+
+        val textNoArticle = root.findViewById<TextView>(R.id.textNoArticles2)
+
+        val inputSearch = root.findViewById<TextInputEditText>(R.id.Search)
+        val buttonSearch = root.findViewById<ImageButton>(R.id.button_search)
+        buttonSearch.setOnClickListener {
+            loadData(db, textNoArticle, articles, rvArticles, inputSearch.text.toString())
+        }
 
 
-        adapter.setOnItemClickListener(object :ArticlesAdapter.onItemClickListener{
+
+        return root
+    }
+
+
+    private fun setAdapter(adapter: ArticlesAdapter) {
+
+        adapter.setOnItemClickListener(object :ArticlesAdapter.OnItemClickListener{
             override fun onItemClick(position: Int) {
                 //recuperer items
+                Log.v(position.toString(), "positio")
                 val objet = adapter.getObjet(position)
                 val lieu = adapter.getLieu(position)
                 val date = adapter.getDate(position)
@@ -74,6 +96,7 @@ class SearchFragment  : Fragment()  {
 
                 //creation du fragment de dialogue
                 val dialogPage = DialogFragmentDiscussion()
+
                 //ajout des infos dans le dialog
                 dialogPage.arguments(args)
 
@@ -81,13 +104,82 @@ class SearchFragment  : Fragment()  {
 
             }
         })
+    }
 
 
-        // Set layout manager to position the items
-        rvArticles.layoutManager = LinearLayoutManager(view?.context)
+    //for loading all articles from server
+    fun loadData(
+        db: FirebaseFirestore,
+        textNoArticle: TextView,
+        articles: java.util.ArrayList<Article>,
+        rvArticles: RecyclerView,
+        text: String?
+    ) {
+
+        //Reset liste
+        articles.clear()
+        val adapter = ArticlesAdapter(articles)
+
+        if (text != null) {
+            var ref = db.collection("Articles")
+            ref.whereEqualTo("title", text /*formattedDateBefore.toInt()*/)
+                //ref.whereIn()
+                //db.collection("Articles")
+                .get()
+                .addOnSuccessListener {
+                    if (it.isEmpty) {
+                        textNoArticle.text = "Aucun objet trouvé"
+                        // Set layout manager to position the items
+                        rvArticles.layoutManager = LinearLayoutManager(view?.context)
+                        Toast.makeText(context, "No article Found", Toast.LENGTH_SHORT).show()
+                        return@addOnSuccessListener
+                    }
+                    for (doc in it) {
+                        val article = doc.toObject(Article::class.java)
+                        Log.v(article.date.toString(), "article")
+                        articles.add(article)
+                    }
+
+                    textNoArticle.text = ""
+                    // Attach the adapter to the recyclerview to populate items
+                    rvArticles.adapter = adapter
+
+                    setAdapter(adapter)
 
 
-        return root
+                    // Set layout manager to position the items
+                    rvArticles.layoutManager = LinearLayoutManager(view?.context)
+
+                }
+        } else {
+            db.collection("Articles")
+                .get()
+                .addOnSuccessListener {
+                    if (it.isEmpty) {
+                        textNoArticle.text = "Aucun objet trouvé"
+
+                        Toast.makeText(context, "No article Found", Toast.LENGTH_SHORT).show()
+                        return@addOnSuccessListener
+                    }
+                    for (doc in it) {
+                        val article = doc.toObject(Article::class.java)
+                        Log.v(article.date.toString(), "article")
+                        articles.add(article)
+                    }
+
+                    textNoArticle.text = ""
+                    // Attach the adapter to the recyclerview to populate items
+                    rvArticles.adapter = adapter
+
+                    setAdapter(adapter)
+
+
+                    // Set layout manager to position the items
+                    rvArticles.layoutManager = LinearLayoutManager(view?.context)
+
+                }
+
+        }
     }
 
     override fun onDestroyView() {
