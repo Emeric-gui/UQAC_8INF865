@@ -6,7 +6,10 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import com.example.project_uqac.R
+import com.example.project_uqac.ui.chat.ChatFragment
+import com.example.project_uqac.ui.discussions.DiscussionsFragment
 
 class DialogFragmentDiscussion:DialogFragment() {
 
@@ -25,10 +28,18 @@ class DialogFragmentDiscussion:DialogFragment() {
         builder.setTitle(R.string.verification_contact)
 
         builder.setCancelable(false)
-        val which : Int
         builder.setNegativeButton(getString(R.string.annuler), null)
-        builder.setPositiveButton(getString(R.string.contacter)) { dialog: DialogInterface, which: Int ->
-            Log.println(Log.DEBUG, "debug", "Appui sur contacter")
+        builder.setPositiveButton(getString(R.string.contacter)) { _: DialogInterface, _: Int ->
+            var fm = parentFragment?.parentFragmentManager
+            var fr = fm?.beginTransaction()
+
+            var discuFrag = fm?.findFragmentById(R.id.navigation_discussions)
+            if (discuFrag != null) {
+                fr?.show(discuFrag)
+            }else{
+                fr?.replace(R.id.nav_host_fragment_activity_main, ChatFragment())
+            }
+            fr?.commit()
         }
 
         return builder.create()
