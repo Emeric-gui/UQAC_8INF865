@@ -21,6 +21,8 @@ class ArticlesAdapter (private val mArticles: List<Article>) : RecyclerView.Adap
     private var mLieu: ArrayList<String> = ArrayList()
     private var mDate: ArrayList<String> = ArrayList()
     private var mNom : ArrayList<String> = ArrayList()
+    private var mMarque : ArrayList<String> = ArrayList()
+
     
 
 
