@@ -290,4 +290,11 @@ class ChatFragment : Fragment(), RoomListener{
         _binding = null
     }
 
+    fun arguments(args: Bundle) {
+        val objet = args.getString("objet")
+        val lieu = args.getString("lieu")
+        val date = args.getString("date")
+        val nom = args.getString("nom")
+    }
+
 }
