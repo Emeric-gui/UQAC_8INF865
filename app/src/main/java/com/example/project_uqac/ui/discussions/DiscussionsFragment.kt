@@ -43,8 +43,6 @@ class DiscussionsFragment : Fragment() {
 
         listView = root.findViewById<ListView>(R.id.recipe_list_view)
 
-        //var array = arrayOf("Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6")
-        //val adapter = ArrayAdapter<String>(_context,android.R.layout.simple_list_item_1,array)
 
         var conversations = Conversation.createConversationList(19)
         val adapter = ConversationsAdapter(_context,conversations)

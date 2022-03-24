@@ -61,12 +61,17 @@ class HomeFragment : Fragment() {
                 val lieu = adapter.getLieu(position)
                 val date = adapter.getDate(position)
 
+                var args : Bundle = Bundle()
+                args.putString("objet", objet)
+                args.putString("lieu", lieu)
+                args.putString("date", date)
+
                 //creation du fragment de dialogue
                 val dialogPage = DialogFragmentDiscussion()
-
                 //ajout des infos dans le dialog
-                dialogPage.show(childFragmentManager, "Custom Dialog")
-                dialogPage.addInfos(lieu, objet, date)
+                dialogPage.arguments(args)
+
+                dialogPage.show(childFragmentManager,  dialogPage.tag)
             }
         })
 

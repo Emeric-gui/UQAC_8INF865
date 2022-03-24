@@ -1,65 +1,42 @@
 package com.example.project_uqac.ui.home.popupDiscussion
 
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.example.project_uqac.R
-import com.example.project_uqac.databinding.FragmentSearchBinding
-import com.example.project_uqac.ui.discussions.DiscussionsFragment
-import kotlinx.android.synthetic.main.fragment_popup_home.view.*
-
-
 
 class DialogFragmentDiscussion:DialogFragment() {
 
-    private var _binding: FragmentSearchBinding? = null
+    private lateinit var mObjet : String
+    private lateinit var mLieu : String
+    private lateinit var mDate : String
 
-    private var rootView: View? = null
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        super.onCreateDialog(savedInstanceState)
 
-    private val binding get() = _binding!!
+        var builder : AlertDialog.Builder = AlertDialog.Builder(activity)
 
-    private lateinit var texte : String
+        val texte = "Recapitulatif : \n-Objet : $mObjet\n-Lieu : $mLieu\n-Date : $mDate"
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) :
-            View? {
-        rootView = inflater.inflate(R.layout.fragment_popup_home, container, false)
+        builder.setMessage(texte)
+        builder.setTitle(R.string.verification_contact)
 
-        _binding = FragmentSearchBinding.inflate(inflater, container, false)
-
-        return rootView
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-
-        rootView?.button_home_annuler?.setOnClickListener(){
-            dismiss()
-        }
-
-        rootView?.button_home_contacter?.setOnClickListener(){
+        builder.setCancelable(false)
+        val which : Int
+        builder.setNegativeButton(getString(R.string.annuler), null)
+        builder.setPositiveButton(getString(R.string.contacter)) { dialog: DialogInterface, which: Int ->
             Log.println(Log.DEBUG, "debug", "Appui sur contacter")
-            dismiss()
-//            val fr = parentFragmentManager.beginTransaction()
-//            fr.add(R.id.nav_host_fragment_activity_main, DiscussionsFragment())
-//            fr.replace(R.id.nav_host_fragment_activity_main, DiscussionsFragment())
-//            fr.commit()
         }
 
-        val texteZone : TextView = rootView?.message_fragment_popup as TextView
-        texteZone.text = texte
-
+        return builder.create()
     }
 
-    fun addInfos(lieu : String, objet : String, date : String){
-        texte = "Recapitulatif : \n-Objet : $objet\n-Lieu : $lieu\n-Date : $date"
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
+    fun arguments(args: Bundle) {
+        mObjet = args.getString("objet").toString()
+        mLieu = args.getString("lieu").toString()
+        mDate = args.getString("date").toString()
     }
 }
