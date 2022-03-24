@@ -67,6 +67,7 @@ class SearchFragment  : Fragment()  {
 
         val inputSearch = root.findViewById<TextInputEditText>(R.id.Search)
         val buttonSearch = root.findViewById<ImageButton>(R.id.button_search)
+        loadData(db, textNoArticle, articles, rvArticles, inputSearch.text.toString())
         buttonSearch.setOnClickListener {
             loadData(db, textNoArticle, articles, rvArticles, inputSearch.text.toString())
         }
@@ -119,10 +120,10 @@ class SearchFragment  : Fragment()  {
         //Reset liste
         articles.clear()
         val adapter = ArticlesAdapter(articles)
-
-        if (text != null) {
+        if (text != "") {
             var ref = db.collection("Articles")
             ref.whereEqualTo("title", text /*formattedDateBefore.toInt()*/)
+            ref.whereEqualTo("marque", text/*formattedDateBefore.toInt()*/)
                 //ref.whereIn()
                 //db.collection("Articles")
                 .get()

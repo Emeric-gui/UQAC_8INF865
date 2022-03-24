@@ -52,7 +52,7 @@ class PostFragmentLieuAnimal : Fragment() {
         buttonNext.setOnClickListener(){
 
             val article = Article("$textSpecie", "$textRace", textDate,
-                "$textDescription", "https://picsum.photos/600/300?random&$", null, null
+                "$textDescription", "https://picsum.photos/600/300?random&$", "Nom",null, null
             )
 
             db.collection("Articles")
