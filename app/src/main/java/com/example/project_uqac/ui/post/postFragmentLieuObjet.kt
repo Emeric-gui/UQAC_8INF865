@@ -12,11 +12,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.project_uqac.R
 import com.example.project_uqac.ui.article.Article
-import com.google.firebase.firestore.FirebaseFirestore
-
-import com.example.project_uqac.ui.my_account.MyAccountFragment
+import com.firebase.geofire.GeoFireUtils
+import com.firebase.geofire.GeoLocation
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+
 
 class PostFragmentLieuObjet : Fragment() {
 
@@ -55,9 +55,13 @@ class PostFragmentLieuObjet : Fragment() {
         val buttonNext : Button = view.findViewById(R.id.buttonPublier)
         buttonNext.setOnClickListener(){
 
+// Compute the GeoHash for a lat/lng point
+            val lat = 51.5074
+            val lng = 0.1278
+            val hash = GeoFireUtils.getGeoHashForLocation(GeoLocation(lat, lng))
 
             val article = Article("$textModel", "$textMarque", textDate,
-                "$textDescription", "https://picsum.photos/600/300?random&$", "Nom",null, null
+                "$textDescription", "https://picsum.photos/600/300?random&$", "Nom",hash, lat, lng
             )
 
             db.collection("Articles")
@@ -73,7 +77,15 @@ class PostFragmentLieuObjet : Fragment() {
                     Toast.makeText(context, "Objet non Posté !", Toast.LENGTH_SHORT).show()
                     Log.e("HA", "Error saving : Err :" + it.message)
                 }
-           }
+
+            /*val londonRef = db.collection("Articles")
+                .add(updates)
+                .addOnCompleteListener {
+                    // ...
+                }
+
+             */
+        }
 
 
 

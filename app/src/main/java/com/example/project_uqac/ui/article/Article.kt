@@ -1,13 +1,16 @@
 package com.example.project_uqac.ui.article
 
+import com.firebase.geofire.core.GeoHash
+
 class Article(
     val title: String = "", val marque: String = "", val date: Int = 0,
 
-    val description: String = "", val image: String = "",val nom: String = "", val lat: String? = "", val lon: String? = "") {
+    val description: String = "", val image: String = "", val nom: String = "", val geoHash: String = "", val lat: Double = 0.0, val lon: Double = 0.0) {
 
 
     companion object {
         private var objectId = 0
+        /*
         fun createContactsList(numObject: Int) : ArrayList<Article> {
             val articles = ArrayList<Article>()
             for (i in 1..numObject) {
@@ -22,5 +25,7 @@ class Article(
             }
             return articles
         }
+        */
+
     }
 }
