@@ -3,7 +3,7 @@ package com.example.project_uqac.ui.article
 class Article(
     val title: String = "", val marque: String = "", val date: Int = 0,
 
-    val description: String = "", val image: String = "",val nom: String, val lat: String? = "", val lon: String? = "") {
+    val description: String = "", val image: String = "",val nom: String = "", val lat: String? = "", val lon: String? = "") {
 
 
     companion object {
