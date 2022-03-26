@@ -3,6 +3,8 @@ package com.example.project_uqac.ui.home
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.os.HandlerCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,11 +24,19 @@ import com.example.project_uqac.ui.article.Article
 import com.example.project_uqac.ui.article.ArticlesAdapter
 import com.example.project_uqac.ui.home.popupDiscussion.DialogFragmentDiscussion
 import com.example.project_uqac.ui.service.LocationGPS
+import com.firebase.geofire.GeoFireUtils
+import com.firebase.geofire.GeoLocation
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 
 class HomeFragment : Fragment() {
@@ -34,6 +45,9 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private var lat : Double = 0.0
     private var lon : Double = 0.0
+    private val executorService: ExecutorService = Executors.newFixedThreadPool(4)
+    private val mainThreadHandler: Handler = HandlerCompat.createAsync(Looper.getMainLooper())
+
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -104,17 +118,32 @@ class HomeFragment : Fragment() {
         //var articles = Article.createContactsList(19)
 
         val position =  LocationGPS(context as MainActivity)
-        position.getLocationHome(this)
+        //position.getLocationHome(this)
+        getPositionBackground(position, this)
 
 
         return root
+    }
+
+    fun getPositionBackground(
+        position: LocationGPS,
+        homeFragment: HomeFragment
+    ) {
+        executorService.execute {
+            try {
+
+                mainThreadHandler.post {  position.getLocationHome(homeFragment) }
+            } catch (e: Exception) {
+
+            }
+        }
     }
 
     fun getCoordinate(lat : Double,lon : Double) {
         this.lat = lat
         this.lon = lon
         Toast.makeText(
-            context,
+            activity,
             "HOME Latitude: $lat , Longitude: $lon",
             Toast.LENGTH_SHORT
         ).show()
@@ -122,6 +151,137 @@ class HomeFragment : Fragment() {
     }
 
 
+
+
+
+
+    //for loading all articles from server
+    fun loadData(
+        db: FirebaseFirestore,
+        textNoArticle: TextView,
+        articles: ArrayList<Article>,
+        rvArticles: RecyclerView,
+        button1: Button,
+        button3: Button,
+        button7: Button
+    ) {
+
+        //Reset liste
+        articles.clear()
+
+
+
+
+        //Find day of choose periode
+        val  cal : Calendar = GregorianCalendar . getInstance ()
+        cal.time = Calendar.getInstance().time
+
+        if (button1.isSelected) {
+            cal.add(Calendar.DAY_OF_YEAR, -1)
+        } else if (button3.isSelected){
+            cal.add(Calendar.DAY_OF_YEAR, -3)
+        } else if (button7.isSelected) {
+            cal.add(Calendar.DAY_OF_YEAR, -7)
+        }
+
+        val daysBeforeDate : java.util.Date = cal.time
+        val df = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+        val formattedDateBefore: String = df.format(daysBeforeDate)
+        Log.v(formattedDateBefore.toInt().toString(),"7avant?")
+
+/*
+ var ref = db.collection("Articles")
+
+        ref.whereGreaterThanOrEqualTo("date", formattedDateBefore.toInt() /*formattedDateBefore.toInt()*/)
+        //ref.whereIn()
+        //db.collection("Articles")
+            .get()
+            .addOnSuccessListener {
+                if (it.isEmpty) {
+                    textNoArticle.text ="Aucun objet trouvé"
+
+                    Toast.makeText(context, "No article Found", Toast.LENGTH_SHORT).show()
+                    return@addOnSuccessListener
+                }
+                for (doc in it) {
+                    val article = doc.toObject(Article::class.java)
+                    Log.v(article.date.toString(), "article")
+                    articles.add(article)
+                }
+
+                textNoArticle.text =""
+
+
+                // Attach the adapter to the recyclerview to populate items
+                rvArticles.adapter = adapter
+
+                setAdapter(adapter)
+
+
+                // Set layout manager to position the items
+                rvArticles.layoutManager = LinearLayoutManager(view?.context)
+
+
+            }
+ */
+
+        // Find cities within 50km of the user position
+        val center = GeoLocation(lat, lon)
+        val radiusInM = (50 * 10000).toDouble()
+
+
+// Each item in 'bounds' represents a startAt/endAt pair. We have to issue
+// a separate query for each pair. There can be up to 9 pairs of bounds
+// depending on overlap, but in most cases there are 4.
+        val bounds = GeoFireUtils.getGeoHashQueryBounds(center, radiusInM)
+        val tasks: MutableList<Task<QuerySnapshot>> = ArrayList()
+        for (b in bounds) {
+        val q: Query = db.collection("Articles")
+                .orderBy("geoHash")
+                .startAt(b.startHash)
+                .endAt(b.endHash)
+            tasks.add(q.get())
+        }
+        // Collect all the query results together into a single list
+        Tasks.whenAllComplete(tasks)
+            .addOnCompleteListener {
+                val adapter = ArticlesAdapter(articles)
+                rvArticles.adapter = adapter
+                setAdapter(adapter)
+                //val matchingDocs: MutableList<DocumentSnapshot> = ArrayList()
+                for (task in tasks) {
+                    val snap = task.result
+                    for (doc in snap.documents) {
+                        val lat = doc.getDouble("lat")!!
+                        val lng = doc.getDouble("lon")!!
+
+                        // We have to filter out a few false positives due to GeoHash
+                        // accuracy, but most will match
+                        val docLocation = GeoLocation(lat, lng)
+                        val distanceInM = GeoFireUtils.getDistanceBetween(docLocation, center)
+                        val article = doc.toObject(Article::class.java)
+
+                        if (article != null) {
+                            if (distanceInM <= radiusInM &&  formattedDateBefore.toInt() <= article.date) {
+                                if (article != null) {
+                                    Log.v(article.title,"articleeeeee22222222" +
+                                            "eeeeeeeee")
+                                    articles.add(article)
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Set layout manager to position the items
+                rvArticles.layoutManager = LinearLayoutManager(view?.context)
+
+               // matchingDocs contains the results
+                // ...
+            }
+
+
+    }
 
     private fun setAdapter(adapter: ArticlesAdapter) {
 
@@ -149,69 +309,6 @@ class HomeFragment : Fragment() {
                 dialogPage.show(childFragmentManager,  dialogPage.tag)
             }
         })
-    }
-
-
-    //for loading all articles from server
-    fun loadData(
-        db: FirebaseFirestore,
-        textNoArticle: TextView,
-        articles: ArrayList<Article>,
-        rvArticles: RecyclerView,
-        button1: Button,
-        button3: Button,
-        button7: Button
-    ) {
-
-        //Reset liste
-        articles.clear()
-        val adapter = ArticlesAdapter(articles)
-        //Find day of choose periode
-        val  cal : Calendar = GregorianCalendar . getInstance ()
-        cal.time = Calendar.getInstance().time
-
-        if (button1.isSelected) {
-            cal.add(Calendar.DAY_OF_YEAR, -1)
-        } else if (button3.isSelected){
-            cal.add(Calendar.DAY_OF_YEAR, -3)
-        } else if (button7.isSelected) {
-            cal.add(Calendar.DAY_OF_YEAR, -7)
-        }
-
-        val daysBeforeDate : java.util.Date = cal.time
-        val df = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
-        val formattedDateBefore: String = df.format(daysBeforeDate)
-        Log.v(formattedDateBefore.toInt().toString(),"7avant?")
-
-        var ref = db.collection("Articles")
-        ref.whereGreaterThanOrEqualTo("date", formattedDateBefore.toInt() /*formattedDateBefore.toInt()*/)
-        //ref.whereIn()
-        //db.collection("Articles")
-            .get()
-            .addOnSuccessListener {
-                if (it.isEmpty) {
-                    textNoArticle.text ="Aucun objet trouvé"
-
-                    Toast.makeText(context, "No article Found", Toast.LENGTH_SHORT).show()
-                    return@addOnSuccessListener
-                }
-                for (doc in it) {
-                    val article = doc.toObject(Article::class.java)
-                    Log.v(article.date.toString(), "article")
-                    articles.add(article)
-                }
-
-                textNoArticle.text =""
-                // Attach the adapter to the recyclerview to populate items
-                rvArticles.adapter = adapter
-
-                setAdapter(adapter)
-
-
-                // Set layout manager to position the items
-                rvArticles.layoutManager = LinearLayoutManager(view?.context)
-
-            }
     }
 
     override fun onDestroyView() {

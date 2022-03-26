@@ -12,7 +12,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.project_uqac.R
 import com.example.project_uqac.ui.article.Article
-import com.example.project_uqac.ui.my_account.MyAccountFragment
+import com.firebase.geofire.GeoFireUtils
+import com.firebase.geofire.GeoLocation
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -51,8 +52,15 @@ class PostFragmentLieuAnimal : Fragment() {
         val buttonNext : Button = view.findViewById(R.id.buttonPublier)
         buttonNext.setOnClickListener(){
 
+
+// Compute the GeoHash for a lat/lng point
+            val lat = 48.4223952
+            val lng = -71.0578483
+            val hash = GeoFireUtils.getGeoHashForLocation(GeoLocation(lat, lng))
+
+
             val article = Article("$textSpecie", "$textRace", textDate,
-                "$textDescription", "https://picsum.photos/600/300?random&$", "Nom",null, null
+                "$textDescription", "https://picsum.photos/600/300?random&$", "Nom",hash,lat, lng
             )
 
             db.collection("Articles")
