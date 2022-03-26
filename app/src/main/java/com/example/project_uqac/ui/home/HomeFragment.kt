@@ -14,11 +14,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.project_uqac.MainActivity
 import com.example.project_uqac.R
 import com.example.project_uqac.databinding.FragmentHomeBinding
 import com.example.project_uqac.ui.article.Article
 import com.example.project_uqac.ui.article.ArticlesAdapter
 import com.example.project_uqac.ui.home.popupDiscussion.DialogFragmentDiscussion
+import com.example.project_uqac.ui.service.LocationGPS
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -30,6 +32,8 @@ class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null
+    private var lat : Double = 0.0
+    private var lon : Double = 0.0
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -99,8 +103,24 @@ class HomeFragment : Fragment() {
         // Initialize contacts
         //var articles = Article.createContactsList(19)
 
+        val position =  LocationGPS(context as MainActivity)
+        position.getLocationHome(this)
+
+
         return root
     }
+
+    fun getCoordinate(lat : Double,lon : Double) {
+        this.lat = lat
+        this.lon = lon
+        Toast.makeText(
+            context,
+            "HOME Latitude: $lat , Longitude: $lon",
+            Toast.LENGTH_SHORT
+        ).show()
+
+    }
+
 
 
     private fun setAdapter(adapter: ArticlesAdapter) {
