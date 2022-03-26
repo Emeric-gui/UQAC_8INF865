@@ -18,9 +18,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/name"/>
+            android:text="@string/username"/>
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/username_textedit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="MonNom MonPrenom" />
@@ -32,9 +33,9 @@
             android:text="@string/email"/>
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/email_textedit"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="nom.prenom@domain.com" />
+            android:layout_height="wrap_content" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -46,7 +47,7 @@
             android:layout_width="wrap_content"
             android:inputType="textPassword"
             android:layout_height="wrap_content"
-            android:text="myCoolPassword" />
+            android:hint="Password Here" />
 
         <Button
             android:layout_width="wrap_content"
@@ -62,6 +63,7 @@
             android:gravity="center">
 
             <Button
+                android:id="@+id/delete_account"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/delete_account" />

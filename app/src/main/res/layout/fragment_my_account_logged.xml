@@ -44,21 +44,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:id="@+id/first_name_user"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:paddingLeft="10dp"
-                    android:text="Prénom" />
+            <TextView
+                android:id="@+id/username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:paddingLeft="10dp" />
 
-                <TextView
-                    android:id="@+id/last_name_user"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:paddingLeft="10dp"
-                    android:text="Nom de famille" />
+<!--                <TextView-->
+<!--                    android:id="@+id/first_name_user"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_margin="5dp"-->
+<!--                    android:paddingLeft="10dp"-->
+<!--                    android:text="Prénom" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/last_name_user"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_margin="5dp"-->
+<!--                    android:paddingLeft="10dp"-->
+<!--                    android:text="Nom de famille" />-->
 
         </LinearLayout>
 

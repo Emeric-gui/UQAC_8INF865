@@ -22,4 +22,6 @@
     <string name="votre_objet">Etes-vous sûr que c\'est votre objet ?</string>
     <string name="delete_item">Voulez-vous vraiment supprimer l\'annonce ?</string>
     <string name="delete_account">Supprimer mon compte</string>
+    <string name="sign_up">S\'inscrire</string>
+    <string name="username">Nom d\'utilisateur</string>
 </resources>

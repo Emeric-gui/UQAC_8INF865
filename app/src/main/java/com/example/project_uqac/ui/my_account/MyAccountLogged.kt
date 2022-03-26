@@ -6,7 +6,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
@@ -14,6 +16,8 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.project_uqac.R
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
 
 
@@ -31,8 +35,17 @@ class MyAccountLogged : Fragment() {
         img.setImageResource(R.drawable.ic_action_arrows_left)
         Picasso.get().load("https://picsum.photos/300/300?random").into(img)
 
-        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
-            // Handle the back button event
+//        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+//            // Handle the back button event
+//        }
+
+        // Print username
+        val user = Firebase.auth.currentUser
+        val username : TextView = view.findViewById(R.id.username)
+        if (user != null) {
+            username.setText(user.displayName.toString())
+        } else {
+            username.setText("Error")
         }
 
         // Instantiate a ViewPager2 and a PagerAdapter.
@@ -48,6 +61,7 @@ class MyAccountLogged : Fragment() {
         TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
             tab.text = TAB_TITLES[position]
         }.attach()
+
 
 //        requireActivity()
 //            .onBackPressedDispatcher
@@ -87,14 +101,24 @@ class MyAccountLogged : Fragment() {
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         val callback: OnBackPressedCallback = object : OnBackPressedCallback(
             true // default to enabled
         ) {
             override fun handleOnBackPressed() {
-                Log.d("TAG", "message")
-                viewPager2.currentItem = viewPager2.currentItem - 1
+
+                if(viewPager2.currentItem > 0)
+                    viewPager2.currentItem = viewPager2.currentItem - 1
+                else{
+//                    requireActivity().onBackPressed()
+                    Log.d("TAG", "message")
+                }
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(
