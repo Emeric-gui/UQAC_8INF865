@@ -1,11 +1,12 @@
-package com.example.project_uqac.ui.my_account
+package com.example.project_uqac.ui.my_account.draft
 
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.project_uqac.R
+import com.example.project_uqac.ui.my_account.tabs.MyAccountTabInformations
+import com.example.project_uqac.ui.my_account.tabs.MyAccountTabMyPosts
 
 class MyAccountViewPagerFragmentAdapter(fm: FragmentManager): FragmentPagerAdapter(fm) {
     override fun getItem(position: Int): Fragment {

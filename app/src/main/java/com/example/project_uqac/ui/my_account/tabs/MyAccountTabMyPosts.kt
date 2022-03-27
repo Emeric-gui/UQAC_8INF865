@@ -1,4 +1,4 @@
-package com.example.project_uqac.ui.my_account
+package com.example.project_uqac.ui.my_account.tabs
 
 import android.os.Bundle
 import android.view.LayoutInflater

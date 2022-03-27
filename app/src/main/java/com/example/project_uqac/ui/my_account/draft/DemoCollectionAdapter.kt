@@ -1,8 +1,9 @@
-package com.example.project_uqac.ui.my_account
+package com.example.project_uqac.ui.my_account.draft
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.project_uqac.ui.my_account.tabs.MyAccountTabInformations
 
 class DemoCollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 

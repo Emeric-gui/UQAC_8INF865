@@ -15,9 +15,12 @@ import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.project_uqac.R
+import com.example.project_uqac.ui.home.popupDiscussion.DialogFragmentDiscussion
+import com.example.project_uqac.ui.my_account.dialogue.DialogueDeleteAccount
 import com.example.project_uqac.ui.post.PostFragmentNature
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
@@ -58,7 +61,7 @@ class MyAccountLogged : Fragment() {
         val pagerAdapter = MyAccountViewPager2FragmentAdapter(this)
         viewPager2.adapter = pagerAdapter
 
-        val TAB_TITLES = arrayOf("Informations", "My Posts")
+        val TAB_TITLES = arrayOf("Home", "Informations", "My Posts")
 
         val tabLayout : TabLayout = view.findViewById(R.id.my_account_logged_tabs)
         TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
@@ -101,12 +104,16 @@ class MyAccountLogged : Fragment() {
 //        val tabs : TabLayout = view.findViewById(R.id.my_account_logged_tabs)
 //        tabs.setupWithViewPager(viewPager)
 
-        val bob : Button = view.findViewById(R.id.bob)
-        bob.setOnClickListener(){
-            val fragment = MyAccountLogin()
-            val transaction = fragmentManager?.beginTransaction()
-            transaction?.replace(R.id.my_account_fragment_navigation, fragment)?.commit()
-        }
+//        val bob : Button = view.findViewById(R.id.bob)
+//        bob.setOnClickListener(){
+//            //creation du fragment de dialogue
+//            val dialogPage = DialogueDeleteAccount()
+//
+//            //ajout des infos dans le dialog
+//            dialogPage.arguments(this)
+//
+//            dialogPage.show(childFragmentManager, "Custom Dialog")
+//        }
 //        val fragment = MyAccountLogin()
 //        val transaction = fragmentManager?.beginTransaction()
 //        transaction?.replace(R.id.my_account_fragment_navigation, fragment)?.commit()
@@ -140,6 +147,11 @@ class MyAccountLogged : Fragment() {
     }
 
     fun goBackLogin(){
+//        Log.d(TAG, "zsdefgh.")
+//        if(Firebase.auth.currentUser != null ){
+//            FirebaseAuth.getInstance().signOut()
+//        }
+
         val fragment = MyAccountLogin()
         val transaction = fragmentManager?.beginTransaction()
         transaction?.replace(R.id.my_account_fragment_navigation, fragment)?.commit()

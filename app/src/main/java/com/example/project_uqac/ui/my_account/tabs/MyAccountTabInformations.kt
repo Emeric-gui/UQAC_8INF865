@@ -1,4 +1,4 @@
-package com.example.project_uqac.ui.my_account
+package com.example.project_uqac.ui.my_account.tabs
 
 import android.content.ContentValues
 import android.content.ContentValues.TAG
@@ -10,14 +10,14 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.example.project_uqac.R
+import com.example.project_uqac.ui.my_account.MyAccountLogged
+import com.example.project_uqac.ui.my_account.dialogue.DialogueDeleteAccount
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_my_account_informations.*
-import kotlinx.android.synthetic.main.fragment_my_account_sign_up.*
 
 class MyAccountTabInformations : Fragment() {
 
@@ -93,24 +93,35 @@ class MyAccountTabInformations : Fragment() {
 
         val buttonDeleteAccount : Button = view.findViewById(R.id.delete_account)
         buttonDeleteAccount.setOnClickListener(){
-            if (user != null) {
-                FirebaseAuth.getInstance().signOut()
-//                val fragment = MyAccountLogged()
-//                val transaction = fragmentManager?.beginTransaction()
-//                transaction?.remove(fragment)?.commit()
-//                Log.d("TAG", "Terminado pepito")
-//                user = Firebase.auth.currentUser
-                val frag: MyAccountLogged? = this.parentFragment as MyAccountLogged?
-                frag?.goBackLogin()
-//                parentFragmentManager.beginTransaction().replace(
-//                    R.id.nav_host_fragment_activity_main,
-//                    MyAccountFragment()
-//                ).commit()
+            //creation du fragment de dialogue
+            val dialogPage = DialogueDeleteAccount()
 
-            } else {
-                Log.d("TAG", "C po ko wtf")
-            }
+            //ajout des infos dans le dialog
+            dialogPage.arguments(this.parentFragment as MyAccountLogged)
+
+            dialogPage.show(childFragmentManager, "Custom Dialog")
         }
+
+//        val buttonDeleteAccount : Button = view.findViewById(R.id.delete_account)
+//        buttonDeleteAccount.setOnClickListener(){
+//            if (user != null) {
+//                FirebaseAuth.getInstance().signOut()
+////                val fragment = MyAccountLogged()
+////                val transaction = fragmentManager?.beginTransaction()
+////                transaction?.remove(fragment)?.commit()
+////                Log.d("TAG", "Terminado pepito")
+////                user = Firebase.auth.currentUser
+//                val frag: MyAccountLogged? = this.parentFragment as MyAccountLogged?
+//                frag?.goBackLogin()
+////                parentFragmentManager.beginTransaction().replace(
+////                    R.id.nav_host_fragment_activity_main,
+////                    MyAccountFragment()
+////                ).commit()
+//
+//            } else {
+//                Log.d("TAG", "C po ko wtf")
+//            }
+//        }
 
         return view
     }

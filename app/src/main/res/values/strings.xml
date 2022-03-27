@@ -9,6 +9,7 @@
     <string name="name">Nom et Prénom</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="tab_my_acc_0">Home</string>
     <string name="tab_my_acc_1">Inforamtions</string>
     <string name="tab_my_acc_2">My Posts</string>
     <!-- TODO: Remove or change this placeholder text -->
@@ -24,4 +25,13 @@
     <string name="delete_account">Supprimer mon compte</string>
     <string name="sign_up">S\'inscrire</string>
     <string name="username">Nom d\'utilisateur</string>
+    <string name="confirmer">Confirmer</string>
+    <string name="verification_suppression">Suppression compte</string>
+    <string name="verification_suppression_message">Voulez-vous vraiment supprimer votre compte ?</string>
+    <string name="my_account_welcome">Bienvenue sur votre profil !</string>
+    <string name="my_account_welcome_message">Nous sommes ravi de vous voir parmi nous.</string>
+    <string name="my_account_new_user_message">Vous êtes connecté et avez la possibilité de poster des publications et d\'échanger avec les autres utilisateurs.</string>
+    <string name="my_account_information_message">Vous pouvez naviguer entre les différents onglets de votre compte afin de pouvoir modiifer votre compte ou de voir vos posts. Si vous le souhaitez, vous pouvez directement supprimer certaines de vos annonces en cliquant dessus.</string>
+    <string name="my_account_information_message_v2">Vous pouvez retrouver deux onglets principaux </string>
+    <string name="disconnect">Déconnexion</string>
 </resources>

@@ -4,8 +4,7 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.project_uqac.R
-import com.example.project_uqac.ui.my_account.MyAccountTabInformations
-import com.example.project_uqac.ui.my_account.MyAccountTabMyPosts
+import com.example.project_uqac.ui.my_account.tabs.MyAccountTabInformations
 
 class FiltreViewPager2FragmentAdapter (fa: Fragment): FragmentStateAdapter(fa) {
     override fun createFragment(position: Int): Fragment {
