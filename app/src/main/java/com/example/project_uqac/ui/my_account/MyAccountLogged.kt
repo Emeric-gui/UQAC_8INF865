@@ -1,5 +1,6 @@
 package com.example.project_uqac.ui.my_account
 
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +15,7 @@ import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.project_uqac.R
+import com.example.project_uqac.ui.post.PostFragmentNature
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.ktx.auth
@@ -24,6 +26,7 @@ import com.squareup.picasso.Picasso
 class MyAccountLogged : Fragment() {
 
     private lateinit var viewPager2 : ViewPager2
+    private lateinit var viewee : View
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,7 +37,7 @@ class MyAccountLogged : Fragment() {
         val img : ImageView = view.findViewById(R.id.imageViewMyAccountLogged)
         img.setImageResource(R.drawable.ic_action_arrows_left)
         Picasso.get().load("https://picsum.photos/300/300?random").into(img)
-
+        viewee = view
 //        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
 //            // Handle the back button event
 //        }
@@ -98,12 +101,21 @@ class MyAccountLogged : Fragment() {
 //        val tabs : TabLayout = view.findViewById(R.id.my_account_logged_tabs)
 //        tabs.setupWithViewPager(viewPager)
 
+        val bob : Button = view.findViewById(R.id.bob)
+        bob.setOnClickListener(){
+            val fragment = MyAccountLogin()
+            val transaction = fragmentManager?.beginTransaction()
+            transaction?.replace(R.id.my_account_fragment_navigation, fragment)?.commit()
+        }
+//        val fragment = MyAccountLogin()
+//        val transaction = fragmentManager?.beginTransaction()
+//        transaction?.replace(R.id.my_account_fragment_navigation, fragment)?.commit()
+
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
     }
 
     override fun onAttach(context: Context) {
@@ -125,6 +137,18 @@ class MyAccountLogged : Fragment() {
             this,  // LifecycleOwner
             callback
         )
+    }
+
+    fun goBackLogin(){
+        val fragment = MyAccountLogin()
+        val transaction = fragmentManager?.beginTransaction()
+        transaction?.replace(R.id.my_account_fragment_navigation, fragment)?.commit()
+//        Log.d("TAG", "J'y suis arrive !")
+    }
+
+    fun updateUsername(username : String){
+        val usernamePlace : TextView = viewee.findViewById(R.id.username)
+        usernamePlace.setText(username)
     }
 
 }

@@ -29,13 +29,14 @@ class MyAccountFragment : Fragment() {
             ViewModelProvider(this).get(MyAccountViewModel::class.java)
 
         _binding = FragmentMyAccountBinding.inflate(inflater, container, false)
+        val root: View = binding.root
 
         childFragmentManager.beginTransaction().replace(
             R.id.my_account_fragment_navigation,
             MyAccountLogin()
         ).commit()
 
-        return binding.root
+        return root
     }
 
     override fun onDestroyView() {

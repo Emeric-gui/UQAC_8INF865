@@ -82,15 +82,13 @@ class MyAccountRegister : Fragment() {
                 user!!.updateProfile(profileUpdates)
                     .addOnCompleteListener { innerTask ->
                         if (innerTask.isSuccessful) {
-
+                            val fragment = MyAccountLogged()
+                            val transaction = fragmentManager?.beginTransaction()
+                            transaction?.replace(R.id.my_account_fragment_navigation, fragment)?.commit()
                         } else {
                             Log.d(TAG, "Error with username.")
                         }
                     }
-
-                val fragment = MyAccountLogged()
-                val transaction = fragmentManager?.beginTransaction()
-                transaction?.replace(R.id.my_account_fragment_navigation, fragment)?.commit()
             } else {
                 // If sign in fails, display a message to the user.
                 Log.w(TAG, "createUserWithEmail:failure", task.exception)

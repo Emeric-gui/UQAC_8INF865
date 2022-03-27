@@ -21,6 +21,12 @@
         app:layout_constraintTop_toTopOf="parent"
         android:gravity="center">
 
+        <Button
+            android:id="@+id/bob"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button" />
+
         <androidx.cardview.widget.CardView
             android:layout_width="100dp"
             android:layout_height="100dp"
@@ -92,6 +98,8 @@
 <!--            android:padding="13dp" />-->
 
     </androidx.viewpager2.widget.ViewPager2>
+
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

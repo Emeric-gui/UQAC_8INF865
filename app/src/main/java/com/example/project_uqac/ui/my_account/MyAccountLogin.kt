@@ -49,6 +49,16 @@ class MyAccountLogin : Fragment() {
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        if (Firebase.auth.currentUser != null){
+            val fragment = MyAccountLogged()
+            val transaction = fragmentManager?.beginTransaction()
+            transaction?.replace(R.id.my_account_fragment_navigation, fragment)?.commit()
+        }
+    }
+
     private fun logInUser() {
         if (email.text.toString().isEmpty()) {
             email.error = "Please enter email"
