@@ -44,6 +44,8 @@ class FilterTabPosition : Fragment(), OnMapReadyCallback {
         val position =  LocationGPS(context as MainActivity)
         getPositionBackground(position, this)
 
+        mapFragment.getMapAsync(this)
+
         return inflater.inflate(R.layout.fragment_filter_map, container, false)
     }
 

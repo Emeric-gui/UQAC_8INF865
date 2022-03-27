@@ -74,6 +74,7 @@ class PostFragmentLieuAnimal : Fragment(), OnMapReadyCallback {
         val position =  LocationGPS(context as MainActivity)
         getPositionBackground(position, this)
 
+        mapFragment.getMapAsync(this)
 
         val db = Firebase.firestore
 

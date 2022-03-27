@@ -84,7 +84,10 @@ class PostFragmentLieuObjet : Fragment(), OnMapReadyCallback {
         val position =  LocationGPS(context as MainActivity)
         getPositionBackground(position, this)
 
-       val db = Firebase.firestore
+        mapFragment.getMapAsync(this)
+
+
+        val db = Firebase.firestore
 
         val buttonNext : Button = view.findViewById(R.id.buttonPublier)
         buttonNext.setOnClickListener(){
