@@ -31,7 +31,6 @@ class FilterTabPosition : Fragment(), OnMapReadyCallback {
         return inflater.inflate(R.layout.fragment_filter_map, container, false)
     }
 
-
     override fun onMapReady(googleMap: GoogleMap) {
         //val positions = LatLng(0.0, 0.0)
         val positions = LatLng(-34.0, 151.0)

@@ -11,12 +11,19 @@ import androidx.fragment.app.DialogFragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.project_uqac.R
 import com.example.project_uqac.ui.my_account.MyAccountViewPager2FragmentAdapter
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.fragment_filter.view.*
+import kotlinx.android.synthetic.main.fragment_filter.view.button_valider
 
-class DialogueFragmentFilter:DialogFragment()  {
 
+class DialogueFragmentFilter:DialogFragment(){
     private lateinit var viewFilter : ViewPager2
 
      override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) :

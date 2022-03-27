@@ -1,6 +1,8 @@
 package com.example.project_uqac.ui.post
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,15 +11,31 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.core.os.HandlerCompat
 import androidx.fragment.app.Fragment
+import com.example.project_uqac.MainActivity
 import com.example.project_uqac.R
 import com.example.project_uqac.ui.article.Article
+import com.example.project_uqac.ui.service.LocationGPS
 import com.firebase.geofire.GeoFireUtils
 import com.firebase.geofire.GeoLocation
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
-class PostFragmentLieuAnimal : Fragment() {
+class PostFragmentLieuAnimal : Fragment(), OnMapReadyCallback {
+
+    private var lat : Double = 0.0
+    private var lon : Double = 0.0
+    private val executorService: ExecutorService = Executors.newFixedThreadPool(4)
+    private val mainThreadHandler: Handler = HandlerCompat.createAsync(Looper.getMainLooper())
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,6 +64,13 @@ class PostFragmentLieuAnimal : Fragment() {
             val transaction = fragmentManager?.beginTransaction()
             transaction?.replace(R.id.post_fragment_navigation, fragment)?.commit()
         }
+
+        val fm = fragmentManager?.beginTransaction()
+        val mapFragment = SupportMapFragment.newInstance()
+        fm?.add(R.id.mapView, mapFragment)
+        fm?.commit()
+        mapFragment.getMapAsync(this)
+
 
         val db = Firebase.firestore
 
@@ -80,6 +105,41 @@ class PostFragmentLieuAnimal : Fragment() {
              }
 
         return view
+    }
+
+//    fun getPositionBackground(
+//        position: LocationGPS,
+//        postFragment: PostFragmentLieuAnimal
+//    ) {
+//        executorService.execute {
+//            try {
+//
+//                mainThreadHandler.post {  position.getLocationPostAnimal(postFragment) }
+//            } catch (e: Exception) {
+//
+//            }
+//        }
+//    }
+//
+//    fun getCoordinate(lat : Double,lon : Double) {
+//        this.lat = lat
+//        this.lon = lon
+//        this.acces = true
+//    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+//        val position =  LocationGPS(context as MainActivity)
+//        getPositionBackground(position, this)
+        val lat = this.lat
+        val lng = this.lon
+        val positions = LatLng(lat, lng)
+
+        googleMap.addMarker(
+            MarkerOptions()
+                .position(positions)
+                .title("Marker")
+        )
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(positions))
     }
 
 

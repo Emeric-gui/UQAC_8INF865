@@ -9,25 +9,45 @@ import android.location.LocationManager
 import androidx.core.app.ActivityCompat
 import com.example.project_uqac.MainActivity
 import com.example.project_uqac.ui.home.HomeFragment
+import com.example.project_uqac.ui.post.PostFragmentLieuAnimal
+import com.example.project_uqac.ui.post.PostFragmentLieuObjet
 import com.example.project_uqac.ui.search.SearchFragment
 
 class LocationGPS(mainActivity: MainActivity) : LocationListener {
+
+    private var lati : Double? = null
+    private var long : Double? = null
+
     private lateinit var locationManager: LocationManager
     private val locationPermissionCode = 2
     private var app = mainActivity
     private var contextHomeFragment: HomeFragment? = null
     private var contextSearchFragment: SearchFragment? = null
+    private var contextPostFragmentObjet : PostFragmentLieuObjet? = null
+    private var contextPostFragmentAnimal : PostFragmentLieuAnimal? = null
 
 
 
-    fun getLocationHome(HomeFragment : HomeFragment)  {
+    fun getLocationHome(homeFragment : HomeFragment)  {
         getLocation()
-        contextHomeFragment = HomeFragment
+        contextHomeFragment = homeFragment
     }
-    fun getLocationSearch(SearchFragment : SearchFragment)  {
+    fun getLocationSearch(searchFragment : SearchFragment)  {
         getLocation()
-        contextSearchFragment = SearchFragment
+        contextSearchFragment = searchFragment
     }
+    fun getLocationPostObjet(postFragmentObjet : PostFragmentLieuObjet)  {
+        getLocation()
+        contextPostFragmentObjet = postFragmentObjet
+//        updateLocation()
+    }
+
+    fun getLocationPostAnimal(postFragmentAnimal : PostFragmentLieuAnimal){
+        getLocation()
+        contextPostFragmentAnimal = postFragmentAnimal
+    }
+
+
     fun getLocation() {
 
         locationManager = app.getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -56,8 +76,18 @@ class LocationGPS(mainActivity: MainActivity) : LocationListener {
 
         val lat = location.latitude
         val lon = location.longitude
+        this.lati = lat
+        this.long = lon
+
         contextHomeFragment?.getCoordinate(lat, lon)
         contextSearchFragment?.getCoordinate(lat, lon)
+
+//        if(contextPostFragmentAnimal != null){
+//            contextPostFragmentAnimal?.getCoordinate(lat, lon)
+//        }
+//        if(contextPostFragmentObjet != null){
+//            contextPostFragmentObjet?.getCoordinate(lat, lon)
+//        }
 
     }
 
