@@ -32,6 +32,7 @@ import java.util.concurrent.Executors
 
 class PostFragmentLieuAnimal : Fragment(), OnMapReadyCallback {
 
+    private lateinit var mapFragment: SupportMapFragment
     private var lat : Double = 0.0
     private var lon : Double = 0.0
     private val executorService: ExecutorService = Executors.newFixedThreadPool(4)
@@ -66,10 +67,12 @@ class PostFragmentLieuAnimal : Fragment(), OnMapReadyCallback {
         }
 
         val fm = fragmentManager?.beginTransaction()
-        val mapFragment = SupportMapFragment.newInstance()
+        mapFragment = SupportMapFragment.newInstance()
         fm?.add(R.id.mapView, mapFragment)
         fm?.commit()
-        mapFragment.getMapAsync(this)
+
+        val position =  LocationGPS(context as MainActivity)
+        getPositionBackground(position, this)
 
 
         val db = Firebase.firestore
@@ -107,29 +110,27 @@ class PostFragmentLieuAnimal : Fragment(), OnMapReadyCallback {
         return view
     }
 
-//    fun getPositionBackground(
-//        position: LocationGPS,
-//        postFragment: PostFragmentLieuAnimal
-//    ) {
-//        executorService.execute {
-//            try {
-//
-//                mainThreadHandler.post {  position.getLocationPostAnimal(postFragment) }
-//            } catch (e: Exception) {
-//
-//            }
-//        }
-//    }
-//
-//    fun getCoordinate(lat : Double,lon : Double) {
-//        this.lat = lat
-//        this.lon = lon
-//        this.acces = true
-//    }
+    fun getPositionBackground(
+        position: LocationGPS,
+        postFragment: PostFragmentLieuAnimal
+    ) {
+        executorService.execute {
+            try {
+
+                mainThreadHandler.post {  position.getLocationPostAnimal(postFragment) }
+            } catch (e: Exception) {
+
+            }
+        }
+    }
+
+    fun getCoordinate(lat : Double,lon : Double) {
+        this.lat = lat
+        this.lon = lon
+        mapFragment.getMapAsync(this)
+    }
 
     override fun onMapReady(googleMap: GoogleMap) {
-//        val position =  LocationGPS(context as MainActivity)
-//        getPositionBackground(position, this)
         val lat = this.lat
         val lng = this.lon
         val positions = LatLng(lat, lng)

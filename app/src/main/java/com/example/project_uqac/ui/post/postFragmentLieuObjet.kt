@@ -1,5 +1,8 @@
 package com.example.project_uqac.ui.post
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -11,17 +14,22 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.os.HandlerCompat
 import androidx.fragment.app.Fragment
 import com.example.project_uqac.MainActivity
 import com.example.project_uqac.R
 import com.example.project_uqac.ui.article.Article
 import com.example.project_uqac.ui.home.HomeFragment
+import com.example.project_uqac.ui.my_account.myPosts.Post
 import com.example.project_uqac.ui.search.SearchFragment
 import com.example.project_uqac.ui.service.LocationGPS
 import com.firebase.geofire.GeoFireUtils
 import com.firebase.geofire.GeoLocation
+import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.*
+import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.firestore.ktx.firestore
@@ -32,11 +40,12 @@ import java.util.concurrent.Executors
 
 class PostFragmentLieuObjet : Fragment(), OnMapReadyCallback {
 
+
+    private lateinit var mapFragment: SupportMapFragment
     private var lat : Double = 0.0
     private var lon : Double = 0.0
     private val executorService: ExecutorService = Executors.newFixedThreadPool(4)
     private val mainThreadHandler: Handler = HandlerCompat.createAsync(Looper.getMainLooper())
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,13 +76,13 @@ class PostFragmentLieuObjet : Fragment(), OnMapReadyCallback {
             transaction?.replace(R.id.post_fragment_navigation, fragment)?.commit()
         }
 
-        val fm = fragmentManager?.beginTransaction()
-        val mapFragment = SupportMapFragment.newInstance()
-        fm?.add(R.id.mapView, mapFragment)
-        fm?.commit()
+        val fm = parentFragmentManager.beginTransaction()
+        mapFragment = SupportMapFragment.newInstance()
+        fm.add(R.id.mapView, mapFragment)
+        fm.commit()
 
-        mapFragment.getMapAsync(this)
-
+        val position =  LocationGPS(context as MainActivity)
+        getPositionBackground(position, this)
 
        val db = Firebase.firestore
 
@@ -113,36 +122,33 @@ class PostFragmentLieuObjet : Fragment(), OnMapReadyCallback {
         }
 
 
-
-
         return view
     }
 
 
-//    fun getPositionBackground(
-//        position: LocationGPS,
-//        postFragment: PostFragmentLieuObjet
-//    ) {
-//        executorService.execute {
-//            try {
-//
-//                mainThreadHandler.post {  position.getLocationPostObjet(postFragment) }
-//            } catch (e: Exception) {
-//
-//            }
-//        }
-//    }
-//
-//    fun getCoordinate(lat : Double,lon : Double) {
-//        this.lat = lat
-//        this.lon = lon
-//    }
+    fun getPositionBackground(
+        position: LocationGPS,
+        postFragment: PostFragmentLieuObjet
+    ) {
+        executorService.execute {
+            try {
+
+                mainThreadHandler.post {  position.getLocationPostObjet(postFragment) }
+            } catch (e: Exception) {
+
+            }
+        }
+    }
+
+    fun getCoordinate(lat : Double,lon : Double) {
+        this.lat = lat
+        this.lon = lon
+        mapFragment.getMapAsync(this)
+    }
+
 
 
     override fun onMapReady(googleMap: GoogleMap) {
-//        val position =  LocationGPS(context as MainActivity)
-//        getPositionBackground(position, this)
-
         val lat = this.lat
         val lng = this.lon
         val positions = LatLng(lat, lng)

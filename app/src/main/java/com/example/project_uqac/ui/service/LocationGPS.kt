@@ -9,9 +9,11 @@ import android.location.LocationManager
 import androidx.core.app.ActivityCompat
 import com.example.project_uqac.MainActivity
 import com.example.project_uqac.ui.home.HomeFragment
+import com.example.project_uqac.ui.post.PostFragment
 import com.example.project_uqac.ui.post.PostFragmentLieuAnimal
 import com.example.project_uqac.ui.post.PostFragmentLieuObjet
 import com.example.project_uqac.ui.search.SearchFragment
+import com.example.project_uqac.ui.search.filter.FilterTabPosition
 
 class LocationGPS(mainActivity: MainActivity) : LocationListener {
 
@@ -23,8 +25,12 @@ class LocationGPS(mainActivity: MainActivity) : LocationListener {
     private var app = mainActivity
     private var contextHomeFragment: HomeFragment? = null
     private var contextSearchFragment: SearchFragment? = null
+
+    private var contextPostFragment : PostFragment? = null
+
     private var contextPostFragmentObjet : PostFragmentLieuObjet? = null
     private var contextPostFragmentAnimal : PostFragmentLieuAnimal? = null
+    private var contextSearchFilterFragment : FilterTabPosition? = null
 
 
 
@@ -36,15 +42,24 @@ class LocationGPS(mainActivity: MainActivity) : LocationListener {
         getLocation()
         contextSearchFragment = searchFragment
     }
+
+    fun getLocationPost(postFragment: PostFragment){
+        getLocation()
+        contextPostFragment = postFragment
+    }
     fun getLocationPostObjet(postFragmentObjet : PostFragmentLieuObjet)  {
         getLocation()
         contextPostFragmentObjet = postFragmentObjet
-//        updateLocation()
     }
 
     fun getLocationPostAnimal(postFragmentAnimal : PostFragmentLieuAnimal){
         getLocation()
         contextPostFragmentAnimal = postFragmentAnimal
+    }
+
+    fun getLocationPostAnimal(searchFilter : FilterTabPosition){
+        getLocation()
+        contextSearchFilterFragment = searchFilter
     }
 
 
@@ -81,14 +96,17 @@ class LocationGPS(mainActivity: MainActivity) : LocationListener {
 
         contextHomeFragment?.getCoordinate(lat, lon)
         contextSearchFragment?.getCoordinate(lat, lon)
+        contextPostFragment?.getCoordinate(lat, lon)
 
-//        if(contextPostFragmentAnimal != null){
-//            contextPostFragmentAnimal?.getCoordinate(lat, lon)
-//        }
-//        if(contextPostFragmentObjet != null){
-//            contextPostFragmentObjet?.getCoordinate(lat, lon)
-//        }
-
+        if(contextPostFragmentAnimal != null){
+            contextPostFragmentAnimal?.getCoordinate(lat, lon)
+        }
+        if(contextPostFragmentObjet != null){
+            contextPostFragmentObjet?.getCoordinate(lat, lon)
+        }
+        if(contextSearchFilterFragment != null){
+            contextSearchFilterFragment?.getCoordinate(lat, lon)
+        }
     }
 
 
