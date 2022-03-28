@@ -31,18 +31,20 @@
 
             <SeekBar
                 android:id="@+id/seekBar"
-                android:layout_width="150dp"
+                android:layout_width="134dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
+                android:max="100"
+                android:min="0"
+                android:progress="1"
                 android:progressTint="#7700FF"
                 android:thumbTint="#AAAAAA" />
-
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/var_progress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="VAR" />
+                android:text="0" />
 
             <TextView
                 android:id="@+id/textView6"
