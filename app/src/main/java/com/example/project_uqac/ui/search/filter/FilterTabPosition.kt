@@ -118,7 +118,7 @@ class FilterTabPosition : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         if(makeModif){
             googleMap.setOnCameraIdleListener {
-                val midLatLng: LatLng = googleMap.cameraPosition.target
+                val midLatLng: LatLng = LatLng(lat, lon)
                 googleMap.clear()
                 googleMap.addCircle(
                     CircleOptions()
