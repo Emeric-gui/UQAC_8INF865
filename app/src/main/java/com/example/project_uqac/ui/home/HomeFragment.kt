@@ -94,8 +94,8 @@ class HomeFragment : Fragment() {
         button3 = root.findViewById<Button>(R.id.button3J)
         button7 = root.findViewById<Button>(R.id.button7j)
         button1.isSelected = false
-        button3.isSelected = true
-        button7.isSelected = false
+        button3.isSelected = false
+        button7.isSelected = true
 
 
 
@@ -107,6 +107,7 @@ class HomeFragment : Fragment() {
             button7.isSelected = false
             button7.setBackgroundColor(Color.parseColor("#E0E0E0"))
 
+            readCoordinate()
             loadData()
         }
         button3.setOnClickListener { // Perform action on click
@@ -117,6 +118,7 @@ class HomeFragment : Fragment() {
             button7.isSelected = false
             button7.setBackgroundColor(Color.parseColor("#E0E0E0"))
 
+            readCoordinate()
             loadData()
         }
         button7.setOnClickListener {
@@ -127,6 +129,7 @@ class HomeFragment : Fragment() {
             button1.isSelected = false
             button1.setBackgroundColor(Color.parseColor("#E0E0E0"))
 
+            readCoordinate()
             loadData()
         }
 
@@ -160,6 +163,7 @@ class HomeFragment : Fragment() {
     }
 
     fun getCoordinate() {
+        readCoordinate()
         loadData()
     }
 
@@ -168,9 +172,10 @@ class HomeFragment : Fragment() {
 
         this.lat = lat
         this.lon = lon
-        val filename = "Location"
+        val filename = "Coordinates"
         if(filename!=null && filename.trim()!=""){
-            var fileInputStream: FileInputStream? = activity?.applicationContext?.openFileInput(filename)
+            var fileInputStream: FileInputStream? =
+                activity?.applicationContext?.openFileInput(filename)//activity?.applicationContext?.openFileInput(filename)
             var inputStreamReader: InputStreamReader = InputStreamReader(fileInputStream)
             val bufferedReader: BufferedReader = BufferedReader(inputStreamReader)
             val stringBuilder: StringBuilder = StringBuilder()
@@ -208,8 +213,6 @@ class HomeFragment : Fragment() {
     //for loading all articles from server
     fun loadData()
     {
-
-        readCoordinate()
 
         //Reset liste
         articles.clear()
