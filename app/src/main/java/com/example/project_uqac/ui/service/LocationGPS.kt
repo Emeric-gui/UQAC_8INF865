@@ -98,10 +98,11 @@ class LocationGPS(mainActivity: MainActivity) : LocationListener {
         //this.long = lon
 
         val fileOutputStream: FileOutputStream
-        val file:String = "Location"
+        val file:String = "Coordinates"
         val data:String = "$lat=$lon"
 
         try {
+
             fileOutputStream = app.openFileOutput(file, Context.MODE_PRIVATE)
             fileOutputStream.write(data.toByteArray())
             Toast.makeText(
@@ -119,7 +120,13 @@ class LocationGPS(mainActivity: MainActivity) : LocationListener {
             e.printStackTrace()
         }
 
+
+
         /*
+           if (contextHomeFragment != null){
+            contextHomeFragment?.getCoordinate()
+        }
+
         if (contextSearchFragment != null){
             contextSearchFragment?.getCoordinate(lat, lon)
         }
