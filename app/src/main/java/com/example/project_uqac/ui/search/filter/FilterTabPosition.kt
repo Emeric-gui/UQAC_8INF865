@@ -101,7 +101,7 @@ class FilterTabPosition : Fragment(), OnMapReadyCallback {
         executorService.execute {
             try {
 
-                mainThreadHandler.post {  position.getLocationPostAnimal(searchFilterFragment) }
+                mainThreadHandler.post {  position.getLocation() }
             } catch (e: Exception) {
 
             }

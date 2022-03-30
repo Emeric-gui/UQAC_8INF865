@@ -93,9 +93,9 @@ class HomeFragment : Fragment() {
         button1 = root.findViewById<Button>(R.id.button1J)
         button3 = root.findViewById<Button>(R.id.button3J)
         button7 = root.findViewById<Button>(R.id.button7j)
-        button1.isSelected = false
+        button1.isSelected = true
         button3.isSelected = false
-        button7.isSelected = true
+        button7.isSelected = false
 
 
 
@@ -107,7 +107,6 @@ class HomeFragment : Fragment() {
             button7.isSelected = false
             button7.setBackgroundColor(Color.parseColor("#E0E0E0"))
 
-            readCoordinate()
             loadData()
         }
         button3.setOnClickListener { // Perform action on click
@@ -118,7 +117,6 @@ class HomeFragment : Fragment() {
             button7.isSelected = false
             button7.setBackgroundColor(Color.parseColor("#E0E0E0"))
 
-            readCoordinate()
             loadData()
         }
         button7.setOnClickListener {
@@ -129,7 +127,6 @@ class HomeFragment : Fragment() {
             button1.isSelected = false
             button1.setBackgroundColor(Color.parseColor("#E0E0E0"))
 
-            readCoordinate()
             loadData()
         }
 
@@ -139,7 +136,8 @@ class HomeFragment : Fragment() {
         val position =  LocationGPS(context as MainActivity)
         //position.getLocationHome(this)
         getPositionBackground(position, this)
-        loadData()
+
+        //loadData()
 
         return root
     }
@@ -148,27 +146,19 @@ class HomeFragment : Fragment() {
         position: LocationGPS,
         homeFragment: HomeFragment
     ) {
-        position.getLocationHome(homeFragment)
-        /*
+
         executorService.execute {
             try {
 
-                mainThreadHandler.post {  position.getLocationHome(homeFragment) }
+                mainThreadHandler.post {  position.getLocation() }
             } catch (e: Exception) {
 
             }
         }
-
-         */
     }
-
-    fun getCoordinate() {
-        readCoordinate()
-        loadData()
-    }
-
 
     private fun readCoordinate() {
+
 
         this.lat = lat
         this.lon = lon
@@ -199,26 +189,15 @@ class HomeFragment : Fragment() {
 
 
 
-
-
     }
-
-
-
-
-
-
-
 
     //for loading all articles from server
     fun loadData()
     {
+        readCoordinate()
 
         //Reset liste
         articles.clear()
-
-
-
 
         //Find day of choose periode
         val  cal : Calendar = GregorianCalendar . getInstance ()

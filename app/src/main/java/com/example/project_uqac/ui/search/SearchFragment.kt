@@ -98,7 +98,7 @@ class SearchFragment  : Fragment()  {
         executorService.execute {
             try {
 
-                mainThreadHandler.post {  position.getLocationSearch(searchFragment) }
+                mainThreadHandler.post {  position.getLocation()}
             } catch (e: Exception) {
 
             }
