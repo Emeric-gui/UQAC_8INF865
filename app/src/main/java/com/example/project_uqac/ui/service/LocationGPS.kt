@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.example.project_uqac.MainActivity
 import com.example.project_uqac.ui.home.HomeFragment
@@ -14,6 +15,8 @@ import com.example.project_uqac.ui.post.PostFragmentLieuAnimal
 import com.example.project_uqac.ui.post.PostFragmentLieuObjet
 import com.example.project_uqac.ui.search.SearchFragment
 import com.example.project_uqac.ui.search.filter.FilterTabPosition
+import java.io.*
+import java.util.*
 
 class LocationGPS(mainActivity: MainActivity) : LocationListener {
 
@@ -89,14 +92,42 @@ class LocationGPS(mainActivity: MainActivity) : LocationListener {
 
     override fun onLocationChanged(location: Location) {
 
-        val lat = location.latitude
-        val lon = location.longitude
-        this.lati = lat
-        this.long = lon
+        var lat = location.latitude
+        var lon = location.longitude
+       // this.lati = lat
+        //this.long = lon
 
-        contextHomeFragment?.getCoordinate(lat, lon)
-        contextSearchFragment?.getCoordinate(lat, lon)
-        contextPostFragment?.getCoordinate(lat, lon)
+        val fileOutputStream: FileOutputStream
+        val file:String = "Location"
+        val data:String = "$lat=$lon"
+
+        try {
+            fileOutputStream = app.openFileOutput(file, Context.MODE_PRIVATE)
+            fileOutputStream.write(data.toByteArray())
+            Toast.makeText(
+                app,
+                "Ecriture data: $data",
+                Toast.LENGTH_SHORT
+            ).show()
+        } catch (e: FileNotFoundException){
+            e.printStackTrace()
+        }catch (e: NumberFormatException){
+            e.printStackTrace()
+        }catch (e: IOException){
+            e.printStackTrace()
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
+
+        /*
+        if (contextSearchFragment != null){
+            contextSearchFragment?.getCoordinate(lat, lon)
+        }
+
+        if (contextPostFragment != null) {
+            contextPostFragment?.getCoordinate(lat, lon)
+
+        }
 
         if(contextPostFragmentAnimal != null){
             contextPostFragmentAnimal?.getCoordinate(lat, lon)
@@ -107,6 +138,8 @@ class LocationGPS(mainActivity: MainActivity) : LocationListener {
         if(contextSearchFilterFragment != null){
             contextSearchFilterFragment?.getCoordinate(lat, lon)
         }
+        */
+
     }
 
 

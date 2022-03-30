@@ -28,15 +28,18 @@ import com.firebase.geofire.GeoFireUtils
 import com.firebase.geofire.GeoLocation
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import java.io.BufferedReader
+import java.io.FileInputStream
+import java.io.InputStreamReader
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
+import java.util.concurrent.Executors 
+import android.content.Context
 
 
 class HomeFragment : Fragment() {
@@ -48,6 +51,18 @@ class HomeFragment : Fragment() {
     private val executorService: ExecutorService = Executors.newFixedThreadPool(4)
     private val mainThreadHandler: Handler = HandlerCompat.createAsync(Looper.getMainLooper())
 
+    private var db = Firebase.firestore
+    private var articles = ArrayList<Article>()
+    // Create adapter passing in the sample user data
+
+    // Lookup the recyclerview in activity layout
+    private lateinit var rvArticles : RecyclerView
+
+    private lateinit var textNoArticle : TextView
+
+    private lateinit var button1 : Button
+    private lateinit var button3 : Button
+    private lateinit var button7 : Button
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -59,28 +74,29 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val db = Firebase.firestore
-        val articles = ArrayList<Article>()
+        db = Firebase.firestore
+        articles = ArrayList<Article>()
         // Create adapter passing in the sample user data
 
         // Lookup the recyclerview in activity layout
-        val rvArticles = root.findViewById<View>(R.id.recyclerView) as RecyclerView
+        rvArticles = root.findViewById<View>(R.id.recyclerView) as RecyclerView
 
-        val textNoArticle = root.findViewById<TextView>(R.id.textNoArticles)
+        textNoArticle = root.findViewById<TextView>(R.id.textNoArticles)
 
-        val button1 = root.findViewById<Button>(R.id.button1J)
-        val button3 = root.findViewById<Button>(R.id.button3J)
-        val button7 = root.findViewById<Button>(R.id.button7j)
-        button1.isSelected = true
-        button3.isSelected = false
+        button1 = root.findViewById<Button>(R.id.button1J)
+        button3 = root.findViewById<Button>(R.id.button3J)
+        button7 = root.findViewById<Button>(R.id.button7j)
+        button1.isSelected = false
+        button3.isSelected = true
         button7.isSelected = false
-        loadData(db, textNoArticle, articles, rvArticles, button1, button3, button7)
+
 
 
         button1.setOnClickListener {
@@ -91,7 +107,7 @@ class HomeFragment : Fragment() {
             button7.isSelected = false
             button7.setBackgroundColor(Color.parseColor("#E0E0E0"))
 
-            loadData(db, textNoArticle, articles, rvArticles, button1, button3, button7)
+            loadData()
         }
         button3.setOnClickListener { // Perform action on click
             button3.isSelected = true
@@ -101,7 +117,7 @@ class HomeFragment : Fragment() {
             button7.isSelected = false
             button7.setBackgroundColor(Color.parseColor("#E0E0E0"))
 
-            loadData(db, textNoArticle, articles, rvArticles, button1, button3, button7)
+            loadData()
         }
         button7.setOnClickListener {
             button7.isSelected = true
@@ -111,7 +127,7 @@ class HomeFragment : Fragment() {
             button1.isSelected = false
             button1.setBackgroundColor(Color.parseColor("#E0E0E0"))
 
-            loadData(db, textNoArticle, articles, rvArticles, button1, button3, button7)
+            loadData()
         }
 
         // Initialize contacts
@@ -120,7 +136,7 @@ class HomeFragment : Fragment() {
         val position =  LocationGPS(context as MainActivity)
         //position.getLocationHome(this)
         getPositionBackground(position, this)
-
+        loadData()
 
         return root
     }
@@ -129,6 +145,8 @@ class HomeFragment : Fragment() {
         position: LocationGPS,
         homeFragment: HomeFragment
     ) {
+        position.getLocationHome(homeFragment)
+        /*
         executorService.execute {
             try {
 
@@ -137,18 +155,50 @@ class HomeFragment : Fragment() {
 
             }
         }
+
+         */
     }
 
-    fun getCoordinate(lat : Double,lon : Double) {
+    fun getCoordinate() {
+        loadData()
+    }
+
+
+    private fun readCoordinate() {
+
         this.lat = lat
         this.lon = lon
-        Toast.makeText(
-            activity,
-            "HOME Latitude: $lat , Longitude: $lon",
-            Toast.LENGTH_SHORT
-        ).show()
+        val filename = "Location"
+        if(filename!=null && filename.trim()!=""){
+            var fileInputStream: FileInputStream? = activity?.applicationContext?.openFileInput(filename)
+            var inputStreamReader: InputStreamReader = InputStreamReader(fileInputStream)
+            val bufferedReader: BufferedReader = BufferedReader(inputStreamReader)
+            val stringBuilder: StringBuilder = StringBuilder()
+            var text: String? = null
+            while (run {
+                    text = bufferedReader.readLine()
+                    text
+                } != null) {
+                stringBuilder.append(text)
+            }
+            //Displaying data on EditText
+            val coordinates = stringBuilder.split("=")
+            lat = coordinates[0].toDouble()
+            lon = coordinates[1].toDouble()
+            //Toast.makeText(activity,"STRING"+stringBuilder,Toast.LENGTH_LONG).show()
+            //Toast.makeText(activity,"LAAAAAAAA"+ coordinates[0] + " / " + coordinates[1] + "FINI",Toast.LENGTH_LONG).show()
+            //fileData.setText(stringBuilder.toString()).toString()
+        }else{
+            Toast.makeText(activity,"file name cannot be blank",Toast.LENGTH_LONG).show()
+        }
+
+
+
+
 
     }
+
+
 
 
 
@@ -156,15 +206,10 @@ class HomeFragment : Fragment() {
 
 
     //for loading all articles from server
-    fun loadData(
-        db: FirebaseFirestore,
-        textNoArticle: TextView,
-        articles: ArrayList<Article>,
-        rvArticles: RecyclerView,
-        button1: Button,
-        button3: Button,
-        button7: Button
-    ) {
+    fun loadData()
+    {
+
+        readCoordinate()
 
         //Reset liste
         articles.clear()

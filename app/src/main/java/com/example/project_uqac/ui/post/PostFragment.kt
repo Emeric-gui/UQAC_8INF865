@@ -15,6 +15,9 @@ import com.example.project_uqac.R
 import com.example.project_uqac.databinding.FragmentPostBinding
 import com.example.project_uqac.ui.search.SearchFragment
 import com.example.project_uqac.ui.service.LocationGPS
+import java.io.BufferedReader
+import java.io.FileInputStream
+import java.io.InputStreamReader
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -45,23 +48,16 @@ class PostFragment : Fragment() {
         _binding = FragmentPostBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        /*
-        val textView: TextView = binding.textPost
-        dashboardViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
-         */
 
         childFragmentManager.beginTransaction().replace(R.id.post_fragment_navigation,PostFragmentNature()).commit()
 
         val position =  LocationGPS(context as MainActivity)
-        //position.getLocationSearch(this)
         getPositionBackground(position, this)
 
         return root
     }
 
-    fun getPositionBackground(
+    private fun getPositionBackground(
         position: LocationGPS,
         postFragment: PostFragment
     ) {
@@ -73,17 +69,6 @@ class PostFragment : Fragment() {
 
             }
         }
-    }
-
-    fun getCoordinate(lat : Double,lon : Double) {
-        this.lat = lat
-        this.lon = lon
-        Toast.makeText(
-            activity,
-            "Post Latitude: $lat , Longitude: $lon",
-            Toast.LENGTH_SHORT
-        ).show()
-
     }
 
 
