@@ -34,6 +34,9 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import java.io.BufferedReader
+import java.io.FileInputStream
+import java.io.InputStreamReader
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -81,8 +84,7 @@ class PostFragmentLieuObjet : Fragment(), OnMapReadyCallback {
         fm.add(R.id.mapView, mapFragment)
         fm.commit()
 
-        val position =  LocationGPS(context as MainActivity)
-        getPositionBackground(position, this)
+        readCoordinate()
 
         mapFragment.getMapAsync(this)
 
@@ -129,26 +131,34 @@ class PostFragmentLieuObjet : Fragment(), OnMapReadyCallback {
     }
 
 
-    fun getPositionBackground(
-        position: LocationGPS,
-        postFragment: PostFragmentLieuObjet
-    ) {
-        executorService.execute {
-            try {
+    private fun readCoordinate() {
 
-                mainThreadHandler.post {  position.getLocationPostObjet(postFragment) }
-            } catch (e: Exception) {
-
-            }
-        }
-    }
-
-    fun getCoordinate(lat : Double,lon : Double) {
         this.lat = lat
         this.lon = lon
-        mapFragment.getMapAsync(this)
+        val filename = "Location"
+        if(filename!=null && filename.trim()!=""){
+            var fileInputStream: FileInputStream? = (activity as MainActivity).openFileInput(filename)
+            var inputStreamReader: InputStreamReader = InputStreamReader(fileInputStream)
+            val bufferedReader: BufferedReader = BufferedReader(inputStreamReader)
+            val stringBuilder: StringBuilder = StringBuilder()
+            var text: String? = null
+            while (run {
+                    text = bufferedReader.readLine()
+                    text
+                } != null) {
+                stringBuilder.append(text)
+            }
+            //Displaying data on EditText
+            val coordinates = stringBuilder.split("=")
+            lat = coordinates[0].toDouble()
+            lon = coordinates[1].toDouble()
+            //Toast.makeText(activity,"STRING"+stringBuilder,Toast.LENGTH_LONG).show()
+            //Toast.makeText(activity,"LAAAAAAAA"+ coordinates[0] + " / " + coordinates[1] + "FINI",Toast.LENGTH_LONG).show()
+            //fileData.setText(stringBuilder.toString()).toString()
+        }else{
+            Toast.makeText(activity,"file name cannot be blank",Toast.LENGTH_LONG).show()
+        }
     }
-
 
 
     override fun onMapReady(googleMap: GoogleMap) {
