@@ -117,7 +117,7 @@ class PostFragmentLieuAnimal : Fragment(), OnMapReadyCallback {
 
         this.lat = lat
         this.lon = lon
-        val filename = "Location"
+        val filename = "Coordinates"
         if(filename!=null && filename.trim()!=""){
             var fileInputStream: FileInputStream? = (activity as MainActivity).openFileInput(filename)
             var inputStreamReader: InputStreamReader = InputStreamReader(fileInputStream)

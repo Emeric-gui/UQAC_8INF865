@@ -64,7 +64,7 @@ class PostFragment : Fragment() {
         executorService.execute {
             try {
 
-                mainThreadHandler.post {  position.getLocationPost(postFragment) }
+                mainThreadHandler.post {  position.getLocation() }
             } catch (e: Exception) {
 
             }

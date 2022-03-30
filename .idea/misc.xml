@@ -40,7 +40,7 @@
         <entry key="app/src/main/res/drawable/post_border_custom.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/post_gradient_background.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/round_button.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.182518115942029" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_chat.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_discussions.xml" value="0.18714555765595464" />
         <entry key="app/src/main/res/layout/fragment_filter.xml" value="0.1" />
@@ -66,9 +66,11 @@
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.16225921630859375" />
         <entry key="app/src/main/res/layout/fragment_test.xml" value="0.1" />
         <entry key="app/src/main/res/layout/frame_textview.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/item_article.xml" value="0.3" />
+        <entry key="app/src/main/res/layout/item_article.xml" value="0.14506172839506173" />
         <entry key="app/src/main/res/layout/item_conversation.xml" value="0.2599304767869274" />
         <entry key="app/src/main/res/layout/item_search.xml" value="0.38364410400390625" />
+        <entry key="app/src/main/res/layout/loading_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/my_message.xml" value="0.1" />
       </map>
     </option>
   </component>
