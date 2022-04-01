@@ -25,8 +25,8 @@ class DialogueDeletePost:DialogFragment() {
 
         var builder : AlertDialog.Builder = AlertDialog.Builder(activity)
 
-        builder.setMessage("clear post")
-        builder.setTitle(R.string.verification_suppression)
+        builder.setTitle(R.string.suppression_post)
+        builder.setMessage(R.string.verification_suppression_post)
 
         builder.setCancelable(false)
         builder.setNegativeButton(getString(R.string.annuler), null)

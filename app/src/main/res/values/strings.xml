@@ -34,4 +34,6 @@
     <string name="my_account_information_message">Vous pouvez naviguer entre les différents onglets de votre compte afin de pouvoir modiifer votre compte ou de voir vos posts. Si vous le souhaitez, vous pouvez directement supprimer certaines de vos annonces en cliquant dessus.</string>
     <string name="my_account_information_message_v2">Vous pouvez retrouver deux onglets principaux </string>
     <string name="disconnect">Déconnexion</string>
+    <string name="suppression_post">Supression publication</string>
+    <string name="verification_suppression_post">Vouulez-vous vraiment supprimer cette publication ?</string>
 </resources>
