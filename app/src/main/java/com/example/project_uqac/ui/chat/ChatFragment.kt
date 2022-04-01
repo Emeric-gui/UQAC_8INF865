@@ -52,7 +52,7 @@ class ChatFragment : Fragment(){
     private val binding get() = _binding!!
 
     private val openDocument = registerForActivityResult(MyOpenDocumentContract()) { uri ->
-        onImageSelected(uri)
+        //onImageSelected(uri)
     }
 
     override fun onCreateView(
@@ -125,7 +125,7 @@ class ChatFragment : Fragment(){
 
         // When the image button is clicked, launch the image picker
         binding.addMessageImageView.setOnClickListener {
-            openDocument.launch(arrayOf("image/*"))
+            //openDocument.launch(arrayOf("image/*"))
         }
 
         return root
@@ -164,7 +164,7 @@ class ChatFragment : Fragment(){
 
 
 
-    private fun onImageSelected(uri: Uri) {
+    /*private fun onImageSelected(uri: Uri) {
         Log.d(TAG, "Uri: $uri")
         val user = auth.currentUser
         val tempMessage = Message(null, getUserName(), getPhotoUrl(), LOADING_IMAGE_URL)
@@ -190,9 +190,9 @@ class ChatFragment : Fragment(){
                         .child(uri.lastPathSegment!!)
                     putImageInStorage(storageReference, uri, key)
                 })
-    }
+    }*/
 
-    private fun putImageInStorage(storageReference: StorageReference, uri: Uri, key: String?) {
+    /*private fun putImageInStorage(storageReference: StorageReference, uri: Uri, key: String?) {
         // First upload the image to Cloud Storage
         storageReference.putFile(uri)
             .addOnSuccessListener(
@@ -216,7 +216,7 @@ class ChatFragment : Fragment(){
                     e
                 )
             }
-    }
+    }*/
 
     private fun getPhotoUrl(): String? {
         val user = auth.currentUser
