@@ -37,6 +37,7 @@ import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.io.BufferedReader
@@ -108,7 +109,7 @@ class PostFragmentLieuObjet : Fragment(), OnMapReadyCallback,
             val hash = GeoFireUtils.getGeoHashForLocation(GeoLocation(lat, lng))
 
             val article = Article("$textModel", "$textMarque", textDate,
-                "$textDescription", "https://picsum.photos/600/300?random&$", "Nom",hash, latObject, lonObject
+                "$textDescription", "https://picsum.photos/600/300?random&$", "Nom",hash, latObject, lonObject, Firebase.auth.currentUser?.email!!
             )
 
             db.collection("Articles")
