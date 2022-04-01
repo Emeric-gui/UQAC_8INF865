@@ -8,13 +8,17 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.DialogFragment
 import com.example.project_uqac.R
+import com.example.project_uqac.ui.article.Article
 import com.example.project_uqac.ui.my_account.MyAccountLogged
+import com.example.project_uqac.ui.my_account.tabs.MyAccountTabMyPosts
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class DialogueDeletePost:DialogFragment() {
 
-    private lateinit var mMyAccountLogged : MyAccountLogged
+    private lateinit var articleToDel : String
+    private lateinit var myCaller : MyAccountTabMyPosts
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         super.onCreateDialog(savedInstanceState)
@@ -27,23 +31,21 @@ class DialogueDeletePost:DialogFragment() {
         builder.setCancelable(false)
         builder.setNegativeButton(getString(R.string.annuler), null)
         builder.setPositiveButton(getString(R.string.confirmer)) { _: DialogInterface, _: Int ->
-
-            // TODO Delete Post here
-            val user = Firebase.auth.currentUser!!
-            user.delete()
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Log.d(TAG, "User account deleted.")
-                        // Show back login page
-//                        mMyAccountLogged.goBackLogin()
-                    }
+            val db = Firebase.firestore
+            db.collection("Articles").document(articleToDel)
+                .delete()
+                .addOnSuccessListener {
+                    Log.d(TAG, "DocumentSnapshot successfully deleted!")
+                    myCaller.gonnaLoad()
                 }
         }
 
         return builder.create()
     }
 
-    fun arguments(elem : MyAccountLogged) {
-        mMyAccountLogged = elem
+    fun arguments(elem : String, caller : MyAccountTabMyPosts) {
+        articleToDel = elem
+        myCaller = caller
+
     }
 }
