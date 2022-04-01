@@ -1,42 +1,44 @@
 package com.example.project_uqac.ui.post
 
+import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
+import android.graphics.*
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ProgressBar
-import android.widget.Toast
-import androidx.core.os.HandlerCompat
+import android.widget.*
 import androidx.fragment.app.Fragment
 import com.example.project_uqac.MainActivity
 import com.example.project_uqac.R
 import com.example.project_uqac.ui.article.Article
-import com.example.project_uqac.ui.service.LocationGPS
 import com.firebase.geofire.GeoFireUtils
 import com.firebase.geofire.GeoLocation
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.*
+import com.google.android.gms.maps.model.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
+import java.io.BufferedReader
+import java.io.FileInputStream
+import java.io.InputStreamReader
 
-class PostFragmentLieuAnimal : Fragment(), OnMapReadyCallback {
+
+class PostFragmentLieuAnimal : Fragment(), OnMapReadyCallback,
+    GoogleMap.OnCameraMoveStartedListener,
+    GoogleMap.OnCameraIdleListener
+{
 
     private lateinit var mapFragment: SupportMapFragment
     private var lat : Double = 0.0
     private var lon : Double = 0.0
-    private val executorService: ExecutorService = Executors.newFixedThreadPool(4)
-    private val mainThreadHandler: Handler = HandlerCompat.createAsync(Looper.getMainLooper())
+    private var latObject : Double = 0.0
+    private var lonObject : Double = 0.0
+   private lateinit var viewMap : MapView
+    private lateinit var map: GoogleMap
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,10 +73,10 @@ class PostFragmentLieuAnimal : Fragment(), OnMapReadyCallback {
         fm?.add(R.id.mapView, mapFragment)
         fm?.commit()
 
-        val position =  LocationGPS(context as MainActivity)
-        getPositionBackground(position, this)
-
+        //Lire les coordonnées sur le fichier de stockage interne de l'application
+        readCoordinate()
         mapFragment.getMapAsync(this)
+        viewMap = view.findViewById(R.id.mapView)
 
         val db = Firebase.firestore
 
@@ -89,7 +91,7 @@ class PostFragmentLieuAnimal : Fragment(), OnMapReadyCallback {
 
 
             val article = Article("$textSpecie", "$textRace", textDate,
-                "$textDescription", "https://picsum.photos/600/300?random&$", "Nom",hash,lat, lng
+                "$textDescription", "https://picsum.photos/600/300?random&$", "Nom",hash,latObject, lonObject
             )
 
             db.collection("Articles")
@@ -108,41 +110,135 @@ class PostFragmentLieuAnimal : Fragment(), OnMapReadyCallback {
 
              }
 
+        drawCircle(view)
+
         return view
     }
 
-    fun getPositionBackground(
-        position: LocationGPS,
-        postFragment: PostFragmentLieuAnimal
-    ) {
-        executorService.execute {
-            try {
+    private fun drawCircle(view: View) {
+        // get device dimensions
+        val displayMetrics = DisplayMetrics()
+        activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
+        val bitmap = Bitmap.createBitmap(700, 1000, Bitmap.Config.ARGB_4444)
+        val canvas = Canvas(bitmap)
 
-                mainThreadHandler.post {  position.getLocationPostAnimal(postFragment) }
-            } catch (e: Exception) {
+        // canvas background color
+        //canvas.drawARGB(255, 78, 168, 186);
 
+        var paint = Paint()
+        paint.color = Color.parseColor("#6C00F8")
+        paint.strokeWidth = 6F
+        paint.style = Paint.Style.STROKE
+        paint.isAntiAlias = true
+        paint.isDither = true
+
+        // set bitmap as background to ImageView
+        var circle : ImageView = view.findViewById(R.id.imageV2)
+
+        // circle center
+       // var centerx = (displayMetrics.widthPixels/3.1).toFloat()
+       // var centery = (displayMetrics.heightPixels/4.585555).toFloat()
+
+        circle.measure(0, 0)
+        val centerx: Float = (circle.measuredWidth / 2).toFloat()
+        val centery: Float = (circle.measuredHeight / 2).toFloat()
+        /*val rect: Rect = circle.getDrawable().getRect()
+
+        var centerx = (circle.getDrawable().getRect().left+circle.width/2).toFloat()
+        var centery = ((circle.top+circle.height)/2).toFloat()
+
+         */
+        var radius = 70F
+
+
+        // draw circle
+        canvas.drawCircle(centerx, centery, radius, paint)
+
+        circle.background = BitmapDrawable(resources, bitmap)
+    }
+
+    private fun readCoordinate() {
+
+        this.lat = lat
+        this.lon = lon
+        val filename = "Coordinates"
+        if(filename!=null && filename.trim()!=""){
+            var fileInputStream: FileInputStream? = (activity as MainActivity).openFileInput(filename)
+            var inputStreamReader: InputStreamReader = InputStreamReader(fileInputStream)
+            val bufferedReader: BufferedReader = BufferedReader(inputStreamReader)
+            val stringBuilder: StringBuilder = StringBuilder()
+            var text: String? = null
+            while (run {
+                    text = bufferedReader.readLine()
+                    text
+                } != null) {
+                stringBuilder.append(text)
             }
+            //Displaying data on EditText
+            val coordinates = stringBuilder.split("=")
+            lat = coordinates[0].toDouble()
+            lon = coordinates[1].toDouble()
+        }else{
+            Toast.makeText(activity,"file name cannot be blank",Toast.LENGTH_LONG).show()
         }
     }
 
-    fun getCoordinate(lat : Double,lon : Double) {
-        this.lat = lat
-        this.lon = lon
-        mapFragment.getMapAsync(this)
-    }
-
+    @SuppressLint("ClickableViewAccessibility")
     override fun onMapReady(googleMap: GoogleMap) {
         val lat = this.lat
         val lng = this.lon
-        val positions = LatLng(lat, lng)
-
-        googleMap.addMarker(
+        var positions = LatLng(lat, lng)
+        val radius  = 15.0
+        val zoomLevel = radius.toFloat()
+        map = googleMap
+        map.setOnCameraMoveStartedListener(this);
+        map.setOnCameraIdleListener(this);
+        map.addMarker(
             MarkerOptions()
                 .position(positions)
                 .title("Marker")
         )
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(positions))
+        /*googleMap.addCircle( CircleOptions()
+           .center(googleMap.cameraPosition.target)
+           .radius(googleMap.maxZoomLevel.toDouble()*25)
+           .strokeWidth(10f)
+           .fillColor(0x550000FF));
+           */
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(positions, zoomLevel))
+    }
+
+    override fun onCameraMoveStarted(reason: Int) {
+
+        var reasonText = "UNKNOWN_REASON"
+        when (reason) {
+            GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE -> {
+                reasonText = "GESTURE"
+
+            }
+            GoogleMap.OnCameraMoveStartedListener.REASON_API_ANIMATION -> {
+                reasonText = "API_ANIMATION"
+
+            }
+            GoogleMap.OnCameraMoveStartedListener.REASON_DEVELOPER_ANIMATION -> {
+                reasonText = "DEVELOPER_ANIMATION"
+            }
+        }
+        Log.d(TAG, "onCameraMoveStarted($reasonText)")
+        //uptdateCoordinates()
+    }
+
+
+    fun uptdateCoordinates() {
+        latObject = map.cameraPosition.target.latitude
+        lonObject = map.cameraPosition.target.longitude
+        Log.v(map.cameraPosition.target.toString(), "CAMERAAAAAAAA")
+
+    }
+
+    override fun onCameraIdle() {
+        uptdateCoordinates()
     }
 
 
 }
+

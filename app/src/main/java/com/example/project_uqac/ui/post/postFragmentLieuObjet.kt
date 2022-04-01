@@ -1,19 +1,24 @@
 package com.example.project_uqac.ui.post
 
 import android.Manifest
+import android.annotation.SuppressLint
+import android.content.ContentValues
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.drawable.BitmapDrawable
 import android.location.Location
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ProgressBar
-import android.widget.Toast
+import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.os.HandlerCompat
@@ -34,18 +39,24 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import java.io.BufferedReader
+import java.io.FileInputStream
+import java.io.InputStreamReader
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 
-class PostFragmentLieuObjet : Fragment(), OnMapReadyCallback {
+class PostFragmentLieuObjet : Fragment(), OnMapReadyCallback,
+    GoogleMap.OnCameraMoveStartedListener,
+    GoogleMap.OnCameraIdleListener {
 
 
     private lateinit var mapFragment: SupportMapFragment
     private var lat : Double = 0.0
     private var lon : Double = 0.0
-    private val executorService: ExecutorService = Executors.newFixedThreadPool(4)
-    private val mainThreadHandler: Handler = HandlerCompat.createAsync(Looper.getMainLooper())
+    private var latObject : Double = 0.0
+    private var lonObject : Double = 0.0
+    private lateinit var map: GoogleMap
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -81,8 +92,7 @@ class PostFragmentLieuObjet : Fragment(), OnMapReadyCallback {
         fm.add(R.id.mapView, mapFragment)
         fm.commit()
 
-        val position =  LocationGPS(context as MainActivity)
-        getPositionBackground(position, this)
+        readCoordinate()
 
         mapFragment.getMapAsync(this)
 
@@ -98,7 +108,7 @@ class PostFragmentLieuObjet : Fragment(), OnMapReadyCallback {
             val hash = GeoFireUtils.getGeoHashForLocation(GeoLocation(lat, lng))
 
             val article = Article("$textModel", "$textMarque", textDate,
-                "$textDescription", "https://picsum.photos/600/300?random&$", "Nom",hash, lat, lng
+                "$textDescription", "https://picsum.photos/600/300?random&$", "Nom",hash, latObject, lonObject
             )
 
             db.collection("Articles")
@@ -124,44 +134,122 @@ class PostFragmentLieuObjet : Fragment(), OnMapReadyCallback {
              */
         }
 
+        drawCircle(view)
 
         return view
     }
 
+    private fun drawCircle(view: View) {
+        // get device dimensions
+        val displayMetrics = DisplayMetrics()
+        activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
+        val bitmap = Bitmap.createBitmap(700, 1000, Bitmap.Config.ARGB_4444)
+        val canvas = Canvas(bitmap)
 
-    fun getPositionBackground(
-        position: LocationGPS,
-        postFragment: PostFragmentLieuObjet
-    ) {
-        executorService.execute {
-            try {
+        // canvas background color
+        //canvas.drawARGB(255, 78, 168, 186);
 
-                mainThreadHandler.post {  position.getLocationPostObjet(postFragment) }
-            } catch (e: Exception) {
+        var paint = Paint()
+        paint.color = Color.parseColor("#6C00F8")
+        paint.strokeWidth = 6F
+        paint.style = Paint.Style.STROKE
+        paint.isAntiAlias = true
+        paint.isDither = true
 
+
+        // circle center
+        var centerx = (displayMetrics.widthPixels/3.1).toFloat()
+        var centery = (displayMetrics.heightPixels/4.585555).toFloat()
+        var radius = 70F
+
+        // draw circle
+        canvas.drawCircle(centerx, centery, radius, paint)
+
+        // set bitmap as background to ImageView
+        var circle : ImageView = view.findViewById(R.id.imageV)
+
+        circle.background = BitmapDrawable(resources, bitmap)
+    }
+
+
+    private fun readCoordinate() {
+
+        this.lat = lat
+        this.lon = lon
+        val filename = "Coordinates"
+        if(filename!=null && filename.trim()!=""){
+            var fileInputStream: FileInputStream? = (activity as MainActivity).openFileInput(filename)
+            var inputStreamReader: InputStreamReader = InputStreamReader(fileInputStream)
+            val bufferedReader: BufferedReader = BufferedReader(inputStreamReader)
+            val stringBuilder: StringBuilder = StringBuilder()
+            var text: String? = null
+            while (run {
+                    text = bufferedReader.readLine()
+                    text
+                } != null) {
+                stringBuilder.append(text)
             }
+            //Displaying data on EditText
+            val coordinates = stringBuilder.split("=")
+            lat = coordinates[0].toDouble()
+            lon = coordinates[1].toDouble()
+            //Toast.makeText(activity,"STRING"+stringBuilder,Toast.LENGTH_LONG).show()
+            //Toast.makeText(activity,"LAAAAAAAA"+ coordinates[0] + " / " + coordinates[1] + "FINI",Toast.LENGTH_LONG).show()
+            //fileData.setText(stringBuilder.toString()).toString()
+        }else{
+            Toast.makeText(activity,"file name cannot be blank",Toast.LENGTH_LONG).show()
         }
     }
 
-    fun getCoordinate(lat : Double,lon : Double) {
-        this.lat = lat
-        this.lon = lon
-        mapFragment.getMapAsync(this)
-    }
 
-
-
+    @SuppressLint("ClickableViewAccessibility")
     override fun onMapReady(googleMap: GoogleMap) {
         val lat = this.lat
         val lng = this.lon
-        val positions = LatLng(lat, lng)
-
-        googleMap.addMarker(
+        var positions = LatLng(lat, lng)
+        val radius  = 15.0
+        val zoomLevel = radius.toFloat()
+        map = googleMap
+        map.setOnCameraMoveStartedListener(this);
+        map.setOnCameraIdleListener(this);
+        map.addMarker(
             MarkerOptions()
                 .position(positions)
                 .title("Marker")
         )
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(positions))
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(positions, zoomLevel))
+    }
+
+    override fun onCameraMoveStarted(reason: Int) {
+
+        var reasonText = "UNKNOWN_REASON"
+        when (reason) {
+            GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE -> {
+                reasonText = "GESTURE"
+
+            }
+            GoogleMap.OnCameraMoveStartedListener.REASON_API_ANIMATION -> {
+                reasonText = "API_ANIMATION"
+
+            }
+            GoogleMap.OnCameraMoveStartedListener.REASON_DEVELOPER_ANIMATION -> {
+                reasonText = "DEVELOPER_ANIMATION"
+            }
+        }
+        Log.d(ContentValues.TAG, "onCameraMoveStarted($reasonText)")
+        //uptdateCoordinates()
+    }
+
+
+    fun uptdateCoordinates() {
+        latObject = map.cameraPosition.target.latitude
+        lonObject = map.cameraPosition.target.longitude
+        Log.v(map.cameraPosition.target.toString(), "CAMERAAAAAAAA")
+
+    }
+
+    override fun onCameraIdle() {
+        uptdateCoordinates()
     }
 
 }

@@ -98,7 +98,7 @@ class SearchFragment  : Fragment()  {
         executorService.execute {
             try {
 
-                mainThreadHandler.post {  position.getLocationSearch(searchFragment) }
+                mainThreadHandler.post {  position.getLocation()}
             } catch (e: Exception) {
 
             }
@@ -108,11 +108,7 @@ class SearchFragment  : Fragment()  {
     fun getCoordinate(lat : Double,lon : Double) {
         this.lat = lat
         this.lon = lon
-        Toast.makeText(
-            activity,
-            "SEARCH Latitude: $lat , Longitude: $lon",
-            Toast.LENGTH_SHORT
-        ).show()
+
 
     }
 

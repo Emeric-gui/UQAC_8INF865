@@ -99,5 +99,5 @@ class MyAccountRegister : Fragment() {
         }
     }
 
-
+ // Test depuis VSCode
 }
