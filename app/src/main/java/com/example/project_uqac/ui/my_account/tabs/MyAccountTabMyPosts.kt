@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -13,6 +14,9 @@ import com.example.project_uqac.R
 import com.example.project_uqac.ui.my_account.myPosts.Post
 import com.example.project_uqac.ui.my_account.myPosts.PostsAdapter
 import com.example.project_uqac.ui.home.popupDiscussion.DialogFragmentDiscussion
+import com.example.project_uqac.ui.my_account.MyAccountLogged
+import com.example.project_uqac.ui.my_account.dialogue.DialogueDeleteAccount
+import com.example.project_uqac.ui.my_account.dialogue.DialogueDeletePost
 import com.example.project_uqac.ui.my_account.popupDelete.DialogFragmentDelete
 
 
@@ -35,14 +39,18 @@ class MyAccountTabMyPosts : Fragment() {
         val adapter = PostsAdapter(articles)
         // Attach the adapter to the recyclerview to populate items
         rvArticles.adapter = adapter
-
         //addOnClick
         adapter.setOnItemClickListener(object :PostsAdapter.onItemClickListener{
             override fun onItemClick(position: Int) {
                 Toast.makeText(activity, "You click on item no. $position", Toast.LENGTH_SHORT).show()
 
                 //recuperer items
-                var dialogPage = DialogFragmentDelete()
+//                var dialogPage = DialogFragmentDelete()
+//                dialogPage.show(childFragmentManager, "Custom Dialog")
+
+                //creation du fragment de dialogue
+                val dialogPage = DialogueDeletePost()
+
                 dialogPage.show(childFragmentManager, "Custom Dialog")
             }
         })

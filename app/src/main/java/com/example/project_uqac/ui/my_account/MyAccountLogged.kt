@@ -1,8 +1,14 @@
 package com.example.project_uqac.ui.my_account
 
+import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.ContentValues.TAG
 import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +18,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
+import androidx.cardview.widget.CardView
+import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.project_uqac.R
@@ -22,14 +30,18 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_my_account_sign_up.*
+import java.io.ByteArrayOutputStream
 
 
 class MyAccountLogged : Fragment() {
 
     private lateinit var viewPager2 : ViewPager2
     private lateinit var viewee : View
+    private lateinit var imageView: ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,9 +49,9 @@ class MyAccountLogged : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_my_account_logged, container, false)
-        val img : ImageView = view.findViewById(R.id.imageViewMyAccountLogged)
-        img.setImageResource(R.drawable.ic_action_arrows_left)
-        Picasso.get().load("https://picsum.photos/300/300?random").into(img)
+        imageView = view.findViewById(R.id.imageViewMyAccountLogged)
+//        img.setImageResource(R.drawable.ic_action_arrows_left)
+//        Picasso.get().load("https://picsum.photos/300/300?random").into(img)
         viewee = view
 //        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
 //            // Handle the back button event
@@ -49,9 +61,13 @@ class MyAccountLogged : Fragment() {
         val user = Firebase.auth.currentUser
         val username : TextView = view.findViewById(R.id.username)
         if (user != null) {
-            username.setText(user.displayName.toString())
+            username.text = user.displayName.toString()
         } else {
-            username.setText("Error")
+            username.text = "Error"
+        }
+
+        if (user != null) {
+            imageView.setImageURI(user.photoUrl)
         }
 
         // Instantiate a ViewPager2 and a PagerAdapter.
@@ -67,6 +83,118 @@ class MyAccountLogged : Fragment() {
         TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
             tab.text = TAB_TITLES[position]
         }.attach()
+
+        val cardViewImageView : CardView = view.findViewById(R.id.cardViewImageViewMyAccountLogged);
+//        val buttonTakePicture : Button = view.findViewById(R.id.my_account_take_pic)
+        cardViewImageView.setOnClickListener {
+            dispatchTakePictureIntent()
+        }
+
+        return view
+    }
+    private val REQUEST_IMAGE_CAPTURE = 1
+
+    private fun dispatchTakePictureIntent() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        try {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+        } catch (e: ActivityNotFoundException) {
+            // display error state to the user
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        Log.d("TAG", "azseghjk")
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            Log.d("TAG", "I was here")
+            val imageBitmap = data?.extras?.get("data") as Bitmap
+
+            // Crop the image to have a square
+            val width: Int = imageBitmap.width
+            val height: Int = imageBitmap.height
+            val newWidth = if (height > width) width else height
+            val newHeight = if (height > width) height - (height - width) else height
+            var cropW = (width - height) / 2
+            cropW = if (cropW < 0) 0 else cropW
+            var cropH = (height - width) / 2
+            cropH = if (cropH < 0) 0 else cropH
+            val cropImg: Bitmap = Bitmap.createBitmap(imageBitmap, cropW, cropH, newWidth, newHeight)
+
+            imageView.setImageBitmap(cropImg)
+
+            // Update profil pic in db
+            val profileUpdates = userProfileChangeRequest {
+                photoUri = context?.let { getImageUri(it, imageView.drawable.toBitmap()) }
+            }
+            val user = Firebase.auth.currentUser
+            user!!.updateProfile(profileUpdates)
+                .addOnCompleteListener { innerTask ->
+                    if (innerTask.isSuccessful) {
+                        val fragment = MyAccountLogged()
+                        val transaction = fragmentManager?.beginTransaction()
+                        transaction?.replace(R.id.my_account_fragment_navigation, fragment)?.commit()
+                    } else {
+                        Log.d(TAG, "Error with username.")
+                    }
+                }
+        }
+    }
+
+    fun getImageUri(inContext: Context, inImage: Bitmap): Uri? {
+        val bytes = ByteArrayOutputStream()
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path = MediaStore.Images.Media.insertImage(
+            inContext.contentResolver,
+            inImage,
+            "Title",
+            null
+        )
+        return Uri.parse(path)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        val callback: OnBackPressedCallback = object : OnBackPressedCallback(
+            true // default to enabled
+        ) {
+            override fun handleOnBackPressed() {
+
+                if(viewPager2.currentItem > 0)
+                    viewPager2.currentItem = viewPager2.currentItem - 1
+                else{
+//                    requireActivity().onBackPressed()
+                    Log.d("TAG", "message")
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(
+            this,  // LifecycleOwner
+            callback
+        )
+    }
+
+    fun goBackLogin(){
+//        Log.d(TAG, "zsdefgh.")
+//        if(Firebase.auth.currentUser != null ){
+//            FirebaseAuth.getInstance().signOut()
+//        }
+
+        val fragment = MyAccountLogin()
+        val transaction = fragmentManager?.beginTransaction()
+        transaction?.replace(R.id.my_account_fragment_navigation, fragment)?.commit()
+//        Log.d("TAG", "J'y suis arrive !")
+    }
+
+    fun updateUsername(username : String){
+        val usernamePlace : TextView = viewee.findViewById(R.id.username)
+        usernamePlace.setText(username)
+    }
+
+}
 
 
 //        requireActivity()
@@ -117,50 +245,3 @@ class MyAccountLogged : Fragment() {
 //        val fragment = MyAccountLogin()
 //        val transaction = fragmentManager?.beginTransaction()
 //        transaction?.replace(R.id.my_account_fragment_navigation, fragment)?.commit()
-
-        return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        val callback: OnBackPressedCallback = object : OnBackPressedCallback(
-            true // default to enabled
-        ) {
-            override fun handleOnBackPressed() {
-
-                if(viewPager2.currentItem > 0)
-                    viewPager2.currentItem = viewPager2.currentItem - 1
-                else{
-//                    requireActivity().onBackPressed()
-                    Log.d("TAG", "message")
-                }
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(
-            this,  // LifecycleOwner
-            callback
-        )
-    }
-
-    fun goBackLogin(){
-//        Log.d(TAG, "zsdefgh.")
-//        if(Firebase.auth.currentUser != null ){
-//            FirebaseAuth.getInstance().signOut()
-//        }
-
-        val fragment = MyAccountLogin()
-        val transaction = fragmentManager?.beginTransaction()
-        transaction?.replace(R.id.my_account_fragment_navigation, fragment)?.commit()
-//        Log.d("TAG", "J'y suis arrive !")
-    }
-
-    fun updateUsername(username : String){
-        val usernamePlace : TextView = viewee.findViewById(R.id.username)
-        usernamePlace.setText(username)
-    }
-
-}
