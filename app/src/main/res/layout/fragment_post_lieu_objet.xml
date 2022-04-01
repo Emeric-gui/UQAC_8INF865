@@ -67,10 +67,32 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <com.google.android.gms.maps.MapView
-                        android:id="@+id/mapView"
-                        android:layout_width="300dp"
-                        android:layout_height="400dp" />
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center">
+
+                        <com.google.android.gms.maps.MapView
+                            android:id="@+id/mapView"
+                            android:layout_width="300dp"
+                            android:layout_height="400dp" />
+
+                        <ImageView
+                            android:id="@+id/imageV"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center" />
+
+                        <ImageView
+                            android:id="@+id/imageView3"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_action_target"
+                            android:tint="#6C00F8" />
+
+                    </androidx.cardview.widget.CardView>
+
                 </LinearLayout>
 
                 <LinearLayout

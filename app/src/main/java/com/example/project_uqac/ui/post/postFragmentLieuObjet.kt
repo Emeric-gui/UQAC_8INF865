@@ -1,19 +1,24 @@
 package com.example.project_uqac.ui.post
 
 import android.Manifest
+import android.annotation.SuppressLint
+import android.content.ContentValues
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.drawable.BitmapDrawable
 import android.location.Location
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ProgressBar
-import android.widget.Toast
+import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.os.HandlerCompat
@@ -41,14 +46,17 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 
-class PostFragmentLieuObjet : Fragment(), OnMapReadyCallback {
+class PostFragmentLieuObjet : Fragment(), OnMapReadyCallback,
+    GoogleMap.OnCameraMoveStartedListener,
+    GoogleMap.OnCameraIdleListener {
 
 
     private lateinit var mapFragment: SupportMapFragment
     private var lat : Double = 0.0
     private var lon : Double = 0.0
-    private val executorService: ExecutorService = Executors.newFixedThreadPool(4)
-    private val mainThreadHandler: Handler = HandlerCompat.createAsync(Looper.getMainLooper())
+    private var latObject : Double = 0.0
+    private var lonObject : Double = 0.0
+    private lateinit var map: GoogleMap
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -100,7 +108,7 @@ class PostFragmentLieuObjet : Fragment(), OnMapReadyCallback {
             val hash = GeoFireUtils.getGeoHashForLocation(GeoLocation(lat, lng))
 
             val article = Article("$textModel", "$textMarque", textDate,
-                "$textDescription", "https://picsum.photos/600/300?random&$", "Nom",hash, lat, lng
+                "$textDescription", "https://picsum.photos/600/300?random&$", "Nom",hash, latObject, lonObject
             )
 
             db.collection("Articles")
@@ -126,8 +134,41 @@ class PostFragmentLieuObjet : Fragment(), OnMapReadyCallback {
              */
         }
 
+        drawCircle(view)
 
         return view
+    }
+
+    private fun drawCircle(view: View) {
+        // get device dimensions
+        val displayMetrics = DisplayMetrics()
+        activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
+        val bitmap = Bitmap.createBitmap(700, 1000, Bitmap.Config.ARGB_4444)
+        val canvas = Canvas(bitmap)
+
+        // canvas background color
+        //canvas.drawARGB(255, 78, 168, 186);
+
+        var paint = Paint()
+        paint.color = Color.parseColor("#6C00F8")
+        paint.strokeWidth = 6F
+        paint.style = Paint.Style.STROKE
+        paint.isAntiAlias = true
+        paint.isDither = true
+
+
+        // circle center
+        var centerx = (displayMetrics.widthPixels/3.1).toFloat()
+        var centery = (displayMetrics.heightPixels/4.585555).toFloat()
+        var radius = 70F
+
+        // draw circle
+        canvas.drawCircle(centerx, centery, radius, paint)
+
+        // set bitmap as background to ImageView
+        var circle : ImageView = view.findViewById(R.id.imageV)
+
+        circle.background = BitmapDrawable(resources, bitmap)
     }
 
 
@@ -161,17 +202,54 @@ class PostFragmentLieuObjet : Fragment(), OnMapReadyCallback {
     }
 
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onMapReady(googleMap: GoogleMap) {
         val lat = this.lat
         val lng = this.lon
-        val positions = LatLng(lat, lng)
-
-        googleMap.addMarker(
+        var positions = LatLng(lat, lng)
+        val radius  = 15.0
+        val zoomLevel = radius.toFloat()
+        map = googleMap
+        map.setOnCameraMoveStartedListener(this);
+        map.setOnCameraIdleListener(this);
+        map.addMarker(
             MarkerOptions()
                 .position(positions)
                 .title("Marker")
         )
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(positions))
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(positions, zoomLevel))
+    }
+
+    override fun onCameraMoveStarted(reason: Int) {
+
+        var reasonText = "UNKNOWN_REASON"
+        when (reason) {
+            GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE -> {
+                reasonText = "GESTURE"
+
+            }
+            GoogleMap.OnCameraMoveStartedListener.REASON_API_ANIMATION -> {
+                reasonText = "API_ANIMATION"
+
+            }
+            GoogleMap.OnCameraMoveStartedListener.REASON_DEVELOPER_ANIMATION -> {
+                reasonText = "DEVELOPER_ANIMATION"
+            }
+        }
+        Log.d(ContentValues.TAG, "onCameraMoveStarted($reasonText)")
+        //uptdateCoordinates()
+    }
+
+
+    fun uptdateCoordinates() {
+        latObject = map.cameraPosition.target.latitude
+        lonObject = map.cameraPosition.target.longitude
+        Log.v(map.cameraPosition.target.toString(), "CAMERAAAAAAAA")
+
+    }
+
+    override fun onCameraIdle() {
+        uptdateCoordinates()
     }
 
 }
