@@ -53,7 +53,6 @@ class DiscussionsFragment : Fragment() {
             val fr = parentFragmentManager.beginTransaction()
             fr.replace(R.id.nav_host_fragment_activity_main, ChatFragment())
             fr.commit()
-            Log.d("debug", "test 3")
         }
         //val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1,listOf("car", "plane"))
         //list.setOnClickListener(AdapterView.OnItemClickListener())

@@ -1,45 +1,59 @@
 package com.example.project_uqac.ui.chat
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ListView
+import android.text.format.DateFormat
+import android.util.Log
+import android.view.*
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.project_uqac.R
 import com.example.project_uqac.databinding.FragmentChatBinding
-import com.fasterxml.jackson.core.JsonProcessingException
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.scaledrone.lib.*
-import kotlin.math.floor
-import kotlin.random.Random
+import com.example.project_uqac.ui.conversation.Conversation
+import com.example.project_uqac.ui.conversation.ConversationsAdapter
+import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.database.FirebaseListAdapter
+import com.firebase.ui.database.FirebaseListOptions
+import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
+import java.time.format.DateTimeFormatter
+
+import com.example.project_uqac.ui.chat.MyButtonObserver
+import com.example.project_uqac.ui.my_account.MyAccountLogin
 
 
-class ChatFragment : Fragment(), RoomListener{
-    private val channelID = "1VL6drCySuNRSOYl"
-    private val roomName = "observable-room"
-    private var data = MemberData(getRandomName(), getRandomColor())
-    private val scaledrone: Scaledrone = Scaledrone(channelID, data)
-    private var messageAdapter: MessageAdapter? = null
-    private val mHandler: Handler = Handler(Looper.getMainLooper())
-    private lateinit var messagesView: ListView
-    private var imageButton: ImageButton? = null
-    private var message: EditText? = null
+
+class ChatFragment : Fragment(){
+
     private lateinit var _context: Context
-
-
     private lateinit var dashboardViewModel: ChatViewModel
     private var _binding: FragmentChatBinding? = null
+    private lateinit var manager: LinearLayoutManager
+
+    // Firebase instance variables
+    private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseDatabase
+    private lateinit var adapter: MessageAdapter
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    private val openDocument = registerForActivityResult(MyOpenDocumentContract()) { uri ->
+        onImageSelected(uri)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,222 +66,69 @@ class ChatFragment : Fragment(), RoomListener{
         _binding = FragmentChatBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        messageAdapter = MessageAdapter(_context)
-        messagesView = root.findViewById(R.id.messages_view)
-        messagesView.adapter = messageAdapter
+         auth = Firebase.auth
 
-        val obj = object : Listener {
-            override fun onOpen() {
-                println("Scaledrone connection open")
-                // Since the MainActivity itself already implement RoomListener we can pass it as a target
-                scaledrone.subscribe(roomName, ChatFragment())
-            }
+         if (Firebase.auth.currentUser == null) {
+             Toast.makeText(
+                 _context,
+                 "Latitude:",
+                 Toast.LENGTH_SHORT
+             ).show()
+             val fr = parentFragmentManager.beginTransaction()
+             fr.replace(R.id.nav_host_fragment_activity_main, MyAccountLogin())
+             fr.commit()
+             // Not signed in, launch the Sign In activity
+             //startActivity(Intent(this, SignInActivity::class.java))
+             return root
+         }
 
-            override fun onOpenFailure(ex:Exception) {
-                System.err.println(ex)
-            }
+        // Initialize Realtime Database and FirebaseRecyclerAdapter
+        db = Firebase.database
+        val messagesRef = db.reference.child(MESSAGES_CHILD)
 
-            override fun onFailure(ex:Exception) {
-                System.err.println(ex)
-            }
+        // The FirebaseRecyclerAdapter class and options come from the FirebaseUI library
+        // See: https://github.com/firebase/FirebaseUI-Android
+        val options = FirebaseRecyclerOptions.Builder<Message>()
+            .setQuery(messagesRef, Message::class.java)
+            .build()
 
-            override fun onClosed(reason:String) {
-                System.err.println(reason)
+        adapter = MessageAdapter(options, getUserName())
+        binding.progressBar.visibility = ProgressBar.INVISIBLE
+        manager = LinearLayoutManager(_context)
+        manager.stackFromEnd = true
+        binding.messageRecyclerView.layoutManager = manager
+        binding.messageRecyclerView.adapter = adapter
+
+        // Scroll down when a new message arrives
+        // See MyScrollToBottomObserver for details
+        adapter.registerAdapterDataObserver(
+            MyScrollToBottomObserver(binding.messageRecyclerView, adapter, manager)
+        )
+        // Disable the send button when there's no text in the input field
+        // See MyButtonObserver for details
+        binding.messageEditText.addTextChangedListener(MyButtonObserver(binding.sendButton))
+
+        // When the send button is clicked, send a text message
+        binding.sendButton.setOnClickListener {
+            if(binding.messageEditText.text.toString()!="")
+            {
+                val friendlyMessage = Message(
+                    binding.messageEditText.text.toString(),
+                    getUserName(),
+                    getPhotoUrl(),
+                    null /* no image */
+                )
+                db.reference.child(MESSAGES_CHILD).push().setValue(friendlyMessage)
             }
+            binding.messageEditText.setText("")
         }
-        scaledrone.connect(obj)
 
-        imageButton = root.findViewById(R.id.sendMessage)
-        imageButton?.setOnClickListener {
-            println(messagesView)
-            message = root.findViewById(R.id.editText)
-            val messageString = message?.text.toString()
-            if (messageString.isNotEmpty()) {
-                scaledrone.publish("observable-room", messageString)
-                message?.text?.clear()
-            }
+        // When the image button is clicked, launch the image picker
+        binding.addMessageImageView.setOnClickListener {
+            openDocument.launch(arrayOf("image/*"))
         }
 
         return root
-    }
-
-    // Successfully connected to Scaledrone room
-    override fun onOpen(room: Room?) {
-        println("Connected to room")
-    }
-
-    // Connecting to Scaledrone room failed
-    override fun onOpenFailure(room: Room?, ex: java.lang.Exception?) {
-        System.err.println(ex)
-    }
-
-    override fun onMessage(room: Room?, receivedMessage: com.scaledrone.lib.Message) {
-        val mapper = ObjectMapper()
-
-        try {
-            val data = mapper.treeToValue(
-                receivedMessage.member.clientData,
-                MemberData::class.java
-            )
-            val belongsToCurrentUser = receivedMessage.clientID == scaledrone.clientID
-            val message = Message(receivedMessage.data.asText(), data, belongsToCurrentUser)
-            mHandler.post{
-                println(message.text)
-                messageAdapter?.add(message)
-                //messagesView.setSelection(messagesView.count - 1)
-            }
-        } catch (e: JsonProcessingException) {
-            e.printStackTrace()
-        }
-    }
-
-
-
-    private fun getRandomName(): String {
-        val adjs = arrayOf(
-            "autumn",
-            "hidden",
-            "bitter",
-            "misty",
-            "silent",
-            "empty",
-            "dry",
-            "dark",
-            "summer",
-            "icy",
-            "delicate",
-            "quiet",
-            "white",
-            "cool",
-            "spring",
-            "winter",
-            "patient",
-            "twilight",
-            "dawn",
-            "crimson",
-            "wispy",
-            "weathered",
-            "blue",
-            "billowing",
-            "broken",
-            "cold",
-            "damp",
-            "falling",
-            "frosty",
-            "green",
-            "long",
-            "late",
-            "lingering",
-            "bold",
-            "little",
-            "morning",
-            "muddy",
-            "old",
-            "red",
-            "rough",
-            "still",
-            "small",
-            "sparkling",
-            "throbbing",
-            "shy",
-            "wandering",
-            "withered",
-            "wild",
-            "black",
-            "young",
-            "holy",
-            "solitary",
-            "fragrant",
-            "aged",
-            "snowy",
-            "proud",
-            "floral",
-            "restless",
-            "divine",
-            "polished",
-            "ancient",
-            "purple",
-            "lively",
-            "nameless"
-        )
-        val nouns = arrayOf(
-            "waterfall",
-            "river",
-            "breeze",
-            "moon",
-            "rain",
-            "wind",
-            "sea",
-            "morning",
-            "snow",
-            "lake",
-            "sunset",
-            "pine",
-            "shadow",
-            "leaf",
-            "dawn",
-            "glitter",
-            "forest",
-            "hill",
-            "cloud",
-            "meadow",
-            "sun",
-            "glade",
-            "bird",
-            "brook",
-            "butterfly",
-            "bush",
-            "dew",
-            "dust",
-            "field",
-            "fire",
-            "flower",
-            "firefly",
-            "feather",
-            "grass",
-            "haze",
-            "mountain",
-            "night",
-            "pond",
-            "darkness",
-            "snowflake",
-            "silence",
-            "sound",
-            "sky",
-            "shape",
-            "surf",
-            "thunder",
-            "violet",
-            "water",
-            "wildflower",
-            "wave",
-            "water",
-            "resonance",
-            "sun",
-            "wood",
-            "dream",
-            "cherry",
-            "tree",
-            "fog",
-            "frost",
-            "voice",
-            "paper",
-            "frog",
-            "smoke",
-            "star"
-        )
-        return adjs[floor(Math.random() * adjs.size).toInt()] +
-                "_" +
-                nouns[floor(Math.random() * nouns.size).toInt()]
-    }
-
-    private fun getRandomColor(): String {
-        val r = Random(7)
-        val sb = StringBuffer("#")
-        while (sb.length < 7) {
-            sb.append(Integer.toHexString(r.nextInt()))
-        }
-        return sb.toString().substring(0, 7)
     }
 
     override fun onAttach(context: Context) {
@@ -278,23 +139,165 @@ class ChatFragment : Fragment(), RoomListener{
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val root: View = binding.root
+        /*val root: View = binding.root
 
         messageAdapter = MessageAdapter(_context)
         messagesView = root.findViewById(R.id.messages_view)
-        messagesView.adapter = messageAdapter
+        messagesView.adapter = messageAdapter*/
     }
 
-    override fun onDestroyView() {
+    override fun onDestroyView()
+    {
         super.onDestroyView()
         _binding = null
     }
+
+    public override fun onPause() {
+        super.onPause()
+        adapter.stopListening()
+    }
+
+    public override fun onResume() {
+        super.onResume()
+        adapter.startListening()
+    }
+
+
+
+    private fun onImageSelected(uri: Uri) {
+        Log.d(TAG, "Uri: $uri")
+        val user = auth.currentUser
+        val tempMessage = Message(null, getUserName(), getPhotoUrl(), LOADING_IMAGE_URL)
+        db.reference
+            .child(MESSAGES_CHILD)
+            .push()
+            .setValue(
+                tempMessage,
+                DatabaseReference.CompletionListener { databaseError, databaseReference ->
+                    if (databaseError != null) {
+                        Log.w(
+                            TAG, "Unable to write message to database.",
+                            databaseError.toException()
+                        )
+                        return@CompletionListener
+                    }
+
+                    // Build a StorageReference and then upload the file
+                    val key = databaseReference.key
+                    val storageReference = Firebase.storage
+                        .getReference(user!!.uid)
+                        .child(key!!)
+                        .child(uri.lastPathSegment!!)
+                    putImageInStorage(storageReference, uri, key)
+                })
+    }
+
+    private fun putImageInStorage(storageReference: StorageReference, uri: Uri, key: String?) {
+        // First upload the image to Cloud Storage
+        storageReference.putFile(uri)
+            .addOnSuccessListener(
+                _context
+            ) { taskSnapshot -> // After the image loads, get a public downloadUrl for the image
+                // and add it to the message.
+                taskSnapshot.metadata!!.reference!!.downloadUrl
+                    .addOnSuccessListener { uri ->
+                        val friendlyMessage =
+                            Message(null, getUserName(), getPhotoUrl(), uri.toString())
+                        db.reference
+                            .child(MESSAGES_CHILD)
+                            .child(key!!)
+                            .setValue(friendlyMessage)
+                    }
+            }
+            .addOnFailureListener(this) { e ->
+                Log.w(
+                    TAG,
+                    "Image upload task was unsuccessful.",
+                    e
+                )
+            }
+    }
+
+    private fun getPhotoUrl(): String? {
+        val user = auth.currentUser
+        return user?.photoUrl?.toString()
+    }
+
+    private fun getUserName(): String? {
+        val user = auth.currentUser
+        return if (user != null) {
+            user.displayName
+        } else ANONYMOUS
+    }
+
+
+    /*private fun displayChatMessages(root :  View)
+    {
+        /*Toast.makeText(context, "Root : $root",
+            Toast.LENGTH_SHORT).show()*/
+        val listOfMessages = root.findViewById(R.id.list_of_messages) as ListView
+
+        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
+        db = FirebaseDatabase.getInstance();
+        databaseReference = db!!.getReference();
+       // databaseReference!!.keepSynced(true);
+
+        //firebaseDatabase = Firebase.database
+        val messagesRef = db!!.reference.child(MESSAGES_CHILD)
+
+        /*Toast.makeText(context, "databaseReference : $databaseReference ,databaseReference : $messagesRef ",
+            Toast.LENGTH_SHORT).show()*/
+
+        val options: FirebaseListOptions<Message> = FirebaseListOptions.Builder<Message>()
+            .setQuery(messagesRef, Message::class.java)
+            .setLayout(R.layout.message)
+            .build()
+
+        Toast.makeText(context, "options = $options",
+            Toast.LENGTH_SHORT).show()
+
+        adapter = object : FirebaseListAdapter<Message>(options) {
+            override fun populateView(v: View, model: Message, position: Int) {
+                // Get references to the views of message.xml
+                val messageText = v.findViewById<View>(R.id.message_text) as TextView
+                val messageUser = v.findViewById<View>(R.id.message_user) as TextView
+                val messageTime = v.findViewById<View>(R.id.message_time) as TextView
+
+                // Set their text
+                var a =model.messageText
+                var b = model.messageUser
+                Toast.makeText(context,
+                    "text : $a , user : $b",
+                    Toast.LENGTH_SHORT).show()
+                messageText.setText(model.messageText)
+                messageUser.setText(model.messageUser)
+
+                // Format the date before showing it
+                var formatter = DateTimeFormatter.ofPattern("dd-MMMM-yyyy")
+                messageTime.setText(
+                    DateFormat.format(
+                        "dd-MM-yyyy (HH:mm:ss)",
+                        model.messageTime)
+                )
+            }
+        }
+
+        listOfMessages.adapter = adapter
+    }*/
 
     fun arguments(args: Bundle) {
         val objet = args.getString("objet")
         val lieu = args.getString("lieu")
         val date = args.getString("date")
         val nom = args.getString("nom")
+    }
+
+    companion object {
+        private const val TAG = "MainActivity"
+        const val MESSAGES_CHILD = "messages"
+        const val ANONYMOUS = "anonymous"
+        private const val LOADING_IMAGE_URL = "https://www.google.com/images/spin-32.gif"
     }
 
 }

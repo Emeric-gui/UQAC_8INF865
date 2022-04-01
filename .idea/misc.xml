@@ -35,6 +35,21 @@
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/menu/bottom_nav_menu.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.24739583333333334" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.24739583333333334" />
+        <entry key="..\:/Users/thoma/UQAC/UQAC_8INF865/app/src/main/res/drawable/button_selector.xml" value="0.1" />
+        <entry key="..\:/Users/thoma/UQAC/UQAC_8INF865/app/src/main/res/drawable/edit_text_shadow.xml" value="0.1" />
+        <entry key="..\:/Users/thoma/UQAC/UQAC_8INF865/app/src/main/res/drawable/my_message.xml" value="0.1" />
+        <entry key="..\:/Users/thoma/UQAC/UQAC_8INF865/app/src/main/res/drawable/outline_add_photo_alternate_24.xml" value="0.1" />
+        <entry key="..\:/Users/thoma/UQAC/UQAC_8INF865/app/src/main/res/drawable/outline_send_24.xml" value="0.1" />
+        <entry key="..\:/Users/thoma/UQAC/UQAC_8INF865/app/src/main/res/drawable/post_border_custom.xml" value="0.1" />
+        <entry key="..\:/Users/thoma/UQAC/UQAC_8INF865/app/src/main/res/drawable/post_gradient_background.xml" value="0.1" />
+        <entry key="..\:/Users/thoma/UQAC/UQAC_8INF865/app/src/main/res/drawable/rounded_message_blue.xml" value="0.1" />
+        <entry key="..\:/Users/thoma/UQAC/UQAC_8INF865/app/src/main/res/drawable/rounded_message_gray.xml" value="0.1" />
+        <entry key="..\:/Users/thoma/UQAC/UQAC_8INF865/app/src/main/res/layout/activity_main.xml" value="0.190625" />
+        <entry key="..\:/Users/thoma/UQAC/UQAC_8INF865/app/src/main/res/layout/fragment_chat.xml" value="0.1" />
+        <entry key="..\:/Users/thoma/UQAC/UQAC_8INF865/app/src/main/res/layout/image_message.xml" value="0.176" />
+        <entry key="..\:/Users/thoma/UQAC/UQAC_8INF865/app/src/main/res/layout/message.xml" value="0.152" />
+        <entry key="..\:/Users/thoma/UQAC/UQAC_8INF865/app/src/main/res/layout/my_message.xml" value="0.1" />
+        <entry key="..\:/Users/thoma/UQAC/UQAC_8INF865/app/src/main/res/layout/their_message.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/customborder.xml" value="0.201" />
         <entry key="app/src/main/res/drawable/ic_information.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/post_border_custom.xml" value="0.1" />
