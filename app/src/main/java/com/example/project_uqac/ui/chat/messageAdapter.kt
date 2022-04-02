@@ -26,7 +26,7 @@ import com.example.project_uqac.databinding.MessageBinding
 import com.google.firebase.storage.ktx.storage
 
 
-//import com.google.firebase.storage.ktx.storage
+import com.google.firebase.storage.ktx.storage
 
 
 class MessageAdapter(
@@ -42,7 +42,7 @@ class MessageAdapter(
             val binding = MessageBinding.bind(view)
             MessageViewHolder(binding)
         } else {
-            val view = inflater.inflate(R.layout.message, parent, false)
+            val view = inflater.inflate(R.layout.image_message, parent, false)
             val binding = ImageMessageBinding.bind(view)
             ImageMessageViewHolder(binding)
         }

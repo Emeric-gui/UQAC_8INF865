@@ -52,7 +52,7 @@ class ChatFragment : Fragment(){
     private val binding get() = _binding!!
 
     private val openDocument = registerForActivityResult(MyOpenDocumentContract()) { uri ->
-        //onImageSelected(uri)
+        onImageSelected(uri)
     }
 
     override fun onCreateView(
@@ -69,16 +69,9 @@ class ChatFragment : Fragment(){
          auth = Firebase.auth
 
          if (Firebase.auth.currentUser == null) {
-             Toast.makeText(
-                 _context,
-                 "Latitude:",
-                 Toast.LENGTH_SHORT
-             ).show()
              val fr = parentFragmentManager.beginTransaction()
              fr.replace(R.id.nav_host_fragment_activity_main, MyAccountLogin())
              fr.commit()
-             // Not signed in, launch the Sign In activity
-             //startActivity(Intent(this, SignInActivity::class.java))
              return root
          }
 
@@ -96,6 +89,7 @@ class ChatFragment : Fragment(){
         binding.progressBar.visibility = ProgressBar.INVISIBLE
         manager = LinearLayoutManager(_context)
         manager.stackFromEnd = true
+        binding.messageRecyclerView.itemAnimator=null;
         binding.messageRecyclerView.layoutManager = manager
         binding.messageRecyclerView.adapter = adapter
 
@@ -125,7 +119,7 @@ class ChatFragment : Fragment(){
 
         // When the image button is clicked, launch the image picker
         binding.addMessageImageView.setOnClickListener {
-            //openDocument.launch(arrayOf("image/*"))
+            openDocument.launch(arrayOf("image/*"))
         }
 
         return root
@@ -164,7 +158,7 @@ class ChatFragment : Fragment(){
 
 
 
-    /*private fun onImageSelected(uri: Uri) {
+    private fun onImageSelected(uri: Uri) {
         Log.d(TAG, "Uri: $uri")
         val user = auth.currentUser
         val tempMessage = Message(null, getUserName(), getPhotoUrl(), LOADING_IMAGE_URL)
@@ -190,33 +184,35 @@ class ChatFragment : Fragment(){
                         .child(uri.lastPathSegment!!)
                     putImageInStorage(storageReference, uri, key)
                 })
-    }*/
+    }
 
-    /*private fun putImageInStorage(storageReference: StorageReference, uri: Uri, key: String?) {
+    private fun putImageInStorage(storageReference: StorageReference, uri: Uri, key: String?) {
         // First upload the image to Cloud Storage
-        storageReference.putFile(uri)
-            .addOnSuccessListener(
-                _context
-            ) { taskSnapshot -> // After the image loads, get a public downloadUrl for the image
-                // and add it to the message.
-                taskSnapshot.metadata!!.reference!!.downloadUrl
-                    .addOnSuccessListener { uri ->
-                        val friendlyMessage =
-                            Message(null, getUserName(), getPhotoUrl(), uri.toString())
-                        db.reference
-                            .child(MESSAGES_CHILD)
-                            .child(key!!)
-                            .setValue(friendlyMessage)
-                    }
-            }
-            .addOnFailureListener(this) { e ->
-                Log.w(
-                    TAG,
-                    "Image upload task was unsuccessful.",
-                    e
-                )
-            }
-    }*/
+        activity?.let {
+            storageReference.putFile(uri)
+                .addOnSuccessListener(
+                    it
+                ) { taskSnapshot -> // After the image loads, get a public downloadUrl for the image
+                    // and add it to the message.
+                    taskSnapshot.metadata!!.reference!!.downloadUrl
+                        .addOnSuccessListener { uri ->
+                            val friendlyMessage =
+                                Message(null, getUserName(), getPhotoUrl(), uri.toString())
+                            db.reference
+                                .child(MESSAGES_CHILD)
+                                .child(key!!)
+                                .setValue(friendlyMessage)
+                        }
+                }
+                .addOnFailureListener(requireActivity()) { e ->
+                    Log.w(
+                        TAG,
+                        "Image upload task was unsuccessful.",
+                        e
+                    )
+                }
+        }
+    }
 
     private fun getPhotoUrl(): String? {
         val user = auth.currentUser
