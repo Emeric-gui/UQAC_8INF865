@@ -19,6 +19,7 @@ import com.firebase.geofire.GeoFireUtils
 import com.firebase.geofire.GeoLocation
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.io.BufferedReader
@@ -91,7 +92,7 @@ class PostFragmentLieuAnimal : Fragment(), OnMapReadyCallback,
 
 
             val article = Article("$textSpecie", "$textRace", textDate,
-                "$textDescription", "https://picsum.photos/600/300?random&$", "Nom",hash,latObject, lonObject
+                "$textDescription", "https://picsum.photos/600/300?random&$", "Nom",hash,latObject, lonObject, Firebase.auth.currentUser?.email!!
             )
 
             db.collection("Articles")

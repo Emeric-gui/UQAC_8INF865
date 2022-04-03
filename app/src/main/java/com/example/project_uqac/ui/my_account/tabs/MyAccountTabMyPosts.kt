@@ -37,6 +37,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.getField
 import com.google.firebase.firestore.model.DocumentKey
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.fragment_my_account_my_posts.*
 
 
 class MyAccountTabMyPosts : Fragment() {
@@ -44,9 +45,11 @@ class MyAccountTabMyPosts : Fragment() {
 //    private var _binding: FragmentMyAccountMyPostsBinding? = null
 //    private val binding get() = _binding!!
 //    private lateinit var rvArticles : RecyclerView
-    val articles = ArrayList<Article>()
-    val articlesSnapshots = ArrayList<String>()
+    var articles = ArrayList<Article>()
+    var articlesSnapshots = ArrayList<String>()
     lateinit var rvArticles: RecyclerView
+    private lateinit var my_account_no_article : TextView
+    private lateinit var my_account_no_article_descr : TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,6 +61,9 @@ class MyAccountTabMyPosts : Fragment() {
         rvArticles = inflated.findViewById<View>(R.id.myAccountRecycler) as RecyclerView
         // Initialize contacts
 
+
+        my_account_no_article = inflated.findViewById(R.id.my_account_no_article)
+        my_account_no_article_descr = inflated.findViewById(R.id.my_account_no_article_descr)
         // Create adapter passing in the sample user data
         loadData()
 
@@ -91,8 +97,11 @@ class MyAccountTabMyPosts : Fragment() {
     }
     //for loading all articles from server
     fun loadData() {
+        articlesSnapshots = ArrayList<String>()
         val db = Firebase.firestore
         articles.clear()
+        my_account_no_article.text = ""
+        my_account_no_article_descr.text = ""
         val adapter = ArticlesAdapter(articles)
         db.collection("Articles")
             .whereEqualTo("author", Firebase.auth.currentUser?.email)
@@ -108,7 +117,9 @@ class MyAccountTabMyPosts : Fragment() {
                     // Set layout manager to position the items
                     rvArticles.layoutManager = LinearLayoutManager(view?.context)
 
-                    Toast.makeText(context, "No article Found", Toast.LENGTH_SHORT).show()
+                    my_account_no_article.text = getString(R.string.my_account_no_post)
+                    my_account_no_article_descr.text = getString(R.string.my_account_no_post_descr)
+//                    Toast.makeText(context, "No article Found", Toast.LENGTH_SHORT).show()
                     return@addOnSuccessListener
                 }
 //                val emailCurrentAuthor : String? = Firebase.auth.currentUser?.email
@@ -144,6 +155,8 @@ class MyAccountTabMyPosts : Fragment() {
 
                 //ajout des infos dans le dialog
                 dialogPage.arguments(articlesSnapshots[position], thisClass)
+//                articles = articles.drop(position) as ArrayList<Article>
+//                articlesSnapshots = articlesSnapshots.drop(position) as ArrayList<String>
 
                 dialogPage.show(childFragmentManager, "Custom Dialog")
             }

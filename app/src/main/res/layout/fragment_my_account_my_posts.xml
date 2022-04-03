@@ -4,6 +4,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <RelativeLayout
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/my_account_no_article"
+            android:layout_marginTop="50dp"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:justificationMode="inter_word" />
+
+        <TextView
+            android:id="@+id/my_account_no_article_descr"
+            android:layout_marginTop="100dp"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:justificationMode="inter_word" />
+    </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/linearLayout_result_search"
         android:layout_width="match_parent"

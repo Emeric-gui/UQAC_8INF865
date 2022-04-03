@@ -17,6 +17,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.cardview.widget.CardView
@@ -107,7 +108,7 @@ class MyAccountLogged : Fragment() {
             tab.text = TAB_TITLES[position]
         }.attach()
 
-        val cardViewImageView : CardView = view.findViewById(R.id.cardViewImageViewMyAccountLogged);
+        val cardViewImageView : CardView = view.findViewById(R.id.cardViewImageViewMyAccountLogged)
 //        val buttonTakePicture : Button = view.findViewById(R.id.my_account_take_pic)
         cardViewImageView.setOnClickListener {
             dispatchTakePictureIntent()
@@ -223,11 +224,16 @@ class MyAccountLogged : Fragment() {
         )
     }
 
-    fun goBackLogin(){
+    fun goBackLogin(compteDeleted : Boolean){
 //        Log.d(TAG, "zsdefgh.")
 //        if(Firebase.auth.currentUser != null ){
 //            FirebaseAuth.getInstance().signOut()
 //        }
+        if (compteDeleted){
+            Toast.makeText(context, "Votre compte a bien été supprimé !", Toast.LENGTH_SHORT).show()
+        }else{
+            Toast.makeText(context, "Votre avez bien été déconnecté !", Toast.LENGTH_SHORT).show()
+        }
 
         val fragment = MyAccountLogin()
         val transaction = fragmentManager?.beginTransaction()
@@ -237,7 +243,7 @@ class MyAccountLogged : Fragment() {
 
     fun updateUsername(username : String){
         val usernamePlace : TextView = viewee.findViewById(R.id.username)
-        usernamePlace.setText(username)
+        usernamePlace.text = username
     }
 
 }
