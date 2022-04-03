@@ -11,6 +11,7 @@ import com.example.project_uqac.R
 import com.example.project_uqac.ui.my_account.MyAccountLogged
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 
 class DialogueDeleteAccount:DialogFragment() {
 
@@ -30,6 +31,9 @@ class DialogueDeleteAccount:DialogFragment() {
 
             // TODO Delete Account here
             val user = Firebase.auth.currentUser!!
+            // Delete profil pic in our storage
+            Firebase.storage.reference.child("profil_pics/" + user.email).delete()
+            // Delete user account
             user.delete()
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
