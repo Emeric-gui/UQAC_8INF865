@@ -120,7 +120,6 @@ class PostFragmentLieuAnimal : Fragment(), OnMapReadyCallback,
     }
 
 
-
     private fun readCoordinate() {
 
         val filename = "Coordinates"
