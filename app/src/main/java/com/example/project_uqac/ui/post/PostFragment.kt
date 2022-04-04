@@ -82,6 +82,11 @@ class PostFragment : Fragment() {
 
         val position =  LocationGPS(context as MainActivity)
         getPositionBackground(position, this)
+        Toast.makeText(
+            context,
+            "PostFragment Ecriture data",
+            Toast.LENGTH_SHORT
+        ).show()
 
         return root
     }
