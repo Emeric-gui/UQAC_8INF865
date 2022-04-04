@@ -96,6 +96,7 @@ class PostFragmentLieuAnimal : Fragment(), OnMapReadyCallback,
                 )
             }
 
+
             if (article != null) {
                 db.collection("Articles")
                     .add(article)
@@ -112,7 +113,7 @@ class PostFragmentLieuAnimal : Fragment(), OnMapReadyCallback,
                     }
             }
 
-             }
+        }
 
 
         return view

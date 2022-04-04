@@ -21,10 +21,17 @@ import androidx.cardview.widget.CardView
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import com.example.project_uqac.R
+import com.example.project_uqac.ui.chat.ChatFragment
+import com.example.project_uqac.ui.chat.Message
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
 import kotlinx.android.synthetic.main.fragment_my_account_sign_up.*
 import kotlinx.android.synthetic.main.fragment_post_lieu_animal.*
 import java.io.ByteArrayOutputStream
@@ -100,26 +107,53 @@ class MyAccountRegister : Fragment() {
                     Toast.LENGTH_SHORT).show()
                 Log.d(TAG, auth.currentUser.toString())
 
-                // Set username and profil pic
-                var myUri : Uri = Uri.parse("android.resource://com.example.project_uqac/drawable/ic_action_my_account")
+                // Set img uri
+//                var myUri : Uri = Uri.parse("android.resource://com.example.project_uqac/drawable/ic_action_my_account")
+//                var myUri : Uri = Uri.parse("android.resource://com.example.project_uqac/drawable/ic_action_my_account")
                 if(imageSet){
-                    myUri = context?.let { getImageUri(it, imageView.drawable.toBitmap()) }!!
-                }
-                val profileUpdates = userProfileChangeRequest {
-                    displayName = sign_up_username.text.toString()
-                    photoUri = myUri
-                }
-                val user = Firebase.auth.currentUser
-                user!!.updateProfile(profileUpdates)
-                    .addOnCompleteListener { innerTask ->
-                        if (innerTask.isSuccessful) {
-                            val fragment = MyAccountLogged()
-                            val transaction = fragmentManager?.beginTransaction()
-                            transaction?.replace(R.id.my_account_fragment_navigation, fragment)?.commit()
-                        } else {
-                            Log.d(TAG, "Error with username.")
+                    var myUri = context?.let { getImageUri(it, imageView.drawable.toBitmap()) }!!
+                    // Upload profil pic
+                    val storageReferenceu = FirebaseStorage.getInstance().getReference("profil_pics/" + sign_up_email.text.toString())
+                    storageReferenceu.putFile(myUri).addOnSuccessListener {
+                        storageReferenceu.downloadUrl.addOnSuccessListener {
+                            // Set username and profil pic
+                            val profileUpdates = userProfileChangeRequest {
+                                displayName = sign_up_username.text.toString()
+                                photoUri = it
+                            }
+                            val user = Firebase.auth.currentUser
+                            user!!.updateProfile(profileUpdates)
+                                .addOnCompleteListener { innerTask ->
+                                    if (innerTask.isSuccessful) {
+                                        val fragment = MyAccountLogged()
+                                        val transaction = fragmentManager?.beginTransaction()
+                                        transaction?.replace(R.id.my_account_fragment_navigation, fragment)?.commit()
+                                    } else {
+                                        Log.d(TAG, "Error with username.")
+                                    }
+                                }
                         }
                     }
+                } else {
+                    val profileUpdates = userProfileChangeRequest {
+                        displayName = sign_up_username.text.toString()
+                        photoUri = null
+                    }
+                    val user = Firebase.auth.currentUser
+                    user!!.updateProfile(profileUpdates)
+                        .addOnCompleteListener { innerTask ->
+                            if (innerTask.isSuccessful) {
+                                val fragment = MyAccountLogged()
+                                val transaction = fragmentManager?.beginTransaction()
+                                transaction?.replace(R.id.my_account_fragment_navigation, fragment)?.commit()
+                            } else {
+                                Log.d(TAG, "Error with username.")
+                            }
+                        }
+                }
+
+
+
             } else {
                 // If sign in fails, display a message to the user.
                 Log.w(TAG, "createUserWithEmail:failure", task.exception)
@@ -174,5 +208,96 @@ class MyAccountRegister : Fragment() {
         )
         return Uri.parse(path)
     }
+
+    private fun onImageSelected(uri: Uri) {
+        val db = Firebase.database
+//        Log.d("MainActivity", "Uri: $uri")
+        val user = auth.currentUser
+        val tempMessage = Message(null, getUserName(), getPhotoUrl(), "https://www.google.com/images/spin-32.gif")
+        db.reference
+            .child("profil_picture")
+            .push()
+            .setValue(
+                tempMessage,
+                DatabaseReference.CompletionListener { databaseError, databaseReference ->
+                    if (databaseError != null) {
+                        Log.w(
+                            "MainActivity", "Unable to write message to database.",
+                            databaseError.toException()
+                        )
+                        return@CompletionListener
+                    }
+
+                    // Build a StorageReference and then upload the file
+                    val key = databaseReference.key
+                    val storageReference = Firebase.storage
+                        .getReference("profil_pic")
+                        .child(key!!)
+                        .child(uri.lastPathSegment!!)
+                    putImageInStorage(storageReference, uri, key)
+                })
+    }
+
+    private fun getPhotoUrl(): String? {
+        val user = auth.currentUser
+        return user?.photoUrl?.toString()
+    }
+
+    private fun getUserName(): String? {
+        val user = auth.currentUser
+        return if (user != null) {
+            user.displayName
+        } else ChatFragment.ANONYMOUS
+    }
+
+    private fun putImageInStorage(storageReference: StorageReference, uri: Uri, key: String?) {
+        val storageReferenceu = FirebaseStorage.getInstance().getReference("profil_pics/myImage")
+        storageReferenceu.putFile(uri).addOnSuccessListener { taskSnapshot ->
+            val snap = taskSnapshot
+            val url = taskSnapshot.metadata?.reference?.downloadUrl
+//            Log.d("Lets gowwww", storageReferenceu.downloadUrl.toString())
+            storageReferenceu.downloadUrl.addOnSuccessListener {
+                Log.d("Lets gowwww", it.toString())
+                Firebase.auth.currentUser!!.updateProfile(userProfileChangeRequest { photoUri = it }).addOnSuccessListener {
+                    val fragment = MyAccountLogged()
+                    val transaction = fragmentManager?.beginTransaction()
+                    transaction?.replace(R.id.my_account_fragment_navigation, fragment)?.commit()
+                }
+            }
+        }
+//            storageReferenceu.downloadUrl.addOnCompleteListener()
+            // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
+            // ...
+    }
+
+
+
+//        Log.d("MainActivity", "Uri: $uri key: $key")
+//        val db = Firebase.database
+//        // First upload the image to Cloud Storage
+//        activity?.let {
+//            storageReference.putFile(uri)
+//                .addOnSuccessListener(
+//                    it
+//                ) { taskSnapshot -> // After the image loads, get a public downloadUrl for the image
+//                    // and add it to the message.
+//                    taskSnapshot.metadata!!.reference!!.downloadUrl
+//                        .addOnSuccessListener { uri ->
+//                            val friendlyMessage =
+//                                Message(null, getUserName(), getPhotoUrl(), uri.toString())
+//                            db.reference
+//                                .child("profil_picture")
+//                                .child(key!!)
+//                                .setValue(friendlyMessage)
+//                        }
+//                }
+//                .addOnFailureListener(requireActivity()) { e ->
+//                    Log.w(
+//                        "MainActivity",
+//                        "Image upload task was unsuccessful.",
+//                        e
+//                    )
+//                }
+//        }
  // Test depuis VSCode
 }
