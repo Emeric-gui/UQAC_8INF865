@@ -33,7 +33,7 @@ class MyAccountTabHome : Fragment() {
             if (user != null) {
                 FirebaseAuth.getInstance().signOut()
                 val frag: MyAccountLogged? = this.parentFragment as MyAccountLogged?
-                frag?.goBackLogin()
+                frag?.goBackLogin(false)
 
             } else {
                 Log.d("TAG", "C po ko wtf")

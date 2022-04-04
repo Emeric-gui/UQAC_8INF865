@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.project_uqac.R
 import com.example.project_uqac.ui.my_account.MyAccountLogged
@@ -45,50 +46,12 @@ class MyAccountTabInformations : Fragment() {
             emailInput.setText("Error")
         }
 
+
+//        var toastTriggered : Boolean = false
         val buttonUpdateAccount : Button = view.findViewById(R.id.update_account)
         buttonUpdateAccount.setOnClickListener(){
-            // Up username
-            if(username_textedit.text.toString() != username){
-                val profileUpdates = userProfileChangeRequest {
-                    displayName = username_textedit.text.toString()
-                }
-                user!!.updateProfile(profileUpdates)
-                    .addOnCompleteListener { innerTask ->
-                        if (innerTask.isSuccessful) {
-                            username = username_textedit.text.toString()
-                            val frag: MyAccountLogged? = this.parentFragment as MyAccountLogged?
-                            frag?.updateUsername(username)
-                        } else {
-                            Log.d(ContentValues.TAG, "Error with username.")
-                        }
-                    }
-            }
-
-            // Up email
-            if(email_textedit.text.toString() != email){
-                Log.d(TAG, email_textedit.text.toString())
-                user = Firebase.auth.currentUser
-                user!!.updateEmail(email_textedit.text.toString())
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            email = email_textedit.text.toString()
-                            Log.d(TAG, "User email address updated.")
-                        } else {
-                            Log.d(TAG, "User email address not updated.")
-                        }
-                    }
-            }
-
-            // Up password
-            if(password_textedit.text.toString() != ""){
-                user!!.updatePassword(password_textedit.text.toString())
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            Log.d(TAG, "User password updated.")
-                        }
-                    }
-            }
-
+            upUsername()
+            Toast.makeText(context, "Vos informations ont ét mises à jour.", Toast.LENGTH_SHORT).show()
         }
 
         val buttonDeleteAccount : Button = view.findViewById(R.id.delete_account)
@@ -124,5 +87,73 @@ class MyAccountTabInformations : Fragment() {
 //        }
 
         return view
+    }
+
+    fun upUsername(){
+        val user = Firebase.auth.currentUser
+        // Up username
+        if(username_textedit.text.toString() != username){
+//                if(!toastTriggered){
+//                    toastTriggered = true
+//                }
+            val profileUpdates = userProfileChangeRequest {
+                displayName = username_textedit.text.toString()
+            }
+            user!!.updateProfile(profileUpdates)
+                .addOnCompleteListener { innerTask ->
+                    if (innerTask.isSuccessful) {
+                        username = username_textedit.text.toString()
+                        val frag: MyAccountLogged? = this.parentFragment as MyAccountLogged?
+                        frag?.updateUsername(username)
+                        upEmail()
+                    } else {
+                        Log.d(ContentValues.TAG, "Error with username.")
+                    }
+                }
+        } else {
+            upEmail()
+        }
+    }
+
+    fun upEmail(){
+
+        // Up email
+        if(email_textedit.text.toString() != email){
+//                if(!toastTriggered){
+//                    toastTriggered = true
+//                    Toast.makeText(context, "Vos informations ont ét mises à jour.", Toast.LENGTH_SHORT).show()
+//                }
+            Log.d(TAG, email_textedit.text.toString())
+            val user = Firebase.auth.currentUser
+            user!!.updateEmail(email_textedit.text.toString())
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        email = email_textedit.text.toString()
+                        Log.d(TAG, "User email address updated.")
+                        upPassword()
+                    } else {
+                        Log.d(TAG, "User email address not updated.")
+                    }
+                }
+        } else {
+            upPassword()
+        }
+    }
+
+    fun upPassword(){
+        val user = Firebase.auth.currentUser
+        // Up password
+        if(password_textedit.text.toString() != ""){
+//                if(!toastTriggered){
+//                    toastTriggered = true
+//                    Toast.makeText(context, "Vos informations ont ét mises à jour.", Toast.LENGTH_SHORT).show()
+//                }
+            user!!.updatePassword(password_textedit.text.toString())
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Log.d(TAG, "User password updated.")
+                    }
+                }
+        }
     }
 }

@@ -96,6 +96,7 @@ class PostFragmentLieuAnimal : Fragment(), OnMapReadyCallback,
                 )
             }
 
+
             if (article != null) {
                 db.collection("Articles")
                     .add(article)
