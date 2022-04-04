@@ -112,7 +112,7 @@ class PostFragmentLieuAnimal : Fragment(), OnMapReadyCallback,
                     }
             }
 
-             }
+        }
 
 
         return view
