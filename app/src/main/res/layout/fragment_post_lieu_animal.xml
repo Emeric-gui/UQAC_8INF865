@@ -77,11 +77,12 @@
                             android:layout_width="300dp"
                             android:layout_height="400dp" />
 
-                        <ImageView
-                            android:id="@+id/imageV2"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center" />
+                        <View
+                            android:id="@+id/view4"
+                            android:layout_width="220dp"
+                            android:layout_height="220dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/targetcircle" />
 
                         <ImageView
                             android:id="@+id/imageView"

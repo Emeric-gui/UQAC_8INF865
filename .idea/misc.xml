@@ -43,11 +43,15 @@
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/menu/bottom_nav_menu.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.24739583333333334" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.24739583333333334" />
+        <entry key="app/src/main/res/drawable/circle.xml" value="0.201" />
         <entry key="app/src/main/res/drawable/customborder.xml" value="0.201" />
         <entry key="app/src/main/res/drawable/ic_information.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/post_border_custom.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/post_gradient_background.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/round_button.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/rounded_message_blue.xml" value="0.1335" />
+        <entry key="app/src/main/res/drawable/rounded_message_gray.xml" value="0.1335" />
+        <entry key="app/src/main/res/drawable/targetcircle.xml" value="0.1335" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.182518115942029" />
         <entry key="app/src/main/res/layout/fragment_chat.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_discussions.xml" value="0.18714555765595464" />
@@ -67,7 +71,7 @@
         <entry key="app/src/main/res/layout/fragment_post_espece.xml" value="0.3292433537832311" />
         <entry key="app/src/main/res/layout/fragment_post_lieu.xml" value="0.1342451874366768" />
         <entry key="app/src/main/res/layout/fragment_post_lieu_animal.xml" value="0.19791666666666666" />
-        <entry key="app/src/main/res/layout/fragment_post_lieu_objet.xml" value="0.19791666666666666" />
+        <entry key="app/src/main/res/layout/fragment_post_lieu_objet.xml" value="0.5317796610169492" />
         <entry key="app/src/main/res/layout/fragment_post_nature.xml" value="0.13247213779128672" />
         <entry key="app/src/main/res/layout/fragment_post_type.xml" value="0.1342451874366768" />
         <entry key="app/src/main/res/layout/fragment_postf.xml" value="0.12364130434782608" />

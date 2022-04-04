@@ -77,11 +77,12 @@
                             android:layout_width="300dp"
                             android:layout_height="400dp" />
 
-                        <ImageView
-                            android:id="@+id/imageV"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center" />
+                        <View
+                            android:id="@+id/view3"
+                            android:layout_width="220dp"
+                            android:layout_height="220dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/targetcircle" />
 
                         <ImageView
                             android:id="@+id/imageView3"
@@ -89,7 +90,7 @@
                             android:layout_height="35dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_action_target"
-                            android:tint="#6C00F8" />
+                            app:tint="#6C00F8" />
 
                     </androidx.cardview.widget.CardView>
 

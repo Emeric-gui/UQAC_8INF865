@@ -136,6 +136,11 @@ class HomeFragment : Fragment() {
         val position =  LocationGPS(context as MainActivity)
         //position.getLocationHome(this)
         getPositionBackground(position, this)
+        Toast.makeText(
+            context,
+            "Home Fragment Ecriture data",
+            Toast.LENGTH_SHORT
+        ).show()
 
         //loadData()
 
@@ -160,8 +165,6 @@ class HomeFragment : Fragment() {
     private fun readCoordinate() {
 
 
-        this.lat = lat
-        this.lon = lon
         val filename = "Coordinates"
         if(filename!=null && filename.trim()!=""){
             var fileInputStream: FileInputStream? =
@@ -178,8 +181,8 @@ class HomeFragment : Fragment() {
             }
             //Displaying data on EditText
             val coordinates = stringBuilder.split("=")
-            lat = coordinates[0].toDouble()
-            lon = coordinates[1].toDouble()
+            this.lat = coordinates[0].toDouble()
+            this.lon = coordinates[1].toDouble()
             //Toast.makeText(activity,"STRING"+stringBuilder,Toast.LENGTH_LONG).show()
             //Toast.makeText(activity,"LAAAAAAAA"+ coordinates[0] + " / " + coordinates[1] + "FINI",Toast.LENGTH_LONG).show()
             //fileData.setText(stringBuilder.toString()).toString()
@@ -289,7 +292,7 @@ class HomeFragment : Fragment() {
                         val article = doc.toObject(Article::class.java)
 
                         if (article != null) {
-                            if (distanceInM <= radiusInM &&  formattedDateBefore.toInt() <= article.date) {
+                            if (distanceInM <= radiusInM && formattedDateBefore.toInt() <= article.date) {
                                 if (article != null) {
                                     Log.v(article.title,"articleeeeee22222222" +
                                             "eeeeeeeee")

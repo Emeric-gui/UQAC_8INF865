@@ -43,6 +43,11 @@ class MainActivity : AppCompatActivity() {
         progressBar2.visibility = VISIBLE
         //Get the localization of the phone NETWORK/GPS
         getLocation ()
+        Toast.makeText(
+            this,
+            "MainActivity Ecriture data",
+            Toast.LENGTH_SHORT
+        ).show()
 
     }
 

@@ -86,82 +86,43 @@ class PostFragmentLieuAnimal : Fragment(), OnMapReadyCallback,
 
 
 // Compute the GeoHash for a lat/lng point
-            val lat = 48.4223952
-            val lng = -71.0578483
-            val hash = GeoFireUtils.getGeoHashForLocation(GeoLocation(lat, lng))
+            val hash = GeoFireUtils.getGeoHashForLocation(GeoLocation(latObject, lonObject))
 
 
-            val article = Article("$textSpecie", "$textRace", textDate,
-                "$textDescription", "https://picsum.photos/600/300?random&$", "Nom",hash,latObject, lonObject, Firebase.auth.currentUser?.email!!
-            )
+            val article = Firebase.auth.currentUser?.email?.let { it1 ->
+                Article("$textSpecie", "$textRace", textDate,
+                    "$textDescription", "https://picsum.photos/600/300?random&$", "Nom",hash,latObject, lonObject,
+                    it1
+                )
+            }
 
-            db.collection("Articles")
-                .add(article)
-                .addOnSuccessListener {
-                    Toast.makeText(context, "Objet posté !", Toast.LENGTH_SHORT).show()
-                    val fragment = PostFragmentNature()
-                    val transaction = fragmentManager?.beginTransaction()
-                    transaction?.replace(R.id.post_fragment_navigation, fragment)?.commit()
 
-                }
-                .addOnFailureListener {
-                    Toast.makeText(context, "Objet non Posté !", Toast.LENGTH_SHORT).show()
-                    Log.e("HA", "Error saving : Err :" + it.message)
-                }
+            if (article != null) {
+                db.collection("Articles")
+                    .add(article)
+                    .addOnSuccessListener {
+                        Toast.makeText(context, "Objet posté !", Toast.LENGTH_SHORT).show()
+                        val fragment = PostFragmentNature()
+                        val transaction = fragmentManager?.beginTransaction()
+                        transaction?.replace(R.id.post_fragment_navigation, fragment)?.commit()
 
-             }
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(context, "Objet non Posté !", Toast.LENGTH_SHORT).show()
+                        Log.e("HA", "Error saving : Err :" + it.message)
+                    }
+            }
 
-        drawCircle(view)
+        }
+
 
         return view
     }
 
-    private fun drawCircle(view: View) {
-        // get device dimensions
-        val displayMetrics = DisplayMetrics()
-        activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
-        val bitmap = Bitmap.createBitmap(700, 1000, Bitmap.Config.ARGB_4444)
-        val canvas = Canvas(bitmap)
 
-        // canvas background color
-        //canvas.drawARGB(255, 78, 168, 186);
-
-        var paint = Paint()
-        paint.color = Color.parseColor("#6C00F8")
-        paint.strokeWidth = 6F
-        paint.style = Paint.Style.STROKE
-        paint.isAntiAlias = true
-        paint.isDither = true
-
-        // set bitmap as background to ImageView
-        var circle : ImageView = view.findViewById(R.id.imageV2)
-
-        // circle center
-       // var centerx = (displayMetrics.widthPixels/3.1).toFloat()
-       // var centery = (displayMetrics.heightPixels/4.585555).toFloat()
-
-        circle.measure(0, 0)
-        val centerx: Float = (circle.measuredWidth / 2).toFloat()
-        val centery: Float = (circle.measuredHeight / 2).toFloat()
-        /*val rect: Rect = circle.getDrawable().getRect()
-
-        var centerx = (circle.getDrawable().getRect().left+circle.width/2).toFloat()
-        var centery = ((circle.top+circle.height)/2).toFloat()
-
-         */
-        var radius = 70F
-
-
-        // draw circle
-        canvas.drawCircle(centerx, centery, radius, paint)
-
-        circle.background = BitmapDrawable(resources, bitmap)
-    }
 
     private fun readCoordinate() {
 
-        this.lat = lat
-        this.lon = lon
         val filename = "Coordinates"
         if(filename!=null && filename.trim()!=""){
             var fileInputStream: FileInputStream? = (activity as MainActivity).openFileInput(filename)
@@ -177,8 +138,8 @@ class PostFragmentLieuAnimal : Fragment(), OnMapReadyCallback,
             }
             //Displaying data on EditText
             val coordinates = stringBuilder.split("=")
-            lat = coordinates[0].toDouble()
-            lon = coordinates[1].toDouble()
+            this.lat = coordinates[0].toDouble()
+            this.lon = coordinates[1].toDouble()
         }else{
             Toast.makeText(activity,"file name cannot be blank",Toast.LENGTH_LONG).show()
         }
