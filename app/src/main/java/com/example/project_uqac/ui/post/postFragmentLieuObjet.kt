@@ -193,6 +193,7 @@ class PostFragmentLieuObjet : Fragment(), OnMapReadyCallback,
     override fun onCameraMoveStarted(reason: Int) {
 
         var reasonText = "UNKNOWN_REASON"
+        
         when (reason) {
             GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE -> {
                 reasonText = "GESTURE"
