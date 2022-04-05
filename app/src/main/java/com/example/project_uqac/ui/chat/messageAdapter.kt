@@ -102,11 +102,13 @@ class MessageAdapter(
     }
 
     private fun loadImageIntoView(view: ImageView, url: String) {
+        Log.i("IMAGE","URL = $url")
         if (url.startsWith("gs://")) {
             val storageReference = Firebase.storage.getReferenceFromUrl(url)
             storageReference.downloadUrl
                 .addOnSuccessListener { uri ->
                     val downloadUrl = uri.toString()
+                    Log.i("downloadUrl","URL = ${downloadUrl}")
                     Glide.with(view.context)
                         .load(downloadUrl)
                         .into(view)

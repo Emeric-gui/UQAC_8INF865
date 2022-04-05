@@ -1,6 +1,8 @@
 package com.example.project_uqac.ui.conversation
 
 import android.content.Context
+import android.graphics.BitmapFactory
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +16,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
 import org.w3c.dom.Text
 
 class ConversationsAdapter(context:Context, private val discussionsList:ArrayList<Conversation>?) : BaseAdapter()
@@ -43,16 +47,19 @@ class ConversationsAdapter(context:Context, private val discussionsList:ArrayLis
         conversation=getItem(position)!!
 
         txtTitle.setText(conversation.titleObject)
-        if(conversation.user1 == Firebase.auth.currentUser?.displayName)
+        if(conversation.user1Mail == Firebase.auth.currentUser?.email.toString())
         {
             txtName.setText(conversation.user2)
+            conversation.user2Mail?.let { showImage(it,imageObject) }
+
         }else
         {
             txtName.setText(conversation.user1)
+            conversation.user1Mail?.let { showImage(it,imageObject) }
         }
 
         txtLastMessage.setText(conversation.lastMessage)
-        //Picasso.get().load(conversation.imageURL).into(imageObject)
+
         return view!!
     }
 
@@ -67,5 +74,16 @@ class ConversationsAdapter(context:Context, private val discussionsList:ArrayLis
 
     override fun getItemId(position: Int): Long {
         return position.toLong()
+    }
+
+    fun showImage(userMail:String, imageView: ImageView){
+        val storageRef = FirebaseStorage.getInstance().getReference("profil_pics/"+userMail)
+        val ONE_MEGABYTE: Long = 1024 * 1024
+        storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener {
+            imageView.setImageBitmap(BitmapFactory.decodeByteArray(it, 0, it.size))
+        }.addOnFailureListener {
+            imageView.setImageResource(R.drawable.ic_account_circle_black_36dp)
+            Log.d("MyAccountLogged : ", "No profil pic in database")
+        }
     }
 }

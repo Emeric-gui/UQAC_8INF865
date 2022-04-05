@@ -49,7 +49,8 @@ class ChatFragment : Fragment(){
 
     private var idChat: String? = null
     private var idConv: String? = null
-    private var user: String? = null
+    private var idUser: String? = null
+    private var idOtherUser: String? = null
 
 
     // This property is only valid between onCreateView and
@@ -83,7 +84,9 @@ class ChatFragment : Fragment(){
         setFragmentResultListener("SendInfoChat") { requestKey, bundle ->
             idChat = bundle.getString("IDChat") // may change by the data
             idConv = bundle.getString("IDConv")
-            user = bundle.getString("User")
+            idUser = bundle.getString("IDUser")
+            idOtherUser = bundle.getString("IDOtherUser")
+
             // Initialize Realtime Database and FirebaseRecyclerAdapter
             db = Firebase.database
             val messagesRef = idChat?.let { db.reference.child("Chat").child(it).child("Messages") }
@@ -127,7 +130,11 @@ class ChatFragment : Fragment(){
 
                     var timestamp = Date().time
                     idConv?.let { it1 -> db.reference.child("Conversations").child(it1).child("timestamp").setValue(timestamp) }
-                    user?.let { it1 -> idConv?.let { it2 ->
+                    idUser?.let { it1 -> idConv?.let { it2 ->
+                        db.reference.child("Users").child(it1).child("Conversations")
+                            .child(it2).child("timestamp").setValue(timestamp)
+                    } }
+                    idOtherUser?.let { it1 -> idConv?.let { it2 ->
                         db.reference.child("Users").child(it1).child("Conversations")
                             .child(it2).child("timestamp").setValue(timestamp)
                     } }
