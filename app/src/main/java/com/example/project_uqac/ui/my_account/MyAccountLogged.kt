@@ -6,6 +6,7 @@ import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -16,6 +17,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.cardview.widget.CardView
@@ -32,6 +34,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_my_account_sign_up.*
 import java.io.ByteArrayOutputStream
@@ -42,6 +46,7 @@ class MyAccountLogged : Fragment() {
     private lateinit var viewPager2 : ViewPager2
     private lateinit var viewee : View
     private lateinit var imageView: ImageView
+    private var reloaded : Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,8 +71,27 @@ class MyAccountLogged : Fragment() {
             username.text = "Error"
         }
 
-        if (user != null) {
-            imageView.setImageURI(user.photoUrl)
+        if (user != null && !reloaded) {
+            // Create a storage reference from our app
+            if(user.photoUrl != null){
+                val storageRef = Firebase.storage.getReferenceFromUrl(user.photoUrl.toString())
+                Log.d("Lets gowwww", user.photoUrl.toString())
+//            var islandRef = storageRef.child("profil_pics/myImage")
+
+                val ONE_MEGABYTE: Long = 1024 * 1024
+                storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener {
+//                val myImage : ByteArray = it
+                    imageView.setImageBitmap(BitmapFactory.decodeByteArray(it, 0, it.size))
+                    // Data for "images/island.jpg" is returned, use this as needed
+                }.addOnFailureListener {
+//                    Log.d("MyAccountLogged : ", "No profil pic in database")
+                }
+            } else {
+                imageView.setImageResource(R.drawable.ic_account_circle_black_36dp)
+            }
+
+
+//            imageView.setImageURI(user.photoUrl)
         }
 
         // Instantiate a ViewPager2 and a PagerAdapter.
@@ -84,7 +108,7 @@ class MyAccountLogged : Fragment() {
             tab.text = TAB_TITLES[position]
         }.attach()
 
-        val cardViewImageView : CardView = view.findViewById(R.id.cardViewImageViewMyAccountLogged);
+        val cardViewImageView : CardView = view.findViewById(R.id.cardViewImageViewMyAccountLogged)
 //        val buttonTakePicture : Button = view.findViewById(R.id.my_account_take_pic)
         cardViewImageView.setOnClickListener {
             dispatchTakePictureIntent()
@@ -122,31 +146,54 @@ class MyAccountLogged : Fragment() {
 
             imageView.setImageBitmap(cropImg)
 
-            // Update profil pic in db
-            val profileUpdates = userProfileChangeRequest {
-                photoUri = context?.let { getImageUri(it, imageView.drawable.toBitmap()) }
-            }
-            val user = Firebase.auth.currentUser
-            user!!.updateProfile(profileUpdates)
-                .addOnCompleteListener { innerTask ->
-                    if (innerTask.isSuccessful) {
-                        val fragment = MyAccountLogged()
-                        val transaction = fragmentManager?.beginTransaction()
-                        transaction?.replace(R.id.my_account_fragment_navigation, fragment)?.commit()
-                    } else {
-                        Log.d(TAG, "Error with username.")
-                    }
-                }
+            // Update profil pic in db - Old style
+//            val profileUpdates = userProfileChangeRequest {
+//                photoUri = context?.let { getImageUri(it, imageView.drawable.toBitmap()) }
+//            }
+//            val user = Firebase.auth.currentUser
+//            user!!.updateProfile(profileUpdates)
+//                .addOnCompleteListener { innerTask ->
+//                    if (innerTask.isSuccessful) {
+//                        val fragment = MyAccountLogged()
+//                        val transaction = fragmentManager?.beginTransaction()
+//                        transaction?.replace(R.id.my_account_fragment_navigation, fragment)?.commit()
+//                    } else {
+//                        Log.d(TAG, "Error with username.")
+//                    }
+//                }
+
+        updatePic(cropImg)
         }
     }
 
-    fun getImageUri(inContext: Context, inImage: Bitmap): Uri? {
+    fun updatePic(img : Bitmap){
+        reloaded = true
+        // Update profil pic in db - New style
+        Firebase.storage.reference.child("profil_pics/" + (Firebase.auth.currentUser?.email)).delete().addOnCompleteListener {
+            val storageReferenceu = FirebaseStorage.getInstance().getReference("profil_pics/" + (Firebase.auth.currentUser?.email))
+            var myUri = context?.let { getImageUri(it, img, "profil_pic." + Firebase.auth.currentUser?.email) }!!
+            Log.d(TAG, myUri.toString())
+            storageReferenceu.putFile(myUri).addOnSuccessListener {
+                storageReferenceu.downloadUrl.addOnSuccessListener { bob ->
+//                            Log.d(TAG, it.toString())
+                    // Set profil pic
+                    val profileUpdates = userProfileChangeRequest {
+                        photoUri = bob
+                    }
+                    Firebase.auth.currentUser!!.updateProfile(profileUpdates)
+                }
+            }
+        }
+    }
+
+
+    fun getImageUri(inContext: Context, inImage: Bitmap, name : String): Uri? {
         val bytes = ByteArrayOutputStream()
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
         val path = MediaStore.Images.Media.insertImage(
             inContext.contentResolver,
             inImage,
-            "Title",
+            name,
             null
         )
         return Uri.parse(path)
@@ -177,11 +224,16 @@ class MyAccountLogged : Fragment() {
         )
     }
 
-    fun goBackLogin(){
+    fun goBackLogin(compteDeleted : Boolean){
 //        Log.d(TAG, "zsdefgh.")
 //        if(Firebase.auth.currentUser != null ){
 //            FirebaseAuth.getInstance().signOut()
 //        }
+        if (compteDeleted){
+            Toast.makeText(context, "Votre compte a bien été supprimé !", Toast.LENGTH_SHORT).show()
+        }else{
+            Toast.makeText(context, "Votre avez bien été déconnecté !", Toast.LENGTH_SHORT).show()
+        }
 
         val fragment = MyAccountLogin()
         val transaction = fragmentManager?.beginTransaction()
@@ -191,7 +243,7 @@ class MyAccountLogged : Fragment() {
 
     fun updateUsername(username : String){
         val usernamePlace : TextView = viewee.findViewById(R.id.username)
-        usernamePlace.setText(username)
+        usernamePlace.text = username
     }
 
 }

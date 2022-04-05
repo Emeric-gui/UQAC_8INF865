@@ -66,11 +66,13 @@ class LocationGPS(mainActivity: MainActivity) : LocationListener {
 
             fileOutputStream = app.openFileOutput(file, Context.MODE_PRIVATE)
             fileOutputStream.write(data.toByteArray())
-            Toast.makeText(
+            /*Toast.makeText(
                 app,
                 "Ecriture data: $data",
                 Toast.LENGTH_SHORT
             ).show()
+
+             */
         } catch (e: FileNotFoundException){
             e.printStackTrace()
         }catch (e: NumberFormatException){

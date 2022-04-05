@@ -40,14 +40,6 @@ class DialogFragmentDelete:DialogFragment() {
         return rootView
     }
 
-    @SuppressLint("SetTextI18n")
-    fun addInfos(lieu : String, objet : String, date : String){
-        var root: View = binding.root
-        var textZone : TextView = root.findViewById<View>(R.id.message_fragment_popup) as TextView
-        textZone.text = "Recapitulatif :$objet perdu à $lieu le $date"
-
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
     }

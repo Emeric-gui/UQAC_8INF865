@@ -104,27 +104,30 @@ class PostFragmentLieuObjet : Fragment(), OnMapReadyCallback,
         buttonNext.setOnClickListener(){
 
 // Compute the GeoHash for a lat/lng point
-            val lat = 51.5074
-            val lng = 0.1278
-            val hash = GeoFireUtils.getGeoHashForLocation(GeoLocation(lat, lng))
+            val hash = GeoFireUtils.getGeoHashForLocation(GeoLocation(latObject, lonObject))
 
-            val article = Article("$textModel", "$textMarque", textDate,
-                "$textDescription", "https://picsum.photos/600/300?random&$", "Nom",hash, latObject, lonObject, Firebase.auth.currentUser?.email!!
-            )
+            val article = Firebase.auth.currentUser?.email?.let { it1 ->
+                Article("$textModel", "$textMarque", textDate,
+                    "$textDescription", "https://picsum.photos/600/300?random&$", "Nom",hash, latObject, lonObject,
+                    it1
+                )
+            }
 
-            db.collection("Articles")
-                .add(article)
-                .addOnSuccessListener {
-                    Toast.makeText(context, "Objet posté !", Toast.LENGTH_SHORT).show()
-                    val fragment = PostFragmentNature()
-                    val transaction = fragmentManager?.beginTransaction()
-                    transaction?.replace(R.id.post_fragment_navigation, fragment)?.commit()
+            if (article != null) {
+                db.collection("Articles")
+                    .add(article)
+                    .addOnSuccessListener {
+                        Toast.makeText(context, "Objet posté !", Toast.LENGTH_SHORT).show()
+                        val fragment = PostFragmentNature()
+                        val transaction = fragmentManager?.beginTransaction()
+                        transaction?.replace(R.id.post_fragment_navigation, fragment)?.commit()
 
-                }
-                .addOnFailureListener {
-                    Toast.makeText(context, "Objet non Posté !", Toast.LENGTH_SHORT).show()
-                    Log.e("HA", "Error saving : Err :" + it.message)
-                }
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(context, "Objet non Posté !", Toast.LENGTH_SHORT).show()
+                        Log.e("HA", "Error saving : Err :" + it.message)
+                    }
+            }
 
             /*val londonRef = db.collection("Articles")
                 .add(updates)
@@ -135,41 +138,7 @@ class PostFragmentLieuObjet : Fragment(), OnMapReadyCallback,
              */
         }
 
-        drawCircle(view)
-
         return view
-    }
-
-    private fun drawCircle(view: View) {
-        // get device dimensions
-        val displayMetrics = DisplayMetrics()
-        activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
-        val bitmap = Bitmap.createBitmap(700, 1000, Bitmap.Config.ARGB_4444)
-        val canvas = Canvas(bitmap)
-
-        // canvas background color
-        //canvas.drawARGB(255, 78, 168, 186);
-
-        var paint = Paint()
-        paint.color = Color.parseColor("#6C00F8")
-        paint.strokeWidth = 6F
-        paint.style = Paint.Style.STROKE
-        paint.isAntiAlias = true
-        paint.isDither = true
-
-
-        // circle center
-        var centerx = (displayMetrics.widthPixels/3.1).toFloat()
-        var centery = (displayMetrics.heightPixels/4.585555).toFloat()
-        var radius = 70F
-
-        // draw circle
-        canvas.drawCircle(centerx, centery, radius, paint)
-
-        // set bitmap as background to ImageView
-        var circle : ImageView = view.findViewById(R.id.imageV)
-
-        circle.background = BitmapDrawable(resources, bitmap)
     }
 
 
@@ -224,6 +193,7 @@ class PostFragmentLieuObjet : Fragment(), OnMapReadyCallback,
     override fun onCameraMoveStarted(reason: Int) {
 
         var reasonText = "UNKNOWN_REASON"
+        
         when (reason) {
             GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE -> {
                 reasonText = "GESTURE"

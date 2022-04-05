@@ -36,4 +36,6 @@
     <string name="disconnect">Déconnexion</string>
     <string name="suppression_post">Supression publication</string>
     <string name="verification_suppression_post">Vouulez-vous vraiment supprimer cette publication ?</string>
+    <string name="my_account_no_post">Vous n\'avez pas de publication en ligne.</string>
+    <string name="my_account_no_post_descr">Vous pouvez en créer une en cliquant sur le + dans la barre de navigation !</string>
 </resources>

@@ -1,41 +1,45 @@
 package com.example.project_uqac.ui.search.filter
 
-import android.graphics.Color
+import android.annotation.SuppressLint
+import android.app.WallpaperColors.fromDrawable
+import android.content.ContentValues
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.PorterDuff
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Icon
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import android.widget.TextView
-import androidx.core.os.HandlerCompat
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.project_uqac.MainActivity
 import com.example.project_uqac.R
-import com.example.project_uqac.ui.post.PostFragmentLieuAnimal
-import com.example.project_uqac.ui.service.LocationGPS
 import com.google.android.gms.maps.*
-import com.google.android.gms.maps.model.CircleOptions
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
-import org.w3c.dom.Text
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
+import com.google.android.gms.maps.model.*
+import java.io.BufferedReader
+import java.io.FileInputStream
+import java.io.InputStreamReader
 
 
-class FilterTabPosition : Fragment(), OnMapReadyCallback {
+class FilterTabPosition : Fragment(),  GoogleMap.OnCameraMoveStartedListener,
+    GoogleMap.OnCameraIdleListener, OnMapReadyCallback {
 
 
     private lateinit var mapFragment: SupportMapFragment
-    private var makeModif = false
-    private var delCircle = false
-    private var value_modif : Double = 0.0
     private var lat : Double = 0.0
     private var lon : Double = 0.0
-    private val executorService: ExecutorService = Executors.newFixedThreadPool(4)
-    private val mainThreadHandler: Handler = HandlerCompat.createAsync(Looper.getMainLooper())
-
+    private var latObject : Double = 0.0
+    private var lonObject : Double = 0.0
+    private var  radius  = 14.0
+    private lateinit var viewMap : MapView
+    private lateinit var map: GoogleMap
+    private lateinit var seekBarRadius : SeekBar
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,102 +49,122 @@ class FilterTabPosition : Fragment(), OnMapReadyCallback {
 
         val rootView = inflater.inflate(R.layout.fragment_filter_map, container, false)
 
-        val seek = rootView.findViewById<SeekBar>(R.id.seekBar)
+        seekBarRadius = rootView.findViewById(R.id.seekBar)
+        val textSeekBarRadius : TextView = rootView.findViewById(R.id.var_progress)
 
-        val data_zone = rootView.findViewById<TextView>(R.id.var_progress)
+        seekBarRadius!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latObject, lonObject),(((1-(i.toFloat()/100))*5)+7)))
+                textSeekBarRadius!!.text = " $i"
 
-        seek?.setOnSeekBarChangeListener(object :
-            SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seek: SeekBar,
-                                           progress: Int, fromUser: Boolean) {
-                // write custom code for progress is changed
-                makeModif = true
-                data_zone.text = progress.toString()
-                value_modif = progress.toDouble()
-                addChangesToMap()
             }
 
-            override fun onStartTrackingTouch(seek: SeekBar) {
-                // write custom code for progress is started
-            }
-
-            override fun onStopTrackingTouch(seek: SeekBar) {
-                // write custom code for progress is stopped
-            }
+            override fun onStartTrackingTouch(seekBar: SeekBar) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar) {}
         })
 
-        //options
-        val options = GoogleMapOptions()
-        options.mapType(GoogleMap.MAP_TYPE_HYBRID)
-            .compassEnabled(false)
-            .rotateGesturesEnabled(false)
-            .tiltGesturesEnabled(false)
-
         //Pour ajouter le fragment de la map
-        mapFragment = SupportMapFragment.newInstance(options)
-        val fm = parentFragmentManager.beginTransaction()
-        fm.add(R.id.mapView2, mapFragment)
-        fm.commit()
-        val position =  LocationGPS(context as MainActivity)
-        getPositionBackground(position, this)
+        //mapFragment = SupportMapFragment.newInstance(options)
+        val fm = fragmentManager?.beginTransaction()
+        mapFragment = SupportMapFragment.newInstance()
+        fm?.add(R.id.mapView2, mapFragment)
+        fm?.commit()
 
-
+        //Lire les coordonnées sur le fichier de stockage interne de l'application
+        readCoordinate()
         mapFragment.getMapAsync(this)
+        viewMap = rootView.findViewById(R.id.mapView2)
+
 
         return rootView
     }
 
-    fun addChangesToMap(){
-        mapFragment.getMapAsync(this)
-    }
 
-    fun getPositionBackground(
-        position: LocationGPS,
-        searchFilterFragment: FilterTabPosition
-    ) {
-        executorService.execute {
-            try {
+    private fun readCoordinate() {
 
-                mainThreadHandler.post {  position.getLocation() }
-            } catch (e: Exception) {
-
+        val filename = "Coordinates"
+        if(filename!=null && filename.trim()!=""){
+            var fileInputStream: FileInputStream? = (activity as MainActivity).openFileInput(filename)
+            var inputStreamReader: InputStreamReader = InputStreamReader(fileInputStream)
+            val bufferedReader: BufferedReader = BufferedReader(inputStreamReader)
+            val stringBuilder: StringBuilder = StringBuilder()
+            var text: String? = null
+            while (run {
+                    text = bufferedReader.readLine()
+                    text
+                } != null) {
+                stringBuilder.append(text)
             }
+            //Displaying data on EditText
+            val coordinates = stringBuilder.split("=")
+            this.lat = coordinates[0].toDouble()
+            this.lon = coordinates[1].toDouble()
+        }else{
+            Toast.makeText(activity,"file name cannot be blank", Toast.LENGTH_LONG).show()
         }
     }
 
-    fun getCoordinate(lat : Double,lon : Double) {
-        this.lat = lat
-        this.lon = lon
-        mapFragment.getMapAsync(this)
-    }
-
-
+    @SuppressLint("ClickableViewAccessibility")
     override fun onMapReady(googleMap: GoogleMap) {
-        if(makeModif){
-            googleMap.setOnCameraIdleListener {
-                val midLatLng: LatLng = LatLng(lat, lon)
-                googleMap.clear()
-                googleMap.addCircle(
-                    CircleOptions()
-                        .center(midLatLng)
-                        .radius(value_modif*1000)
-                        .strokeWidth(1f)
-                        .fillColor(0x880000FF.toInt()))
-            }
-            makeModif = false
+        var positions = LatLng(this.lat, this.lon)
+        val zoomLevel = radius.toFloat()
+        map = googleMap
+        map.setOnCameraMoveStartedListener(this);
+        map.setOnCameraIdleListener(this);
 
-        }
+        val drawable = this.resources.getDrawable(R.drawable.ic_herepin)
 
+        val bitmap = Bitmap.createBitmap(
+            drawable.intrinsicWidth,
+            drawable.intrinsicHeight,
+            Bitmap.Config.ARGB_8888
+        )
 
-        val lat = this.lat
-        val lng = this.lon
-        val positions = LatLng(lat, lng)
+        val canvas = Canvas(bitmap)
+        drawable.setBounds(0, 0, canvas.width, canvas.height)
+        drawable.draw(canvas)
 
-        googleMap.addMarker(
+        val bitmapDrawable = BitmapDrawable(this.resources, bitmap)
+
+        map.addMarker(
+
             MarkerOptions()
+                .icon( BitmapDescriptorFactory.fromBitmap(Bitmap.createScaledBitmap(bitmapDrawable.bitmap, 150, 150, false)))
                 .position(positions)
                 .title("Marker")
         )
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(positions))
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(positions, zoomLevel))
     }
+
+
+    fun uptdateCoordinates() {
+        latObject = map.cameraPosition.target.latitude
+        lonObject = map.cameraPosition.target.longitude
+        Log.v(map.cameraPosition.target.toString(), "CAMERAAAAAAAA")
+
+    }
+
+    override fun onCameraIdle() {
+        uptdateCoordinates()
+    }
+
+    override fun onCameraMoveStarted(reason: Int) {
+        var reasonText = "UNKNOWN_REASON"
+        when (reason) {
+            GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE -> {
+                reasonText = "GESTURE"
+
+            }
+            GoogleMap.OnCameraMoveStartedListener.REASON_API_ANIMATION -> {
+                reasonText = "API_ANIMATION"
+
+            }
+            GoogleMap.OnCameraMoveStartedListener.REASON_DEVELOPER_ANIMATION -> {
+                reasonText = "DEVELOPER_ANIMATION"
+            }
+        }
+        Log.d(ContentValues.TAG, "onCameraMoveStarted($reasonText)")
+        //uptdateCoordinates()
+    }
+
 }
