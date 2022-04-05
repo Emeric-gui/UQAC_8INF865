@@ -19,6 +19,7 @@ class ArticlesAdapter (private val mArticles: List<Article>) : RecyclerView.Adap
     private var mLieu: ArrayList<String> = ArrayList()
     private var mDate: ArrayList<String> = ArrayList()
     private var mNom : ArrayList<String> = ArrayList()
+    private var mMail : ArrayList<String> = ArrayList()
 
 
 
@@ -104,6 +105,10 @@ class ArticlesAdapter (private val mArticles: List<Article>) : RecyclerView.Adap
         val person = article.nom
         mNom.add(person)
 
+        //recupérer le mail sans l'afficher
+        val mail = article.author
+        mMail.add(mail)
+
         val descriptionView = viewHolder.descriptionTextView
         descriptionView.text = article.description
         Picasso.get().load(article.image).into(viewHolder.imageImageView)
@@ -127,6 +132,9 @@ class ArticlesAdapter (private val mArticles: List<Article>) : RecyclerView.Adap
         return mDate[position]
     }
     fun getNom(position: Int): String{
-        return mNom.get(position)
+        return mNom[position]
+    }
+    fun getMail(position: Int): String{
+        return mMail[position]
     }
 }

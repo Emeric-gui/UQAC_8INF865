@@ -17,6 +17,7 @@ class DialogFragmentDiscussion:DialogFragment() {
     private lateinit var mLieu : String
     private lateinit var mDate : String
     private lateinit var mNom : String
+    private lateinit var mMail : String
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         super.onCreateDialog(savedInstanceState)
@@ -45,6 +46,7 @@ class DialogFragmentDiscussion:DialogFragment() {
                 args.putString("lieu", mLieu)
                 args.putString("date", mDate)
                 args.putString("nom", mNom)
+                args.putString("mail", mMail)
                 chat.arguments(args)
                 fr?.replace(R.id.nav_host_fragment_activity_main, chat)
             }
@@ -59,5 +61,6 @@ class DialogFragmentDiscussion:DialogFragment() {
         mLieu = args.getString("lieu").toString()
         mDate = args.getString("date").toString()
         mNom = args.getString("nom").toString()
+        mMail = args.getString("mail").toString()
     }
 }
