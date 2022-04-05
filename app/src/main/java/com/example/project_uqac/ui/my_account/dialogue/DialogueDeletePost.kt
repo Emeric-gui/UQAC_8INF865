@@ -6,6 +6,7 @@ import android.content.ContentValues.TAG
 import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.example.project_uqac.R
 import com.example.project_uqac.ui.article.Article
