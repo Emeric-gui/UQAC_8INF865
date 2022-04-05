@@ -110,14 +110,6 @@ class SearchFragment  : Fragment()  {
         }
     }
 
-    fun getCoordinate(lat : Double,lon : Double) {
-        this.lat = lat
-        this.lon = lon
-
-
-    }
-
-
     private fun setAdapter(adapter: ArticlesAdapter) {
 
         adapter.setOnItemClickListener(object :ArticlesAdapter.OnItemClickListener{

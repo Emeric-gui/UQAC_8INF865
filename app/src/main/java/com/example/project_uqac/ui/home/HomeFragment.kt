@@ -94,10 +94,9 @@ class HomeFragment : Fragment() {
         button3 = root.findViewById<Button>(R.id.button3J)
         button7 = root.findViewById<Button>(R.id.button7j)
         button1.isSelected = true
+        button1.setBackgroundColor(Color.parseColor("#FF919090"))
         button3.isSelected = false
         button7.isSelected = false
-
-
 
         button1.setOnClickListener {
             button1.isSelected = true
@@ -129,7 +128,6 @@ class HomeFragment : Fragment() {
 
             loadData()
         }
-
         // Initialize contacts
         //var articles = Article.createContactsList(19)
 
@@ -142,7 +140,7 @@ class HomeFragment : Fragment() {
             Toast.LENGTH_SHORT
         ).show()
 
-        //loadData()
+        loadData()
 
         return root
     }
