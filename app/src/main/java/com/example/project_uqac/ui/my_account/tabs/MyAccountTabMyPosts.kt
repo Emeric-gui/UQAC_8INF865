@@ -93,6 +93,7 @@ class MyAccountTabMyPosts : Fragment() {
 
 //        val textNoArticle = root.findViewById<TextView>(R.id.textNoArticles2)
     fun gonnaLoad(){
+        Toast.makeText(context, "Publication supprimée", Toast.LENGTH_SHORT).show()
         loadData()
     }
     //for loading all articles from server

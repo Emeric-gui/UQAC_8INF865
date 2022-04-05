@@ -103,7 +103,7 @@ class MyAccountRegister : Fragment() {
             if (task.isSuccessful) {
                 // Sign in success, update UI with the signed-in user's information
                 Log.d(TAG, "createUserWithEmail:success")
-                Toast.makeText(context, "Account Created !",
+                Toast.makeText(context, "Votre compte a bien été créé !",
                     Toast.LENGTH_SHORT).show()
                 Log.d(TAG, auth.currentUser.toString())
 
