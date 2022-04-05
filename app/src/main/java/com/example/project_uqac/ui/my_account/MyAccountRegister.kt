@@ -63,8 +63,6 @@ class MyAccountRegister : Fragment() {
             dispatchTakePictureIntent()
         }
 
-
-
         return view
     }
 
@@ -106,6 +104,9 @@ class MyAccountRegister : Fragment() {
                 Toast.makeText(context, "Votre compte a bien été créé !",
                     Toast.LENGTH_SHORT).show()
                 Log.d(TAG, auth.currentUser.toString())
+
+                //Add user to the bdd
+                Firebase.database.getReference().child("Users_ID").push().setValue(sign_up_email.text.toString())
 
                 // Set img uri
 //                var myUri : Uri = Uri.parse("android.resource://com.example.project_uqac/drawable/ic_action_my_account")
@@ -151,15 +152,11 @@ class MyAccountRegister : Fragment() {
                             }
                         }
                 }
-
-
-
             } else {
                 // If sign in fails, display a message to the user.
                 Log.w(TAG, "createUserWithEmail:failure", task.exception)
                 Toast.makeText(context, "Authentication failed.",
                     Toast.LENGTH_SHORT).show()
-
             }
         }
     }
