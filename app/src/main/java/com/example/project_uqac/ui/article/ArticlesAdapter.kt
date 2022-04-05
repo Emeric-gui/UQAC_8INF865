@@ -1,6 +1,6 @@
 package com.example.project_uqac.ui.article
 
-import android.util.Log
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,9 +8,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.project_uqac.R
-import com.example.project_uqac.ui.home.popupDiscussion.DialogFragmentDiscussion
 import com.squareup.picasso.Picasso
-
+import android.location.Address
+import android.location.Geocoder
+import com.example.project_uqac.MainActivity
+import kotlinx.coroutines.currentCoroutineContext
 
 class ArticlesAdapter (private val mArticles: List<Article>) : RecyclerView.Adapter<ArticlesAdapter.ViewHolder>()
 {
@@ -18,7 +20,7 @@ class ArticlesAdapter (private val mArticles: List<Article>) : RecyclerView.Adap
 
 
     private var mObjet: ArrayList<String> = ArrayList()
-    private var mMarque: ArrayList<String> = ArrayList()
+    private var mLieu: ArrayList<String> = ArrayList()
     private var mDate: ArrayList<String> = ArrayList()
     private var mNom : ArrayList<String> = ArrayList()
 
@@ -74,13 +76,24 @@ class ArticlesAdapter (private val mArticles: List<Article>) : RecyclerView.Adap
         val objet = titleView.text
         mObjet.add(objet.toString())
 
-        val marqueView = viewHolder.lieuTextView
-        marqueView.text = article.marque
-        val lieu = marqueView.text
-        mMarque.add(lieu.toString())
 
+        //find city ofr lat and long
+        val latitude = article.lat
+        val longitude = article.lon
+        val geoCoder = Geocoder(viewHolder.itemView.context)
+        val adresse = geoCoder.getFromLocation(latitude, longitude, 1)[0]
+
+        val texteLieu : String = adresse.locality+ ", "+adresse.adminArea+", "+adresse.countryName
+
+        val locationView = viewHolder.lieuTextView
+        locationView.text = adresse.locality
+        mLieu.add(texteLieu)
+
+
+        //changement dans la date
+        val date_string = article.date.toString()
         val dateView = viewHolder.dateTextView
-        dateView.text = article.date.toString()
+        dateView.text = date_string
         val date = dateView.text
         mDate.add(date.toString())
 
@@ -106,7 +119,7 @@ class ArticlesAdapter (private val mArticles: List<Article>) : RecyclerView.Adap
     }
 
     fun getLieu(position: Int): String{
-        return mMarque[position]
+        return mLieu[position]
     }
 
     fun getDate(position: Int): String{
