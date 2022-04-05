@@ -12,9 +12,11 @@ import com.squareup.picasso.Picasso
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import org.w3c.dom.Text
 
-class ConversationsAdapter(context:Context, private val discussionsList:ArrayList<Conversation>) : BaseAdapter()
+class ConversationsAdapter(context:Context, private val discussionsList:ArrayList<Conversation>?) : BaseAdapter()
 {
     var inflator : LayoutInflater?=null
 
@@ -41,9 +43,16 @@ class ConversationsAdapter(context:Context, private val discussionsList:ArrayLis
         conversation=getItem(position)!!
 
         txtTitle.setText(conversation.titleObject)
-        txtName.setText(conversation.name)
+        if(conversation.user1 == Firebase.auth.currentUser?.displayName)
+        {
+            txtName.setText(conversation.user2)
+        }else
+        {
+            txtName.setText(conversation.user1)
+        }
+
         txtLastMessage.setText(conversation.lastMessage)
-        Picasso.get().load(conversation.image).into(imageObject)
+        //Picasso.get().load(conversation.imageURL).into(imageObject)
         return view!!
     }
 
@@ -52,7 +61,8 @@ class ConversationsAdapter(context:Context, private val discussionsList:ArrayLis
     }
 
     override fun getItem(position: Int): Conversation? {
-        return discussionsList?.get(position)
+        return discussionsList?.get(getCount() - 1 - position)
+        //return getItem(getCount() - 1 - position)
     }
 
     override fun getItemId(position: Int): Long {

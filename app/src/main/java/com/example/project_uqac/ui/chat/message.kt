@@ -16,7 +16,7 @@ class Message {
         this.imageUrl = imageUrl
 
         // Initialize to current time
-        messageTime = Date().getTime()
+        messageTime = Date().time
     }
 
     constructor() {}

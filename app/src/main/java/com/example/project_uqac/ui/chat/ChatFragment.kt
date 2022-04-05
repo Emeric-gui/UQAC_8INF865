@@ -1,25 +1,29 @@
 package com.example.project_uqac.ui.chat
 
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.getIntent
+import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
-import android.text.format.DateFormat
 import android.util.Log
-import android.view.*
-import android.widget.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ProgressBar
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
+//import androidx.fragment.app.testing.FragmentScenario
 import androidx.lifecycle.ViewModelProvider
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.project_uqac.R
 import com.example.project_uqac.databinding.FragmentChatBinding
-import com.example.project_uqac.ui.conversation.Conversation
-import com.example.project_uqac.ui.conversation.ConversationsAdapter
-import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.database.FirebaseListAdapter
-import com.firebase.ui.database.FirebaseListOptions
+import com.example.project_uqac.ui.discussions.DiscussionsFragment
+import com.example.project_uqac.ui.my_account.MyAccountLogin
 import com.firebase.ui.database.FirebaseRecyclerOptions
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
@@ -28,11 +32,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
-import java.time.format.DateTimeFormatter
-
-import com.example.project_uqac.ui.chat.MyButtonObserver
-import com.example.project_uqac.ui.my_account.MyAccountLogin
-
+import java.util.*
 
 
 class ChatFragment : Fragment(){
@@ -45,7 +45,12 @@ class ChatFragment : Fragment(){
     // Firebase instance variables
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseDatabase
-    private lateinit var adapter: MessageAdapter
+    private  var adapter: MessageAdapter? = null
+
+    private var idChat: String? = null
+    private var idConv: String? = null
+    private var user: String? = null
+
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -75,48 +80,66 @@ class ChatFragment : Fragment(){
              return root
          }
 
-        // Initialize Realtime Database and FirebaseRecyclerAdapter
-        db = Firebase.database
-        val messagesRef = db.reference.child(MESSAGES_CHILD)
+        setFragmentResultListener("SendInfoChat") { requestKey, bundle ->
+            idChat = bundle.getString("IDChat") // may change by the data
+            idConv = bundle.getString("IDConv")
+            user = bundle.getString("User")
+            // Initialize Realtime Database and FirebaseRecyclerAdapter
+            db = Firebase.database
+            val messagesRef = idChat?.let { db.reference.child("Chat").child(it).child("Messages") }
 
-        // The FirebaseRecyclerAdapter class and options come from the FirebaseUI library
-        // See: https://github.com/firebase/FirebaseUI-Android
-        val options = FirebaseRecyclerOptions.Builder<Message>()
-            .setQuery(messagesRef, Message::class.java)
-            .build()
-
-        adapter = MessageAdapter(options, getUserName())
-        binding.progressBar.visibility = ProgressBar.INVISIBLE
-        manager = LinearLayoutManager(_context)
-        manager.stackFromEnd = true
-        binding.messageRecyclerView.itemAnimator=null;
-        binding.messageRecyclerView.layoutManager = manager
-        binding.messageRecyclerView.adapter = adapter
-
-        // Scroll down when a new message arrives
-        // See MyScrollToBottomObserver for details
-        adapter.registerAdapterDataObserver(
-            MyScrollToBottomObserver(binding.messageRecyclerView, adapter, manager)
-        )
-        // Disable the send button when there's no text in the input field
-        // See MyButtonObserver for details
-        binding.messageEditText.addTextChangedListener(MyButtonObserver(binding.sendButton))
-
-        // When the send button is clicked, send a text message
-        binding.sendButton.setOnClickListener {
-            if(binding.messageEditText.text.toString()!="")
-            {
-                val friendlyMessage = Message(
-                    binding.messageEditText.text.toString(),
-                    getUserName(),
-                    getPhotoUrl(),
-                    null /* no image */
-                )
-                db.reference.child(MESSAGES_CHILD).push().setValue(friendlyMessage)
+            // The FirebaseRecyclerAdapter class and options come from the FirebaseUI library
+            // See: https://github.com/firebase/FirebaseUI-Android
+            val options = messagesRef?.let {
+                FirebaseRecyclerOptions.Builder<Message>()
+                    .setQuery(it, Message::class.java)
+                    .build()
             }
-            binding.messageEditText.setText("")
-        }
 
+            adapter = options?.let { MessageAdapter(it, getUserName()) }!!
+            binding.progressBar.visibility = ProgressBar.INVISIBLE
+            manager = LinearLayoutManager(_context)
+            manager.stackFromEnd = true
+            binding.messageRecyclerView.itemAnimator=null;
+            binding.messageRecyclerView.layoutManager = manager
+            binding.messageRecyclerView.adapter = adapter
+
+            // Scroll down when a new message arrives
+            // See MyScrollToBottomObserver for details
+            adapter!!.registerAdapterDataObserver(
+                MyScrollToBottomObserver(binding.messageRecyclerView, adapter!!, manager)
+            )
+            // Disable the send button when there's no text in the input field
+            // See MyButtonObserver for details
+            binding.messageEditText.addTextChangedListener(MyButtonObserver(binding.sendButton))
+
+            // When the send button is clicked, send a text message
+            binding.sendButton.setOnClickListener {
+                if(binding.messageEditText.text.toString()!="")
+                {
+                    val friendlyMessage = Message(
+                        binding.messageEditText.text.toString(),
+                        getUserName(),
+                        getPhotoUrl(),
+                        null /* no image */
+                    )
+                    idChat?.let { db.reference.child("Chat").child(it).child("Messages").push().setValue(friendlyMessage)}
+
+                    var timestamp = Date().time
+                    idConv?.let { it1 -> db.reference.child("Conversations").child(it1).child("timestamp").setValue(timestamp) }
+                    user?.let { it1 -> idConv?.let { it2 ->
+                        db.reference.child("Users").child(it1).child("Conversations")
+                            .child(it2).child("timestamp").setValue(timestamp)
+                    } }
+                    idConv?.let { it1 ->
+                        db.reference.child("Conversations").child(it1).child("lastMessage").setValue(binding.messageEditText.text.toString())
+                    }
+
+                    //db.reference.child("Conversations").child(idConv).child("timestamp").push().setValue(timestamp)
+                }
+                binding.messageEditText.setText("")
+            }
+        }
         // When the image button is clicked, launch the image picker
         binding.addMessageImageView.setOnClickListener {
             openDocument.launch(arrayOf("image/*"))
@@ -146,44 +169,46 @@ class ChatFragment : Fragment(){
         _binding = null
     }
 
+
     public override fun onPause() {
         super.onPause()
-        adapter.stopListening()
+        adapter?.stopListening()
     }
 
     public override fun onResume() {
         super.onResume()
-        adapter.startListening()
+        adapter?.startListening()
     }
-
 
 
     private fun onImageSelected(uri: Uri) {
         Log.d(TAG, "Uri: $uri")
         val user = auth.currentUser
         val tempMessage = Message(null, getUserName(), getPhotoUrl(), LOADING_IMAGE_URL)
-        db.reference
-            .child(MESSAGES_CHILD)
-            .push()
-            .setValue(
-                tempMessage,
-                DatabaseReference.CompletionListener { databaseError, databaseReference ->
-                    if (databaseError != null) {
-                        Log.w(
-                            TAG, "Unable to write message to database.",
-                            databaseError.toException()
-                        )
-                        return@CompletionListener
-                    }
+        idChat?.let {
+            db.reference
+                .child("Chat").child(it).child("Messages")
+                .push()
+                .setValue(
+                    tempMessage,
+                    DatabaseReference.CompletionListener { databaseError, databaseReference ->
+                        if (databaseError != null) {
+                            Log.w(
+                                TAG, "Unable to write message to database.",
+                                databaseError.toException()
+                            )
+                            return@CompletionListener
+                        }
 
-                    // Build a StorageReference and then upload the file
-                    val key = databaseReference.key
-                    val storageReference = Firebase.storage
-                        .getReference(user!!.uid)
-                        .child(key!!)
-                        .child(uri.lastPathSegment!!)
-                    putImageInStorage(storageReference, uri, key)
-                })
+                        // Build a StorageReference and then upload the file
+                        val key = databaseReference.key
+                        val storageReference = Firebase.storage
+                            .getReference(user!!.uid)
+                            .child(key!!)
+                            .child(uri.lastPathSegment!!)
+                        putImageInStorage(storageReference, uri, key)
+                    })
+        }
     }
 
     private fun putImageInStorage(storageReference: StorageReference, uri: Uri, key: String?) {
@@ -198,10 +223,12 @@ class ChatFragment : Fragment(){
                         .addOnSuccessListener { uri ->
                             val friendlyMessage =
                                 Message(null, getUserName(), getPhotoUrl(), uri.toString())
-                            db.reference
-                                .child(MESSAGES_CHILD)
-                                .child(key!!)
-                                .setValue(friendlyMessage)
+                            idChat?.let { it1 ->
+                                db.reference
+                                    .child("Chat").child(it1).child("Messages")
+                                    .child(key!!)
+                                    .setValue(friendlyMessage)
+                            }
                         }
                 }
                 .addOnFailureListener(requireActivity()) { e ->
@@ -227,61 +254,6 @@ class ChatFragment : Fragment(){
     }
 
 
-    /*private fun displayChatMessages(root :  View)
-    {
-        /*Toast.makeText(context, "Root : $root",
-            Toast.LENGTH_SHORT).show()*/
-        val listOfMessages = root.findViewById(R.id.list_of_messages) as ListView
-
-        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-
-        db = FirebaseDatabase.getInstance();
-        databaseReference = db!!.getReference();
-       // databaseReference!!.keepSynced(true);
-
-        //firebaseDatabase = Firebase.database
-        val messagesRef = db!!.reference.child(MESSAGES_CHILD)
-
-        /*Toast.makeText(context, "databaseReference : $databaseReference ,databaseReference : $messagesRef ",
-            Toast.LENGTH_SHORT).show()*/
-
-        val options: FirebaseListOptions<Message> = FirebaseListOptions.Builder<Message>()
-            .setQuery(messagesRef, Message::class.java)
-            .setLayout(R.layout.message)
-            .build()
-
-        Toast.makeText(context, "options = $options",
-            Toast.LENGTH_SHORT).show()
-
-        adapter = object : FirebaseListAdapter<Message>(options) {
-            override fun populateView(v: View, model: Message, position: Int) {
-                // Get references to the views of message.xml
-                val messageText = v.findViewById<View>(R.id.message_text) as TextView
-                val messageUser = v.findViewById<View>(R.id.message_user) as TextView
-                val messageTime = v.findViewById<View>(R.id.message_time) as TextView
-
-                // Set their text
-                var a =model.messageText
-                var b = model.messageUser
-                Toast.makeText(context,
-                    "text : $a , user : $b",
-                    Toast.LENGTH_SHORT).show()
-                messageText.setText(model.messageText)
-                messageUser.setText(model.messageUser)
-
-                // Format the date before showing it
-                var formatter = DateTimeFormatter.ofPattern("dd-MMMM-yyyy")
-                messageTime.setText(
-                    DateFormat.format(
-                        "dd-MM-yyyy (HH:mm:ss)",
-                        model.messageTime)
-                )
-            }
-        }
-
-        listOfMessages.adapter = adapter
-    }*/
-
     fun arguments(args: Bundle) {
         val objet = args.getString("objet")
         val lieu = args.getString("lieu")
@@ -290,8 +262,7 @@ class ChatFragment : Fragment(){
     }
 
     companion object {
-        private const val TAG = "MainActivity"
-        const val MESSAGES_CHILD = "messages"
+        const val TAG = "MainActivity"
         const val ANONYMOUS = "anonymous"
         private const val LOADING_IMAGE_URL = "https://www.google.com/images/spin-32.gif"
     }

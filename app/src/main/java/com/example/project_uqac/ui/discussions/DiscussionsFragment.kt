@@ -1,6 +1,7 @@
 package com.example.project_uqac.ui.discussions
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,21 +9,28 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentResultListener
+import androidx.fragment.app.setFragmentResult
+//import androidx.fragment.app.testing.FragmentScenario
 import androidx.lifecycle.ViewModelProvider
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.project_uqac.R
 import com.example.project_uqac.databinding.FragmentDiscussionsBinding
+import com.example.project_uqac.ui.chat.ChatFragment
 import com.example.project_uqac.ui.conversation.Conversation
 import com.example.project_uqac.ui.conversation.ConversationsAdapter
-import com.example.project_uqac.ui.chat.ChatFragment
-import com.example.project_uqac.ui.post.PostFragmentNature
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.fragment_chat.*
 
 class DiscussionsFragment : Fragment() {
 
@@ -35,7 +43,18 @@ class DiscussionsFragment : Fragment() {
 
     private lateinit var _context: Context
     private lateinit var listView: ListView
+
+    // Firebase instance variables
     private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseDatabase
+    private lateinit var adapter: ConversationsAdapter
+
+    private var listIdConversation: ArrayList<String>? = ArrayList()
+    private var listConversation: ArrayList<Conversation>?= ArrayList()
+    private var mapIDConv: MutableMap<String,Conversation>? = mutableMapOf<String, Conversation>()
+    private var mapIDTimestamp: MutableMap<String,Double?>? = mutableMapOf<String, Double?>()
+    private  var userID: String? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,22 +74,58 @@ class DiscussionsFragment : Fragment() {
 
             listView = root.findViewById<ListView>(R.id.recipe_list_view)
 
+            // Initialize Realtime Database and FirebaseRecyclerAdapter
+            db = Firebase.database
 
-            var conversations = Conversation.createConversationList(19)
-            val adapter = ConversationsAdapter(_context,conversations)
+            val userIDRef = db.reference.child("Users_ID").get().addOnSuccessListener {
+                it.getValue<Map<String,String>>()!!.forEach{
+                    if(it.value==auth.currentUser?.email){
+                        userID=it.key
+                    }
+                }
+                val userRef = userID?.let { it1 -> db.reference.child("Users").child(it1).child("Conversations").orderByChild("timestamp") }
 
-            listView.adapter = adapter
+                userRef?.addChildEventListener(object: ChildEventListener{
+                    override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                        snapshot.key?.let { addConversation(it)}
+                        //Log.i("Child Add ", " ${snapshot.key}")
+                    }
+
+                    override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                        Log.i("Child ", "onChildChanged ${snapshot.child("timestamp").value}, name = ${snapshot.key}")
+                        snapshot.key?.let { it1 -> refreshConversation(it1, snapshot.child("timestamp").getValue<Double>()) }
+                    }
+
+                    override fun onChildRemoved(snapshot: DataSnapshot) {
+                        Log.i("Child ", "onChildRemoved ")
+                        snapshot.key?.let { it1 -> removeConversation(it1) }
+                    }
+
+                    override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+                        Log.i("Child ", "onChildMoved ")
+                        //refreshConversation()
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.i("Child ", "onCancelled ")
+                    }
+                })
+            }
 
             listView.setOnItemClickListener { parent, view, position, id ->
+                setFragmentResult(
+                    "SendInfoChat",
+                    bundleOf(
+                        "IDChat" to listConversation?.get(listConversation!!.size- 1 - position)?.chat,
+                        "IDConv" to listIdConversation?.get(listConversation!!.size- 1 - position),
+                        "User" to userID
+                    )
+                )
+
                 val fr = parentFragmentManager.beginTransaction()
                 fr.replace(R.id.nav_host_fragment_activity_main, ChatFragment())
                 fr.commit()
-                Log.d("debug", "test 3")
             }
-            //val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1,listOf("car", "plane"))
-            //list.setOnClickListener(AdapterView.OnItemClickListener())
-
-
         } else {
             Toast.makeText(
                 context,
@@ -80,7 +135,6 @@ class DiscussionsFragment : Fragment() {
             this.findNavController().navigate(R.id.navigation_my_account)
             
         }
-
         return root
     }
 
@@ -94,4 +148,101 @@ class DiscussionsFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+
+    private fun getUserName(): String? {
+        val user = auth.currentUser
+        return if (user != null) {
+            user.displayName
+        } else ChatFragment.ANONYMOUS
+    }
+
+    private fun addConversation(id:String){
+        // We check if we have already the id in the list
+        if(listIdConversation?.contains(id) == false)
+        {
+            listIdConversation?.add(id)
+            db.getReference().child("Conversations").child(id).get().addOnSuccessListener {
+                if(it.exists()){
+                   // Log.i("Error","$it")
+                    val conv = it.getValue<Conversation>()!!
+                    if(listConversation?.contains(conv) == false){
+                        listConversation?.add(conv)
+                        mapIDConv?.set(id, conv)
+                        mapIDTimestamp?.set(id,conv.timestamp)
+                    }
+                    //listConversation?.forEach { Log.i("add Conv", "${it.chat}") }
+                    showConversations()
+                }
+            }
+           // listConversation?.forEach { Log.i("test", "${it.chat}") }
+        }else{
+            Log.i("DEBUG ", "ID already here ")
+        }
+    }
+
+    private fun removeConversation(id:String){
+        if(listIdConversation?.contains(id) == true)
+        {
+            listIdConversation?.remove(id)
+            listConversation?.remove(mapIDConv?.get(id))
+            mapIDConv?.remove(id)
+            showConversations()
+        }
+    }
+
+    private fun refreshConversation(idChangedConv:String, timeChangedConv:Double?)
+    {
+        var list: ArrayList<String>? = ArrayList()
+
+        listIdConversation?.remove(idChangedConv)
+        listIdConversation?.forEach {
+            list?.add(it)
+        }
+
+        listConversation?.remove(mapIDConv?.get(idChangedConv))
+        listIdConversation?.clear()
+
+        var i = 0
+        var b:Boolean= true
+
+        while(i< list?.size!!)
+        {
+            if((timeChangedConv!!<listConversation?.get(i)?.timestamp!!) && b==true){
+                listIdConversation?.add(idChangedConv)
+                b=false
+            }else{
+                listIdConversation?.add(list[i])
+                i++
+            }
+        }
+        if(b == true)
+        {
+            listIdConversation?.add(idChangedConv)
+        }
+
+        listConversation?.clear()
+
+        listIdConversation?.forEach {
+            var id = it
+            db.getReference().child("Conversations").child(id).get().addOnSuccessListener {
+                if(it.exists()){
+                    val conv = it.getValue<Conversation>()!!
+                    if(listConversation?.contains(conv) == false){
+                        listConversation?.add(conv)
+                    }
+                    showConversations()
+                }
+            }
+        }
+    }
+
+    private fun showConversations()
+    {
+        adapter = ConversationsAdapter(_context,listConversation)
+        listView.adapter = adapter
+    }
+
+
 }
+

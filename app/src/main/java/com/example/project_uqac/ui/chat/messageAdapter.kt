@@ -92,6 +92,8 @@ class MessageAdapter(
 
             binding.messengerTextView.text = if (item.messageUser == null) ANONYMOUS else item.messageUser
             if (item.photoUrl != null) {
+                var a = item.photoUrl
+                Log.d(ChatFragment.TAG, "url: $a")
                 loadImageIntoView(binding.messengerImageView, item.photoUrl!!)
             } else {
                 binding.messengerImageView.setImageResource(R.drawable.ic_account_circle_black_36dp)
