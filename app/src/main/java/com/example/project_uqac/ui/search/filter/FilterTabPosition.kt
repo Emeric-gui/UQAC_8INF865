@@ -1,11 +1,15 @@
 package com.example.project_uqac.ui.search.filter
 
 import android.annotation.SuppressLint
+import android.app.WallpaperColors.fromDrawable
 import android.content.ContentValues
-import android.graphics.Color
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.PorterDuff
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Icon
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,22 +17,14 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.os.HandlerCompat
 import androidx.fragment.app.Fragment
 import com.example.project_uqac.MainActivity
 import com.example.project_uqac.R
-import com.example.project_uqac.ui.post.PostFragmentLieuAnimal
-import com.example.project_uqac.ui.service.LocationGPS
 import com.google.android.gms.maps.*
-import com.google.android.gms.maps.model.CircleOptions
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
-import org.w3c.dom.Text
+import com.google.android.gms.maps.model.*
 import java.io.BufferedReader
 import java.io.FileInputStream
 import java.io.InputStreamReader
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 
 
 class FilterTabPosition : Fragment(),  GoogleMap.OnCameraMoveStartedListener,
@@ -115,8 +111,25 @@ class FilterTabPosition : Fragment(),  GoogleMap.OnCameraMoveStartedListener,
         map = googleMap
         map.setOnCameraMoveStartedListener(this);
         map.setOnCameraIdleListener(this);
+
+        val drawable = this.resources.getDrawable(R.drawable.ic_herepin)
+
+        val bitmap = Bitmap.createBitmap(
+            drawable.intrinsicWidth,
+            drawable.intrinsicHeight,
+            Bitmap.Config.ARGB_8888
+        )
+
+        val canvas = Canvas(bitmap)
+        drawable.setBounds(0, 0, canvas.width, canvas.height)
+        drawable.draw(canvas)
+
+        val bitmapDrawable = BitmapDrawable(this.resources, bitmap)
+
         map.addMarker(
+
             MarkerOptions()
+                .icon( BitmapDescriptorFactory.fromBitmap(Bitmap.createScaledBitmap(bitmapDrawable.bitmap, 150, 150, false)))
                 .position(positions)
                 .title("Marker")
         )
