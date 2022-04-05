@@ -58,7 +58,7 @@ class PostFragment : Fragment() {
 
         // Initialize Firebase Auth
         auth = Firebase.auth
-/*
+
         if (Firebase.auth.currentUser != null){
             childFragmentManager.beginTransaction().replace(R.id.post_fragment_navigation,PostFragmentNature()).commit()
 
@@ -71,8 +71,8 @@ class PostFragment : Fragment() {
            this.findNavController().navigate(R.id.navigation_my_account)
 
         }
-        */
-        childFragmentManager.beginTransaction().replace(R.id.post_fragment_navigation,PostFragmentNature()).commit()
+
+       // childFragmentManager.beginTransaction().replace(R.id.post_fragment_navigation,PostFragmentNature()).commit()
 
 
 
