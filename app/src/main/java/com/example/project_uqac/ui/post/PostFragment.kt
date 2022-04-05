@@ -74,12 +74,6 @@ class PostFragment : Fragment() {
 
        // childFragmentManager.beginTransaction().replace(R.id.post_fragment_navigation,PostFragmentNature()).commit()
 
-
-
-
-
-
-
         val position =  LocationGPS(context as MainActivity)
         getPositionBackground(position, this)
         Toast.makeText(

@@ -316,17 +316,18 @@ class HomeFragment : Fragment() {
         adapter.setOnItemClickListener(object :ArticlesAdapter.OnItemClickListener{
             override fun onItemClick(position: Int) {
                 //recuperer items
-                Log.v(position.toString(), "positio")
                 val objet = adapter.getObjet(position)
                 val lieu = adapter.getLieu(position)
                 val date = adapter.getDate(position)
                 val nom = adapter.getNom(position)
+                val mail = adapter.getMail(position)
 
                 var args : Bundle = Bundle()
                 args.putString("objet", objet)
                 args.putString("lieu", lieu)
                 args.putString("date", date)
                 args.putString("nom", nom)
+                args.putString("mail", mail)
 
 
                 //creation du fragment de dialogue
