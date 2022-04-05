@@ -90,10 +90,13 @@ class PostFragmentLieuAnimal : Fragment(), OnMapReadyCallback,
 
 
             val article = Firebase.auth.currentUser?.email?.let { it1 ->
-                Article("$textSpecie", "$textRace", textDate,
-                    "$textDescription", "https://picsum.photos/600/300?random&$", "Nom",hash,latObject, lonObject,
-                    it1
-                )
+                Firebase.auth.currentUser?.displayName?.let { it2 ->
+                    Article("$textSpecie", "$textRace", textDate,
+                        "$textDescription", "https://picsum.photos/600/300?random&$",
+                        it2,hash,latObject, lonObject,
+                        it1
+                    )
+                }
             }
 
 

@@ -1,19 +1,17 @@
 package com.example.project_uqac.ui.search.filter
 
 import android.annotation.SuppressLint
-import android.app.WallpaperColors.fromDrawable
 import android.content.ContentValues
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Canvas
-import android.graphics.PorterDuff
 import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Icon
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
@@ -41,6 +39,7 @@ class FilterTabPosition : Fragment(),  GoogleMap.OnCameraMoveStartedListener,
     private lateinit var map: GoogleMap
     private lateinit var seekBarRadius : SeekBar
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -76,8 +75,11 @@ class FilterTabPosition : Fragment(),  GoogleMap.OnCameraMoveStartedListener,
         viewMap = rootView.findViewById(R.id.mapView2)
 
 
+
         return rootView
     }
+
+
 
 
     private fun readCoordinate() {
@@ -134,6 +136,8 @@ class FilterTabPosition : Fragment(),  GoogleMap.OnCameraMoveStartedListener,
                 .title("Marker")
         )
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(positions, zoomLevel))
+
+
     }
 
 

@@ -107,10 +107,13 @@ class PostFragmentLieuObjet : Fragment(), OnMapReadyCallback,
             val hash = GeoFireUtils.getGeoHashForLocation(GeoLocation(latObject, lonObject))
 
             val article = Firebase.auth.currentUser?.email?.let { it1 ->
-                Article("$textModel", "$textMarque", textDate,
-                    "$textDescription", "https://picsum.photos/600/300?random&$", "Nom",hash, latObject, lonObject,
-                    it1
-                )
+                Firebase.auth.currentUser?.displayName?.let { it2 ->
+                    Article("$textModel", "$textMarque", textDate,
+                        "$textDescription", "https://picsum.photos/600/300?random&$",
+                        it2,hash, latObject, lonObject,
+                        it1
+                    )
+                }
             }
 
             if (article != null) {
