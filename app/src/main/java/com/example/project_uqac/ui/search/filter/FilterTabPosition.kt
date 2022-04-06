@@ -51,10 +51,18 @@ class FilterTabPosition : Fragment(),  GoogleMap.OnCameraMoveStartedListener,
         seekBarRadius = rootView.findViewById(R.id.seekBar)
         val textSeekBarRadius : TextView = rootView.findViewById(R.id.var_progress)
 
-        seekBarRadius!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        // Init values
+        textSeekBarRadius.text = " 1"
+
+        seekBarRadius.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latObject, lonObject),(((1-(i.toFloat()/100))*5)+7)))
-                textSeekBarRadius!!.text = " $i"
+                if(i == 0){
+                    textSeekBarRadius.text = " 1"
+                } else {
+                    textSeekBarRadius.text = " $i"
+                }
+
 
             }
 
