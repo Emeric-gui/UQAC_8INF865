@@ -38,8 +38,9 @@ import java.io.InputStreamReader
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors 
+import java.util.concurrent.Executors
 import android.content.Context
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 
 
@@ -219,7 +220,6 @@ class HomeFragment : Fragment() {
 
 /*
  var ref = db.collection("Articles")
-
         ref.whereGreaterThanOrEqualTo("date", formattedDateBefore.toInt() /*formattedDateBefore.toInt()*/)
         //ref.whereIn()
         //db.collection("Articles")
@@ -227,7 +227,6 @@ class HomeFragment : Fragment() {
             .addOnSuccessListener {
                 if (it.isEmpty) {
                     textNoArticle.text ="Aucun objet trouvé"
-
                     Toast.makeText(context, "No article Found", Toast.LENGTH_SHORT).show()
                     return@addOnSuccessListener
                 }
@@ -236,20 +235,12 @@ class HomeFragment : Fragment() {
                     Log.v(article.date.toString(), "article")
                     articles.add(article)
                 }
-
                 textNoArticle.text =""
-
-
                 // Attach the adapter to the recyclerview to populate items
                 rvArticles.adapter = adapter
-
                 setAdapter(adapter)
-
-
                 // Set layout manager to position the items
                 rvArticles.layoutManager = LinearLayoutManager(view?.context)
-
-
             }
  */
 
@@ -264,7 +255,7 @@ class HomeFragment : Fragment() {
         val bounds = GeoFireUtils.getGeoHashQueryBounds(center, radiusInM)
         val tasks: MutableList<Task<QuerySnapshot>> = ArrayList()
         for (b in bounds) {
-        val q: Query = db.collection("Articles")
+            val q: Query = db.collection("Articles")
                 .orderBy("geoHash")
                 .startAt(b.startHash)
                 .endAt(b.endHash)
@@ -291,7 +282,7 @@ class HomeFragment : Fragment() {
 
                         if (article != null) {
                             if (distanceInM <= radiusInM && formattedDateBefore.toInt() <= article.date) {
-                                if (article != null) {
+                                if (article != null && article.author != Firebase.auth.currentUser?.email) {
                                     Log.v(article.title,"articleeeeee22222222" +
                                             "eeeeeeeee")
                                     articles.add(article)
@@ -304,7 +295,7 @@ class HomeFragment : Fragment() {
                 // Set layout manager to position the items
                 rvArticles.layoutManager = LinearLayoutManager(view?.context)
 
-               // matchingDocs contains the results
+                // matchingDocs contains the results
                 // ...
             }
 

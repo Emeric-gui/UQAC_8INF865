@@ -46,7 +46,6 @@ class ArticlesAdapter (private val mArticles: List<Article>) : RecyclerView.Adap
         init {
             itemView.setOnClickListener {
                 listener.onItemClick(layoutPosition)
-
             }
         }
     }
@@ -78,12 +77,21 @@ class ArticlesAdapter (private val mArticles: List<Article>) : RecyclerView.Adap
         val latitude = article.lat
         val longitude = article.lon
         val geoCoder = Geocoder(viewHolder.itemView.context)
-        val adresse = geoCoder.getFromLocation(latitude, longitude, 1)[0]
+        val adresse_Geo = geoCoder.getFromLocation(latitude, longitude, 1)
 
-        val texteLieu : String = adresse.locality+ ", "+adresse.adminArea+", "+adresse.countryName
 
         val locationView = viewHolder.lieuTextView
-        locationView.text = adresse.locality
+
+        var texteLieu = ""
+
+        if(adresse_Geo.size > 0){
+            val adresse = adresse_Geo[0]
+            texteLieu = adresse.locality+ ", "+adresse.adminArea+", "+adresse.countryName
+            locationView.text = adresse.locality
+        }else{
+            locationView.text = "Pas d'adresse"
+            texteLieu = "Pas de lieu trouvé"
+        }
         mLieu.add(texteLieu)
 
 
