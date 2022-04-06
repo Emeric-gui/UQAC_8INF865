@@ -2,6 +2,8 @@ package com.example.project_uqac.ui.chat
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.util.Log
@@ -23,6 +25,7 @@ import com.bumptech.glide.Glide
 
 import com.example.project_uqac.databinding.ImageMessageBinding
 import com.example.project_uqac.databinding.MessageBinding
+import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 
 
@@ -66,6 +69,7 @@ class MessageAdapter(
             setTextColor(item.messageUser, binding.messageTextView)
 
             binding.messengerTextView.text = if (item.messageUser == null) ANONYMOUS else item.messageUser
+
             if (item.photoUrl != null) {
                 loadImageIntoView(binding.messengerImageView, item.photoUrl!!)
             } else {

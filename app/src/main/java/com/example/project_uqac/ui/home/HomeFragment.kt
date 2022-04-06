@@ -40,6 +40,7 @@ import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors 
 import android.content.Context
+import com.google.firebase.database.ktx.database
 
 
 class HomeFragment : Fragment() {
@@ -161,7 +162,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun readCoordinate() {
-
 
         val filename = "Coordinates"
         if(filename!=null && filename.trim()!=""){
@@ -328,7 +328,6 @@ class HomeFragment : Fragment() {
                 args.putString("date", date)
                 args.putString("nom", nom)
                 args.putString("mail", mail)
-
 
                 //creation du fragment de dialogue
                 val dialogPage = DialogFragmentDiscussion()

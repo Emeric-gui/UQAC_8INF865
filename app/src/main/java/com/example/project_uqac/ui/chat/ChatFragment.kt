@@ -18,6 +18,7 @@ import androidx.fragment.app.setFragmentResultListener
 //import androidx.fragment.app.testing.FragmentScenario
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.project_uqac.R
 import com.example.project_uqac.databinding.FragmentChatBinding
@@ -47,10 +48,10 @@ class ChatFragment : Fragment(){
     private lateinit var db: FirebaseDatabase
     private  var adapter: MessageAdapter? = null
 
-    private var idChat: String? = null
-    private var idConv: String? = null
-    private var idUser: String? = null
-    private var idOtherUser: String? = null
+    private lateinit var idChat: String
+    private lateinit var idConv: String
+    private lateinit var idUser: String
+    private lateinit var idOtherUser: String
 
 
     // This property is only valid between onCreateView and
@@ -81,72 +82,50 @@ class ChatFragment : Fragment(){
              return root
          }
 
-        setFragmentResultListener("SendInfoChat") { requestKey, bundle ->
-            idChat = bundle.getString("IDChat") // may change by the data
-            idConv = bundle.getString("IDConv")
-            idUser = bundle.getString("IDUser")
-            idOtherUser = bundle.getString("IDOtherUser")
+        // Initialize Realtime Database and FirebaseRecyclerAdapter
+        db = Firebase.database
 
-            // Initialize Realtime Database and FirebaseRecyclerAdapter
-            db = Firebase.database
-            val messagesRef = idChat?.let { db.reference.child("Chat").child(it).child("Messages") }
+        /*idChat = bundle.getString("IDChat") // may change by the data
+        idConv = bundle.getString("IDConv")
+        idUser = bundle.getString("IDUser")
+        idOtherUser = bundle.getString("IDOtherUser")*/
 
-            // The FirebaseRecyclerAdapter class and options come from the FirebaseUI library
-            // See: https://github.com/firebase/FirebaseUI-Android
-            val options = messagesRef?.let {
-                FirebaseRecyclerOptions.Builder<Message>()
-                    .setQuery(it, Message::class.java)
-                    .build()
-            }
+        val messagesRef = idChat.let { db.reference.child("Chat").child(it).child("Messages") }
 
-            adapter = options?.let { MessageAdapter(it, getUserName()) }!!
-            binding.progressBar.visibility = ProgressBar.INVISIBLE
-            manager = LinearLayoutManager(_context)
-            manager.stackFromEnd = true
-            binding.messageRecyclerView.itemAnimator=null;
-            binding.messageRecyclerView.layoutManager = manager
-            binding.messageRecyclerView.adapter = adapter
+        // The FirebaseRecyclerAdapter class and options come from the FirebaseUI library
+        // See: https://github.com/firebase/FirebaseUI-Android
+        val options = messagesRef.let {
+            FirebaseRecyclerOptions.Builder<Message>()
+                .setQuery(it, Message::class.java)
+                .build()
+        }
 
-            // Scroll down when a new message arrives
-            // See MyScrollToBottomObserver for details
-            adapter!!.registerAdapterDataObserver(
-                MyScrollToBottomObserver(binding.messageRecyclerView, adapter!!, manager)
-            )
-            // Disable the send button when there's no text in the input field
-            // See MyButtonObserver for details
-            binding.messageEditText.addTextChangedListener(MyButtonObserver(binding.sendButton))
+        adapter = options.let { MessageAdapter(it, getUserName()) }
+        binding.progressBar.visibility = ProgressBar.INVISIBLE
+        manager = LinearLayoutManager(_context)
+        manager.stackFromEnd = true
+        binding.messageRecyclerView.itemAnimator=null;
+        binding.messageRecyclerView.layoutManager = manager
+        binding.messageRecyclerView.adapter = adapter
 
-            // When the send button is clicked, send a text message
-            binding.sendButton.setOnClickListener {
-                if(binding.messageEditText.text.toString()!="")
-                {
-                    val friendlyMessage = Message(
-                        binding.messageEditText.text.toString(),
-                        getUserName(),
-                        getPhotoUrl(),
-                        null /* no image */
-                    )
-                    idChat?.let { db.reference.child("Chat").child(it).child("Messages").push().setValue(friendlyMessage)}
+        // Scroll down when a new message arrives
+        // See MyScrollToBottomObserver for details
+        adapter!!.registerAdapterDataObserver(
+            MyScrollToBottomObserver(binding.messageRecyclerView, adapter!!, manager)
+        )
+        // Disable the send button when there's no text in the input field
+        // See MyButtonObserver for details
+        binding.messageEditText.addTextChangedListener(MyButtonObserver(binding.sendButton))
 
-                    var timestamp = Date().time
-                    idConv?.let { it1 -> db.reference.child("Conversations").child(it1).child("timestamp").setValue(timestamp) }
-                    idUser?.let { it1 -> idConv?.let { it2 ->
-                        db.reference.child("Users").child(it1).child("Conversations")
-                            .child(it2).child("timestamp").setValue(timestamp)
-                    } }
-                    idOtherUser?.let { it1 -> idConv?.let { it2 ->
-                        db.reference.child("Users").child(it1).child("Conversations")
-                            .child(it2).child("timestamp").setValue(timestamp)
-                    } }
-                    idConv?.let { it1 ->
-                        db.reference.child("Conversations").child(it1).child("lastMessage").setValue(binding.messageEditText.text.toString())
-                    }
-
-                    //db.reference.child("Conversations").child(idConv).child("timestamp").push().setValue(timestamp)
-                }
+        // When the send button is clicked, send a text message
+        binding.sendButton.setOnClickListener {
+            if(binding.messageEditText.text.toString()!="")
+            {
+                sendData()
                 binding.messageEditText.setText("")
             }
         }
+
         // When the image button is clicked, launch the image picker
         binding.addMessageImageView.setOnClickListener {
             openDocument.launch(arrayOf("image/*"))
@@ -158,16 +137,6 @@ class ChatFragment : Fragment(){
     override fun onAttach(context: Context) {
         super.onAttach(context)
         _context=context
-    }
-
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        /*val root: View = binding.root
-
-        messageAdapter = MessageAdapter(_context)
-        messagesView = root.findViewById(R.id.messages_view)
-        messagesView.adapter = messageAdapter*/
     }
 
     override fun onDestroyView()
@@ -192,7 +161,10 @@ class ChatFragment : Fragment(){
         Log.d(TAG, "Uri: $uri")
         val user = auth.currentUser
         val tempMessage = Message(null, getUserName(), getPhotoUrl(), LOADING_IMAGE_URL)
-        idChat?.let {
+        idConv.let { it1 ->
+            db.reference.child("Conversations").child(it1).child("lastMessage").setValue("Image")
+        }
+        idChat.let {
             db.reference
                 .child("Chat").child(it).child("Messages")
                 .push()
@@ -230,7 +202,7 @@ class ChatFragment : Fragment(){
                         .addOnSuccessListener { uri ->
                             val friendlyMessage =
                                 Message(null, getUserName(), getPhotoUrl(), uri.toString())
-                            idChat?.let { it1 ->
+                            idChat.let { it1 ->
                                 db.reference
                                     .child("Chat").child(it1).child("Messages")
                                     .child(key!!)
@@ -260,12 +232,39 @@ class ChatFragment : Fragment(){
         } else ANONYMOUS
     }
 
+    private fun sendData(){
+        val friendlyMessage = Message(
+            binding.messageEditText.text.toString(),
+            getUserName(),
+            getPhotoUrl(),
+            null /* no image */
+        )
+        idChat.let { db.reference.child("Chat").child(it).child("Messages").push().setValue(friendlyMessage)}
+
+        var timestamp = Date().time
+        idConv.let { it1 -> db.reference.child("Conversations").child(it1).child("timestamp").setValue(timestamp) }
+        idUser.let { it1 ->
+            idConv.let { it2 ->
+                db.reference.child("Users").child(it1).child("Conversations")
+                    .child(it2).child("timestamp").setValue(timestamp)
+            }
+        }
+        idOtherUser.let { it1 ->
+            idConv.let { it2 ->
+                db.reference.child("Users").child(it1).child("Conversations")
+                    .child(it2).child("timestamp").setValue(timestamp)
+            }
+        }
+        idConv.let { it1 ->
+            db.reference.child("Conversations").child(it1).child("lastMessage").setValue(binding.messageEditText.text.toString())
+        }
+    }
 
     fun arguments(args: Bundle) {
-        val objet = args.getString("objet")
-        val lieu = args.getString("lieu")
-        val date = args.getString("date")
-        val nom = args.getString("nom")
+        idChat = args.getString("IDChat").toString()
+        idConv = args.getString("IDConv").toString()
+        idUser = args.getString("IDUser").toString()
+        idOtherUser = args.getString("IDOtherUser").toString()
     }
 
     companion object {

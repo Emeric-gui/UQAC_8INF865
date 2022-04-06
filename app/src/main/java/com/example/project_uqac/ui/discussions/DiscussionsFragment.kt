@@ -52,7 +52,7 @@ class DiscussionsFragment : Fragment() {
     private var listIdConversation: ArrayList<String>? = ArrayList()
     private var listConversation: ArrayList<Conversation>?= ArrayList()
     private var mapIDConv: MutableMap<String,Conversation>? = mutableMapOf<String, Conversation>()
-    private var mapIDTimestamp: MutableMap<String,Double?>? = mutableMapOf<String, Double?>()
+    private var mapIDTimestamp: MutableMap<String,Long?>? = mutableMapOf<String, Long?>()
     private  var userID: String? = null
 
 
@@ -245,9 +245,8 @@ class DiscussionsFragment : Fragment() {
                     otherUserID = it.key
                 }
             }
-            Log.i("TEST","VBLABLMABLA")
-            Log.i("TEST","USER_ID : $userID & OTHER_USER_ID = $otherUserID")
-            setFragmentResult(
+
+            /*setFragmentResult(
                 "SendInfoChat",
                 bundleOf(
                     "IDChat" to listConversation?.get(listConversation!!.size- 1 - position)?.chat,
@@ -255,10 +254,18 @@ class DiscussionsFragment : Fragment() {
                     "IDUser" to userID,
                     "IDOtherUser" to otherUserID
                 )
-            )
+            )*/
+
+            var chat = ChatFragment()
+            var args = Bundle()
+            args.putString("IDChat", listConversation?.get(listConversation!!.size- 1 - position)?.chat)
+            args.putString("IDConv", listIdConversation?.get(listConversation!!.size- 1 - position))
+            args.putString("IDUser", userID)
+            args.putString("IDOtherUser", otherUserID)
+            chat.arguments(args)
 
             val fr = parentFragmentManager.beginTransaction()
-            fr.replace(R.id.nav_host_fragment_activity_main, ChatFragment())
+            fr.replace(R.id.nav_host_fragment_activity_main, chat)
             fr.commit()
         }
     }

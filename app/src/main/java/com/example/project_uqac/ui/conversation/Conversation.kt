@@ -8,9 +8,12 @@ class Conversation {
     var user2Mail: String? = null
     var lastMessage: String? = null
     var chat: String? = null
-    var timestamp: Double? = null
+    var timestamp: Long? = null
 
-    constructor(titleObject: String?, user1: String?, user2: String?,user1Mail: String?, user2Mail: String?, lastMessage: String?, chat: String?, timestamp: Double?  )
+    constructor(
+        titleObject: String?, user1: String?, user2: String?,
+        user1Mail: String?, user2Mail: String?, lastMessage: String?, chat: String?, timestamp: Long
+    )
     {
         this.titleObject=titleObject
         this.chat=chat
