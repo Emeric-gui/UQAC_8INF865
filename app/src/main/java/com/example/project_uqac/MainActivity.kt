@@ -12,9 +12,9 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.project_uqac.databinding.ActivityMainBinding
 import com.example.project_uqac.ui.service.LocationGPS
+import com.google.android.libraries.places.api.Places
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
-import java.io.*
 
 class MainActivity : AppCompatActivity() {
 
