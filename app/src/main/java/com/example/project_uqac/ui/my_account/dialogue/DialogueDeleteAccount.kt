@@ -32,6 +32,7 @@ class DialogueDeleteAccount:DialogFragment() {
 
             // TODO Delete Account here
             val user = Firebase.auth.currentUser!!
+            val email : String? = user.email;
             // Delete profil pic in our storage
             Firebase.storage.reference.child("profil_pics/" + user.email).delete()
             // Delete user account
@@ -40,6 +41,9 @@ class DialogueDeleteAccount:DialogFragment() {
                     if (task.isSuccessful) {
                         Log.d(TAG, "User account deleted.")
                         // Show back login page
+                        if (email != null) {
+                            mMyAccountLogged.deleteAllPosts(email)
+                        }
                         mMyAccountLogged.goBackLogin(true)
                     }
                 }

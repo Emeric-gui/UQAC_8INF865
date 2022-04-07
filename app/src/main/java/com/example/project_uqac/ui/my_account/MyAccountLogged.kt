@@ -25,6 +25,7 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.project_uqac.R
+import com.example.project_uqac.ui.article.Article
 import com.example.project_uqac.ui.home.popupDiscussion.DialogFragmentDiscussion
 import com.example.project_uqac.ui.my_account.dialogue.DialogueDeleteAccount
 import com.example.project_uqac.ui.post.PostFragmentNature
@@ -33,6 +34,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
@@ -242,6 +244,18 @@ class MyAccountLogged : Fragment() {
         val transaction = fragmentManager?.beginTransaction()
         transaction?.replace(R.id.my_account_fragment_navigation, fragment)?.commit()
 //        Log.d("TAG", "J'y suis arrive !")
+    }
+
+    fun deleteAllPosts(emailUser : String){
+        val db = Firebase.firestore
+        db.collection("Articles")
+            .whereEqualTo("author", emailUser)
+            .get()
+            .addOnSuccessListener {
+                for (doc in it) {
+                    db.collection("Articles").document(doc.toString().split("/")[1].split(",")[0]).delete()
+                }
+            }
     }
 
     fun updateUsername(username : String){

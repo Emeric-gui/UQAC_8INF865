@@ -92,7 +92,13 @@ class MyAccountRegister : Fragment() {
             return
         }
 
-//        if (!this::imageView.isInitialized){
+        if (sign_up_password.text.toString().length < 6) {
+            sign_up_password.error = "Veuillez entrer un mot de passe de minimum 6 caractères"
+            sign_up_password.requestFocus()
+            return
+        }
+
+//        if (!this::imageView.isInitialized){ // Forget because add a pic isn't mandatory
 //            sign_up_password.requestFocus()
 //            return
 //        }
