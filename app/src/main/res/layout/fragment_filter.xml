@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="300dp"
-    android:layout_height="600dp"
+    android:layout_height="700dp"
     android:layout_gravity="center_horizontal"
     android:backgroundTint="#FFFFFF"
     android:foregroundTint="#FFFFFF">
@@ -60,6 +60,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="#FAF8F8"
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
@@ -72,7 +73,7 @@
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/filter_viewer"
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
+                android:layout_height="500dp"
                 android:layout_gravity="center"
                 android:foregroundGravity="center_vertical|center_horizontal"
                 android:padding="10dp"
@@ -91,6 +92,7 @@
                 android:id="@+id/button_valider"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:text="Valider" />
 
         </LinearLayout>

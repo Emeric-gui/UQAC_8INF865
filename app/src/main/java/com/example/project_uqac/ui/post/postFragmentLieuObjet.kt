@@ -23,26 +23,34 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.os.HandlerCompat
 import androidx.fragment.app.Fragment
+import com.example.project_uqac.BuildConfig
 import com.example.project_uqac.MainActivity
 import com.example.project_uqac.R
 import com.example.project_uqac.ui.article.Article
+import com.example.project_uqac.ui.chat.ChatFragment
 import com.example.project_uqac.ui.home.HomeFragment
 import com.example.project_uqac.ui.my_account.myPosts.Post
 import com.example.project_uqac.ui.search.SearchFragment
 import com.example.project_uqac.ui.service.LocationGPS
 import com.firebase.geofire.GeoFireUtils
 import com.firebase.geofire.GeoLocation
+import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.io.BufferedReader
 import java.io.FileInputStream
 import java.io.InputStreamReader
+import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -53,11 +61,16 @@ class PostFragmentLieuObjet : Fragment(), OnMapReadyCallback,
 
 
     private lateinit var mapFragment: SupportMapFragment
+    private lateinit var autocompleteFragment: AutocompleteSupportFragment
+
     private var lat : Double = 0.0
     private var lon : Double = 0.0
     private var latObject : Double = 0.0
     private var lonObject : Double = 0.0
+    private var  radius  = 14.0
     private lateinit var map: GoogleMap
+    private var zoomMap = 0
+    private lateinit var seekBarRadius : SeekBar
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -88,10 +101,29 @@ class PostFragmentLieuObjet : Fragment(), OnMapReadyCallback,
             transaction?.replace(R.id.post_fragment_navigation, fragment)?.commit()
         }
 
-        val fm = parentFragmentManager.beginTransaction()
+        seekBarRadius = view.findViewById(R.id.seekBar)
+        val textSeekBarRadius : TextView = view.findViewById(R.id.var_progress)
+
+        seekBarRadius!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
+                zoomMap = i
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latObject, lonObject),(((1-(zoomMap.toFloat()/100))*5)+7)))
+                textSeekBarRadius!!.text = " $zoomMap"
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar) {}
+        })
+
+        if (!Places.isInitialized()) {
+            Places.initialize(context, BuildConfig.MAPS_API_KEY, Locale.CANADA);
+        }
+
+        val fm = fragmentManager?.beginTransaction()
         mapFragment = SupportMapFragment.newInstance()
-        fm.add(R.id.mapView, mapFragment)
-        fm.commit()
+        autocompleteFragment = AutocompleteSupportFragment.newInstance()
+        fm?.add(R.id.mapView, mapFragment)
+        fm?.add(R.id.autocomplete_fragment, autocompleteFragment)
+        fm?.commit()
 
         readCoordinate()
 
@@ -141,6 +173,26 @@ class PostFragmentLieuObjet : Fragment(), OnMapReadyCallback,
              */
         }
 
+        autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME))
+
+        // Set up a PlaceSelectionListener to handle the response.
+        autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
+            override fun onError(status: Status) {
+               // Log.i(ChatFragment.TAG, "An error occurred: $status")
+                Toast.makeText(context,"Utilisez une API KEY valide!", Toast.LENGTH_LONG).show()
+
+            }
+
+            override fun onPlaceSelected(place: Place) {
+                // TODO: Get info about the selected place.
+                Log.i(ChatFragment.TAG, "Place: ${place.name}, ${place.id}")
+                latObject = place.latLng.latitude
+                lonObject = place.latLng.longitude
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(place.latLng,(((1-(zoomMap.toFloat()/100))*5)+7)))
+
+            }
+        })
+
         return view
     }
 
@@ -180,7 +232,6 @@ class PostFragmentLieuObjet : Fragment(), OnMapReadyCallback,
         val lat = this.lat
         val lng = this.lon
         var positions = LatLng(lat, lng)
-        val radius  = 15.0
         val zoomLevel = radius.toFloat()
         map = googleMap
         map.setOnCameraMoveStartedListener(this);
