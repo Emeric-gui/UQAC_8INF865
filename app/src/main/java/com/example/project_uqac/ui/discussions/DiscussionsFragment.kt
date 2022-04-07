@@ -52,7 +52,7 @@ class DiscussionsFragment : Fragment() {
     private var listIdConversation: ArrayList<String>? = ArrayList()
     private var listConversation: ArrayList<Conversation>?= ArrayList()
     private var mapIDConv: MutableMap<String,Conversation>? = mutableMapOf<String, Conversation>()
-    private var mapIDTimestamp: MutableMap<String,Double?>? = mutableMapOf<String, Double?>()
+    private var mapIDTimestamp: MutableMap<String,Long?>? = mutableMapOf<String, Long?>()
     private  var userID: String? = null
 
 
@@ -113,18 +113,7 @@ class DiscussionsFragment : Fragment() {
             }
 
             listView.setOnItemClickListener { parent, view, position, id ->
-                setFragmentResult(
-                    "SendInfoChat",
-                    bundleOf(
-                        "IDChat" to listConversation?.get(listConversation!!.size- 1 - position)?.chat,
-                        "IDConv" to listIdConversation?.get(listConversation!!.size- 1 - position),
-                        "User" to userID
-                    )
-                )
-
-                val fr = parentFragmentManager.beginTransaction()
-                fr.replace(R.id.nav_host_fragment_activity_main, ChatFragment())
-                fr.commit()
+                sendInformations(position)
             }
         } else {
             Toast.makeText(
@@ -148,7 +137,6 @@ class DiscussionsFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
 
     private fun getUserName(): String? {
         val user = auth.currentUser
@@ -234,6 +222,51 @@ class DiscussionsFragment : Fragment() {
                     showConversations()
                 }
             }
+        }
+    }
+
+    private fun sendInformations(position:Int)
+    {
+        var otherUserMail : String
+        var otherUserID : String? = null
+
+        //Get the name of the other player
+        if(listConversation?.get(listConversation!!.size- 1 - position)?.user1Mail==auth.currentUser?.email){
+            otherUserMail = listConversation?.get(listConversation!!.size- 1 - position)?.user2Mail.toString()
+        }else{
+            otherUserMail = listConversation?.get(listConversation!!.size- 1 - position)?.user1Mail.toString()
+        }
+
+        //Get the other user 's ID
+        db.reference.child("Users_ID").get().addOnSuccessListener {
+
+            it.getValue<Map<String, String>>()!!.forEach {
+                if (it.value == otherUserMail) {
+                    otherUserID = it.key
+                }
+            }
+
+            /*setFragmentResult(
+                "SendInfoChat",
+                bundleOf(
+                    "IDChat" to listConversation?.get(listConversation!!.size- 1 - position)?.chat,
+                    "IDConv" to listIdConversation?.get(listConversation!!.size- 1 - position),
+                    "IDUser" to userID,
+                    "IDOtherUser" to otherUserID
+                )
+            )*/
+
+            var chat = ChatFragment()
+            var args = Bundle()
+            args.putString("IDChat", listConversation?.get(listConversation!!.size- 1 - position)?.chat)
+            args.putString("IDConv", listIdConversation?.get(listConversation!!.size- 1 - position))
+            args.putString("IDUser", userID)
+            args.putString("IDOtherUser", otherUserID)
+            chat.arguments(args)
+
+            val fr = parentFragmentManager.beginTransaction()
+            fr.replace(R.id.nav_host_fragment_activity_main, chat)
+            fr.commit()
         }
     }
 

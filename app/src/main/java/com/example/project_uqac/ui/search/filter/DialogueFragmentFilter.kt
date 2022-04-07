@@ -35,6 +35,7 @@ class DialogueFragmentFilter:DialogFragment(){
          }
          // Instantiate a ViewPager2 and a PagerAdapter.
          viewFilter = rootView.findViewById(R.id.filter_viewer)
+         viewFilter.isUserInputEnabled = false;
 
          // The pager adapter, which provides the pages to the view pager widget.
          val pagerAdapter = FiltreViewPager2FragmentAdapter(this)

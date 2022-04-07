@@ -24,6 +24,7 @@ import com.example.project_uqac.ui.home.popupDiscussion.DialogFragmentDiscussion
 import com.example.project_uqac.ui.search.filter.DialogueFragmentFilter
 import com.example.project_uqac.ui.service.LocationGPS
 import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -115,17 +116,18 @@ class SearchFragment  : Fragment()  {
         adapter.setOnItemClickListener(object :ArticlesAdapter.OnItemClickListener{
             override fun onItemClick(position: Int) {
                 //recuperer items
-                Log.v(position.toString(), "positio")
                 val objet = adapter.getObjet(position)
                 val lieu = adapter.getLieu(position)
                 val date = adapter.getDate(position)
                 val nom = adapter.getNom(position)
+                val mail = adapter.getMail(position)
 
                 var args : Bundle = Bundle()
                 args.putString("objet", objet)
                 args.putString("lieu", lieu)
                 args.putString("date", date)
                 args.putString("nom", nom)
+                args.putString("mail", mail)
 
                 //creation du fragment de dialogue
                 val dialogPage = DialogFragmentDiscussion()
@@ -170,7 +172,10 @@ class SearchFragment  : Fragment()  {
                     for (doc in it) {
                         val article = doc.toObject(Article::class.java)
                         Log.v(article.date.toString(), "article")
-                        articles.add(article)
+                        if( article.author != Firebase.auth.currentUser?.email){
+                            articles.add(article)
+                        }
+
                     }
 
                     textNoArticle.text = ""
@@ -197,7 +202,9 @@ class SearchFragment  : Fragment()  {
                     for (doc in it) {
                         val article = doc.toObject(Article::class.java)
                         Log.v(article.date.toString(), "article")
-                        articles.add(article)
+                        if( article.author != Firebase.auth.currentUser?.email){
+                            articles.add(article)
+                        }
                     }
 
                     textNoArticle.text = ""

@@ -11,17 +11,20 @@
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.24739583333333334" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.24739583333333334" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/drawable/ic_send_black_24dp.xml" value="0.253" />
+        <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/aatemp.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/activity_main.xml" value="0.2957427536231884" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_chat.xml" value="0.18854166666666666" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_dashboard.xml" value="0.2957427536231884" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_discussions.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_filter.xml" value="0.21354166666666666" />
+        <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_filter_calendrier.xml" value="0.16041666666666668" />
+        <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_filter_map.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_home.xml" value="0.2957427536231884" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_login.xml" value="0.16822916666666668" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_my_account.xml" value="0.23125" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_my_account_home.xml" value="0.33" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_my_account_informations.xml" value="0.21105072463768115" />
-        <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_my_account_logged.xml" value="0.1" />
+        <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_my_account_logged.xml" value="0.25" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_my_account_my_posts.xml" value="0.21105072463768115" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_my_account_sign_up.xml" value="0.1" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_notifications.xml" value="0.2957427536231884" />
@@ -34,6 +37,7 @@
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/fragment_search.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/frame.xml" value="0.23125" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/frame_textview.xml" value="0.24635416666666668" />
+        <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/image_message.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/item_article.xml" value="0.21105072463768115" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/item_conversation.xml" value="0.21105072463768115" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/layout/my_message.xml" value="0.21354166666666666" />
@@ -41,17 +45,15 @@
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/menu/bottom_nav_menu.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.24739583333333334" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.24739583333333334" />
+
         <entry key="app/src/main/res/drawable-xxxhdpi/ic_search_black_24dp.xml" value="0.138" />
         <entry key="app/src/main/res/drawable/circle.xml" value="0.201" />
+
         <entry key="app/src/main/res/drawable/customborder.xml" value="0.201" />
-        <entry key="app/src/main/res/drawable/heremap.xml" value="0.1335" />
         <entry key="app/src/main/res/drawable/ic_information.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/post_border_custom.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/post_gradient_background.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/round_button.xml" value="0.1" />
-        <entry key="app/src/main/res/drawable/rounded_message_blue.xml" value="0.1335" />
-        <entry key="app/src/main/res/drawable/rounded_message_gray.xml" value="0.1335" />
-        <entry key="app/src/main/res/drawable/targetcircle.xml" value="0.1335" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.182518115942029" />
         <entry key="app/src/main/res/layout/fragment_chat.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_discussions.xml" value="0.18714555765595464" />
@@ -70,8 +72,10 @@
         <entry key="app/src/main/res/layout/fragment_post_description_objet.xml" value="0.1328125" />
         <entry key="app/src/main/res/layout/fragment_post_espece.xml" value="0.3292433537832311" />
         <entry key="app/src/main/res/layout/fragment_post_lieu.xml" value="0.1342451874366768" />
+
         <entry key="app/src/main/res/layout/fragment_post_lieu_animal.xml" value="0.3850574712643678" />
         <entry key="app/src/main/res/layout/fragment_post_lieu_objet.xml" value="0.1" />
+
         <entry key="app/src/main/res/layout/fragment_post_nature.xml" value="0.13247213779128672" />
         <entry key="app/src/main/res/layout/fragment_post_type.xml" value="0.1342451874366768" />
         <entry key="app/src/main/res/layout/fragment_postf.xml" value="0.12364130434782608" />
