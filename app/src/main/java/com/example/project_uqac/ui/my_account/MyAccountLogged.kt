@@ -74,23 +74,26 @@ class MyAccountLogged : Fragment() {
         if (user != null && !reloaded) {
             // Create a storage reference from our app
             if(user.photoUrl != null){
-                val storageRef = Firebase.storage.getReferenceFromUrl(user.photoUrl.toString())
-                Log.d("Lets gowwww", user.photoUrl.toString())
+                try {
+                    val storageRef = Firebase.storage.getReferenceFromUrl(user.photoUrl.toString())
+                    Log.d("Lets gowwww", user.photoUrl.toString())
 //            var islandRef = storageRef.child("profil_pics/myImage")
 
-                val ONE_MEGABYTE: Long = 1024 * 1024
-                storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener {
+                    val ONE_MEGABYTE: Long = 1024 * 1024
+                    storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener {
 //                val myImage : ByteArray = it
-                    imageView.setImageBitmap(BitmapFactory.decodeByteArray(it, 0, it.size))
-                    // Data for "images/island.jpg" is returned, use this as needed
-                }.addOnFailureListener {
+                        imageView.setImageBitmap(BitmapFactory.decodeByteArray(it, 0, it.size))
+                        // Data for "images/island.jpg" is returned, use this as needed
+                    }.addOnFailureListener {
 //                    Log.d("MyAccountLogged : ", "No profil pic in database")
+                    }
+                } catch (e: Exception) {
+                    imageView.setImageResource(R.drawable.ic_account_circle_black_36dp)
                 }
+
             } else {
                 imageView.setImageResource(R.drawable.ic_account_circle_black_36dp)
             }
-
-
 //            imageView.setImageURI(user.photoUrl)
         }
 
