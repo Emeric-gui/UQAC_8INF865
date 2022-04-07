@@ -39,6 +39,20 @@ apply plugin: 'com.google.gms.google-services'
 
 
 dependencies {
+    implementation 'com.google.maps.android:places-ktx:0.4.0'
+    implementation("androidx.hilt:hilt-navigation-fragment:1.0.0")
+    implementation 'com.google.android.libraries.places:places:2.6.0'
+
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.6.20"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0-native-mt"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"
+    implementation "com.android.volley:volley:1.2.1"
+    implementation 'androidx.multidex:multidex:2.0.1'
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.0-native-mt"
+    api "com.google.android.libraries.places:places:2.5.0"
+
+
     implementation 'com.firebase:geofire-android-common:3.1.0'
     implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation platform('com.google.firebase:firebase-bom:29.2.1')
