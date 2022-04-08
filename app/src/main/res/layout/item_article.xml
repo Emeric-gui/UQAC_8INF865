@@ -44,9 +44,11 @@
 
                         <ImageView
                             android:id="@+id/imageViewArticle"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitXY"
                             tools:srcCompat="@mipmap/ic_launcher" />
                     </androidx.cardview.widget.CardView>
 
