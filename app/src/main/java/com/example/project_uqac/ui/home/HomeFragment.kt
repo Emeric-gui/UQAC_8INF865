@@ -136,11 +136,13 @@ class HomeFragment : Fragment() {
         val position =  LocationGPS(context as MainActivity)
         //position.getLocationHome(this)
         getPositionBackground(position, this)
-        Toast.makeText(
+       /* Toast.makeText(
             context,
             "Home Fragment Ecriture data",
             Toast.LENGTH_SHORT
         ).show()
+
+        */
 
         loadData()
 

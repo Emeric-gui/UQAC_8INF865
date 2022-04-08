@@ -88,11 +88,12 @@ class SearchFragment  : Fragment()  {
         val position =  LocationGPS(context as MainActivity)
         //position.getLocationSearch(this)
         getPositionBackground(position, this)
-        Toast.makeText(
+        /*Toast.makeText(
             context,
             "SearchFragment Ecriture data",
             Toast.LENGTH_SHORT
         ).show()
+         */
 
         return root
     }

@@ -6,22 +6,23 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.example.project_uqac.MainActivity
-import com.example.project_uqac.ui.home.HomeFragment
-import com.example.project_uqac.ui.post.PostFragment
-import com.example.project_uqac.ui.post.PostFragmentLieuAnimal
-import com.example.project_uqac.ui.post.PostFragmentLieuObjet
-import com.example.project_uqac.ui.search.SearchFragment
-import com.example.project_uqac.ui.search.filter.FilterTabPosition
+import com.example.project_uqac.ui.mysql.CoordinateDB
+import com.example.project_uqac.ui.mysql.MySQL
+import com.firebase.geofire.GeoFireUtils
+import com.firebase.geofire.GeoLocation
 import java.io.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 class LocationGPS(mainActivity: MainActivity) : LocationListener {
 
     private var lati : Double? = null
     private var long : Double? = null
+    private var dbHandler: MySQL? = null
 
     private lateinit var locationManager: LocationManager
     private val locationPermissionCode = 2
@@ -87,7 +88,46 @@ class LocationGPS(mainActivity: MainActivity) : LocationListener {
             app?.getCoordinate()
         }
 
+        //update database
+        updateDB(lat, lon)
+
     }
 
+    fun updateDB(lat: Double, lon: Double) {
+        // checking input text should not be null
+        Toast.makeText(app, "UPDATEDB", Toast.LENGTH_LONG).show()
 
-}
+
+        //init db
+        dbHandler = MySQL(app)
+        Log.v(dbHandler!!.getAllCoordinates(), "Elements beforeeeeeeeee")
+        Log.v(dbHandler!!.anyCoordinatesInsideRadius(lat, lon).toString(), "last elementVVVVVV")
+
+        dbHandler!!.deleteCoordinates7DaysLater()
+
+        Log.v(dbHandler!!.getAllCoordinates(), "Elements AFTERrrrrrrrrrrrr")
+
+
+        if (!dbHandler!!.anyCoordinatesInsideRadius(lat, lon)) {
+
+            val coordinates: CoordinateDB = CoordinateDB()
+            var success: Boolean = false
+
+           //val  cal : Calendar = GregorianCalendar . getInstance ()
+            //cal.time = Calendar.getInstance().time
+            val todayDate: java.util.Date = Calendar.getInstance().time //cal.time
+            val df = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
+            val formattedTodayDate: String = df.format(todayDate)
+
+            coordinates.date = formattedTodayDate
+            coordinates.geoHash = GeoFireUtils.getGeoHashForLocation(GeoLocation(lat, lon))
+            coordinates.lat = lat
+            coordinates.lon = lon
+            success = dbHandler!!.addCoordinates(coordinates)
+
+            if (success) {
+                Toast.makeText(app, "Saved Successfully", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+    }
