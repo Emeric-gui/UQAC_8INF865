@@ -1,5 +1,6 @@
 package com.example.project_uqac.ui.article
 
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.project_uqac.R
 import com.squareup.picasso.Picasso
 import android.location.Geocoder
+import android.util.Log
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 
 class ArticlesAdapter (private val mArticles: List<Article>) : RecyclerView.Adapter<ArticlesAdapter.ViewHolder>()
 {
@@ -119,7 +124,39 @@ class ArticlesAdapter (private val mArticles: List<Article>) : RecyclerView.Adap
 
         val descriptionView = viewHolder.descriptionTextView
         descriptionView.text = article.description
-        Picasso.get().load(article.image).into(viewHolder.imageImageView)
+
+        val image : ImageView = viewHolder.imageImageView
+
+
+        //changer image et check si true ou false
+        val isObject = article.objet
+        if(article.image != "null"){
+            //recupérer ici l'image contenue dans le dossier de storage
+            try {
+                val storageRef = Firebase.storage.getReference("articles_pics/"+article.image)
+                val ONE_MEGABYTE: Long = 1024 * 1024
+                storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener {
+                    image.setImageBitmap(BitmapFactory.decodeByteArray(it, 0, it.size))
+                }.addOnFailureListener {
+                }
+            } catch (e: Exception) {
+                if(isObject){
+                    image.setImageResource(R.drawable.ic_baseline_weekend_24_black)
+                }else{
+                    image.setImageResource(R.drawable.ic_baseline_pets_24_black)
+                }
+            }
+
+
+        }else{
+            if(isObject){
+                image.setImageResource(R.drawable.ic_baseline_weekend_24_black)
+            }else{
+                image.setImageResource(R.drawable.ic_baseline_pets_24_black)
+            }
+        }
+
+//        Picasso.get().load(article.image).into(viewHolder.imageImageView)
 
     }
 

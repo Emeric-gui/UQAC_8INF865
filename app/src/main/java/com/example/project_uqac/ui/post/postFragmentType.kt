@@ -23,7 +23,7 @@ class PostFragmentType : Fragment() {
         val textModel : TextInputEditText = view.findViewById(R.id.textModele)
         val textMarque : TextInputEditText = view.findViewById(R.id.textMarque)
         var progressBar : ProgressBar = view.findViewById(R.id.progressBar)
-        progressBar.progress = 40
+        progressBar.progress = 34
         val args = Bundle()
 
         val buttonPrev : ImageButton = view.findViewById(R.id.imageButtonprevtype)

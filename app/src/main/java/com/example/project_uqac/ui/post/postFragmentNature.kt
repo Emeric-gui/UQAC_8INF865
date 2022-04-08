@@ -20,7 +20,7 @@ class PostFragmentNature : Fragment() {
         // Inflate the layout for this fragment
         val view =  inflater.inflate(R.layout.fragment_post_nature, container, false)
         var progressBar : ProgressBar = view.findViewById(R.id.progressBar)
-        progressBar.progress = 20
+        progressBar.progress = 17
 
 
         val buttonAnimal : Button = view.findViewById(R.id.buttonAnimal)

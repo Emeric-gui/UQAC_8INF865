@@ -1,5 +1,6 @@
 package com.example.project_uqac.ui.post
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -27,8 +28,11 @@ class PostFragmentDateObjet : Fragment() {
         val textModel = requireArguments().getString("model")
         val textMarque = requireArguments().getString("marque")
         val textDescription = requireArguments().getString("description")
+        val cropImg : Bitmap? = requireArguments().getParcelable("image")
+
+
         var progressBar : ProgressBar = view.findViewById(R.id.progressBar)
-        progressBar.progress = 80
+        progressBar.progress = 85
         var varMonth: Int = 0
         var calendar: CalendarView = view.findViewById(R.id.calendarView_post_objet)
 
@@ -63,9 +67,10 @@ class PostFragmentDateObjet : Fragment() {
 
         val buttonPrev : ImageButton = view.findViewById(R.id.imageButtonprevDateObjet)
         buttonPrev.setOnClickListener(){
-            val fragment = PostFragmentDescriptionObjet()
+            val fragment = PostFragmentPhotoObjet()
             args.putString("model", textModel.toString())
             args.putString("marque", textMarque.toString())
+            args.putString("description", textDescription.toString())
             fragment.arguments = args
             val transaction = fragmentManager?.beginTransaction()
             transaction?.replace(R.id.post_fragment_navigation, fragment)?.commit()
@@ -78,13 +83,12 @@ class PostFragmentDateObjet : Fragment() {
             args.putString("model", textModel.toString())
             args.putString("marque", textMarque.toString())
             args.putString("description", textDescription.toString())
+            args.putParcelable("image", cropImg)
             args.putInt("date", textDate.toInt())
             fragment.arguments = args
             val transaction = fragmentManager?.beginTransaction()
             transaction?.replace(R.id.post_fragment_navigation, fragment)?.commit()
         }
-
-
 
         return view
 

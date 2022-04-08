@@ -23,7 +23,7 @@ class PostFragmentEspece : Fragment() {
         val textSpecie : TextInputEditText = view.findViewById(R.id.textSpecie)
         val textMRace : TextInputEditText = view.findViewById(R.id.textRace)
         var progressBar : ProgressBar = view.findViewById(R.id.progressBar)
-        progressBar.progress = 40
+        progressBar.progress = 34
         val args = Bundle()
 
         val buttonPrev : ImageButton = view.findViewById(R.id.imageButtonprevrespece)

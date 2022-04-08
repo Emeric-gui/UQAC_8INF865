@@ -7,7 +7,7 @@ class Article(
 
     val description: String = "", val image: String = "", val nom: String = "", val geoHash: String = "", val lat: Double = 0.0, val lon: Double = 0.0,
 
-    val author: String = "" ){
+    val author: String = "", val objet : Boolean = true){
 
 
     companion object {

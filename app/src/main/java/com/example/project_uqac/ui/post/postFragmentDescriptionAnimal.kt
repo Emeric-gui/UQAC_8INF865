@@ -22,7 +22,7 @@ class PostFragmentDescriptionAnimal : Fragment() {
 
         val textDescription : TextInputEditText = view.findViewById(R.id.textDescriptionAnimal)
         var progressBar : ProgressBar = view.findViewById(R.id.progressBar)
-        progressBar.progress = 60
+        progressBar.progress = 51
 
         val args = Bundle()
 
@@ -40,7 +40,7 @@ class PostFragmentDescriptionAnimal : Fragment() {
 
         val buttonNext : ImageButton = view.findViewById(R.id.imageButtonnextdescriptionAnimal)
         buttonNext.setOnClickListener(){
-            val fragment = PostFragmentDateAnimal()
+            val fragment = PostFragmentPhotoAnimal()
             args.putString("specie", textSpecie.toString())
             args.putString("race", textRace.toString())
             args.putString("description", textDescription.text.toString())

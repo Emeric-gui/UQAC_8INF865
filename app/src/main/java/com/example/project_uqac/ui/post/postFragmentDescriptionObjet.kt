@@ -21,7 +21,7 @@ class PostFragmentDescriptionObjet : Fragment() {
 
         val textDescription : TextInputEditText = view.findViewById(R.id.textDescriptionObjet)
         var progressBar : ProgressBar = view.findViewById(R.id.progressBar)
-        progressBar.progress = 60
+        progressBar.progress = 51
 
         val args = Bundle()
 
@@ -38,7 +38,7 @@ class PostFragmentDescriptionObjet : Fragment() {
 
         val buttonNext : ImageButton = view.findViewById(R.id.imageButtonnextdescriptionObjet)
         buttonNext.setOnClickListener(){
-            val fragment = PostFragmentDateObjet()
+            val fragment = PostFragmentPhotoObjet()
             args.putString("model", textModel.toString())
             args.putString("marque", textMarque.toString())
             args.putString("description", textDescription.text.toString())

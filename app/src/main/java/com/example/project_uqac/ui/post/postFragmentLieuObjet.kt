@@ -3,6 +3,7 @@ package com.example.project_uqac.ui.post
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ContentValues
+import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -10,9 +11,11 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.BitmapDrawable
 import android.location.Location
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.MediaStore
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
@@ -45,9 +48,13 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
 import java.io.BufferedReader
+import java.io.ByteArrayOutputStream
 import java.io.FileInputStream
 import java.io.InputStreamReader
 import java.util.*
@@ -62,6 +69,9 @@ class PostFragmentLieuObjet : Fragment(), OnMapReadyCallback,
 
     private lateinit var mapFragment: SupportMapFragment
     private lateinit var autocompleteFragment: AutocompleteSupportFragment
+
+
+    private var reloaded : Boolean = false
 
     private var lat : Double = 0.0
     private var lon : Double = 0.0
@@ -85,6 +95,7 @@ class PostFragmentLieuObjet : Fragment(), OnMapReadyCallback,
         val textModel = requireArguments().getString("model")
         val textMarque = requireArguments().getString("marque")
         val textDescription = requireArguments().getString("description")
+        val cropImg : Bitmap? = requireArguments().getParcelable("image")
         val textDate = requireArguments().getInt("date")
 
         val args = Bundle()
@@ -95,6 +106,7 @@ class PostFragmentLieuObjet : Fragment(), OnMapReadyCallback,
             args.putString("model", textModel.toString())
             args.putString("marque", textMarque.toString())
             args.putString("description", textDescription.toString())
+            args.putParcelable("image", cropImg)
             fragment.arguments = args
 
             val transaction = fragmentManager?.beginTransaction()
@@ -138,31 +150,52 @@ class PostFragmentLieuObjet : Fragment(), OnMapReadyCallback,
 // Compute the GeoHash for a lat/lng point
             val hash = GeoFireUtils.getGeoHashForLocation(GeoLocation(latObject, lonObject))
 
-            val article = Firebase.auth.currentUser?.email?.let { it1 ->
-                Firebase.auth.currentUser?.displayName?.let { it2 ->
-                    Article("$textModel", "$textMarque", textDate,
-                        "$textDescription", "https://picsum.photos/600/300?random&$",
-                        it2,hash, latObject, lonObject,
-                        it1
-                    )
+            //ici, on récupère l'id de la dernière image, requete, on compte le nombre d'éléments
+            var champ_image = "image_"
+            var id_recup : Int = 0
+
+            val list_articles = db.collection("Articles")
+            list_articles.whereNotEqualTo("image", "null")
+                .get().addOnSuccessListener { documents ->
+                    for (document in documents){
+                        id_recup++
+                    }
+                }.addOnCompleteListener{
+                    champ_image += id_recup.toString()
+
+                    if (cropImg != null) {
+                        updatePic(cropImg, champ_image)
+                    }else{
+                        champ_image = null.toString()
+                    }
+
+                    val article = Firebase.auth.currentUser?.email?.let { it1 ->
+                        Firebase.auth.currentUser?.displayName?.let { it2 ->
+                            Article("$textModel", "$textMarque", textDate,
+                                "$textDescription", champ_image,
+                                it2,hash, latObject, lonObject,
+                                it1, true
+                            )
+                        }
+                    }
+
+                    if (article != null) {
+                        db.collection("Articles")
+                            .add(article)
+                            .addOnSuccessListener {
+                                Toast.makeText(context, "Objet posté !", Toast.LENGTH_SHORT).show()
+                                val fragment = PostFragmentNature()
+                                val transaction = fragmentManager?.beginTransaction()
+                                transaction?.replace(R.id.post_fragment_navigation, fragment)?.commit()
+
+                            }
+                            .addOnFailureListener {
+                                Toast.makeText(context, "Objet non Posté !", Toast.LENGTH_SHORT).show()
+                                Log.e("HA", "Error saving : Err :" + it.message)
+                            }
+                    }
                 }
-            }
 
-            if (article != null) {
-                db.collection("Articles")
-                    .add(article)
-                    .addOnSuccessListener {
-                        Toast.makeText(context, "Objet posté !", Toast.LENGTH_SHORT).show()
-                        val fragment = PostFragmentNature()
-                        val transaction = fragmentManager?.beginTransaction()
-                        transaction?.replace(R.id.post_fragment_navigation, fragment)?.commit()
-
-                    }
-                    .addOnFailureListener {
-                        Toast.makeText(context, "Objet non Posté !", Toast.LENGTH_SHORT).show()
-                        Log.e("HA", "Error saving : Err :" + it.message)
-                    }
-            }
 
             /*val londonRef = db.collection("Articles")
                 .add(updates)
@@ -275,6 +308,28 @@ class PostFragmentLieuObjet : Fragment(), OnMapReadyCallback,
 
     override fun onCameraIdle() {
         uptdateCoordinates()
+    }
+
+    fun updatePic(img : Bitmap, id: String){
+        reloaded = true
+        // Update profil pic in db - New style
+            val storageReferenceu = FirebaseStorage.getInstance().getReference("articles_pics/$id")
+            var myUri = context?.let { getImageUri(it, img, "article_pic.$id") }!!
+            Log.d(ContentValues.TAG, myUri.toString())
+            storageReferenceu.putFile(myUri).addOnSuccessListener {
+                storageReferenceu.downloadUrl.addOnSuccessListener {}
+            }
+    }
+    fun getImageUri(inContext: Context, inImage: Bitmap, name : String): Uri? {
+        val bytes = ByteArrayOutputStream()
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path = MediaStore.Images.Media.insertImage(
+            inContext.contentResolver,
+            inImage,
+            name,
+            null
+        )
+        return Uri.parse(path)
     }
 
 }

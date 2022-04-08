@@ -1,10 +1,14 @@
 package com.example.project_uqac.ui.post
 
 import android.annotation.SuppressLint
+import android.content.ContentValues
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
@@ -29,7 +33,9 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import java.io.BufferedReader
+import java.io.ByteArrayOutputStream
 import java.io.FileInputStream
 import java.io.InputStreamReader
 import java.util.*
@@ -42,6 +48,8 @@ class PostFragmentLieuAnimal : Fragment(), OnMapReadyCallback,
 
     private lateinit var mapFragment: SupportMapFragment
     private lateinit var autocompleteFragment: AutocompleteSupportFragment
+
+    private var reloaded : Boolean = false
 
     private var lat : Double = 0.0
     private var lon : Double = 0.0
@@ -67,6 +75,7 @@ class PostFragmentLieuAnimal : Fragment(), OnMapReadyCallback,
         val textSpecie = requireArguments().getString("specie")
         val textRace = requireArguments().getString("race")
         val textDescription = requireArguments().getString("description")
+        val cropImg : Bitmap? = requireArguments().getParcelable("image")
         val textDate = requireArguments().getInt("date")
 
         val args = Bundle()
@@ -77,6 +86,7 @@ class PostFragmentLieuAnimal : Fragment(), OnMapReadyCallback,
             args.putString("specie", textSpecie.toString())
             args.putString("race", textRace.toString())
             args.putString("description", textDescription.toString())
+            args.putParcelable("image", cropImg)
             fragment.arguments = args
             val transaction = fragmentManager?.beginTransaction()
             transaction?.replace(R.id.post_fragment_navigation, fragment)?.commit()
@@ -120,33 +130,55 @@ class PostFragmentLieuAnimal : Fragment(), OnMapReadyCallback,
 // Compute the GeoHash for a lat/lng point
             val hash = GeoFireUtils.getGeoHashForLocation(GeoLocation(latObject, lonObject))
 
+            //ici, on récupère l'id de la dernière image, requete, on compte le nombre d'éléments
+            var champ_image = "image_"
+            var id_recup : Int = 0
 
-            val article = Firebase.auth.currentUser?.email?.let { it1 ->
-                Firebase.auth.currentUser?.displayName?.let { it2 ->
-                    Article("$textSpecie", "$textRace", textDate,
-                        "$textDescription", "https://picsum.photos/600/300?random&$",
-                        it2,hash,latObject, lonObject,
-                        it1
-                    )
+            val list_articles = db.collection("Articles")
+            list_articles.whereNotEqualTo("image", "null")
+                .get().addOnSuccessListener { documents ->
+                    for (document in documents){
+                        id_recup++
+                    }
+                }.addOnCompleteListener{
+
+                    champ_image += id_recup.toString()
+
+                    if (cropImg != null) {
+                        updatePic(cropImg, champ_image)
+                    }else{
+                        champ_image = null.toString()
+                    }
+
+
+                    val article = Firebase.auth.currentUser?.email?.let { it1 ->
+                        Firebase.auth.currentUser?.displayName?.let { it2 ->
+                            Article("$textSpecie", "$textRace", textDate,
+                                "$textDescription", champ_image,
+                                it2,hash,latObject, lonObject,
+                                it1, false
+                            )
+                        }
+                    }
+
+
+                    if (article != null) {
+                        db.collection("Articles")
+                            .add(article)
+                            .addOnSuccessListener {
+                                Toast.makeText(context, "Objet posté !", Toast.LENGTH_SHORT).show()
+                                val fragment = PostFragmentNature()
+                                val transaction = fragmentManager?.beginTransaction()
+                                transaction?.replace(R.id.post_fragment_navigation, fragment)?.commit()
+
+                            }
+                            .addOnFailureListener {
+                                Toast.makeText(context, "Objet non Posté !", Toast.LENGTH_SHORT).show()
+                                Log.e("HA", "Error saving : Err :" + it.message)
+                            }
+                    }
                 }
-            }
 
-
-            if (article != null) {
-                db.collection("Articles")
-                    .add(article)
-                    .addOnSuccessListener {
-                        Toast.makeText(context, "Objet posté !", Toast.LENGTH_SHORT).show()
-                        val fragment = PostFragmentNature()
-                        val transaction = fragmentManager?.beginTransaction()
-                        transaction?.replace(R.id.post_fragment_navigation, fragment)?.commit()
-
-                    }
-                    .addOnFailureListener {
-                        Toast.makeText(context, "Objet non Posté !", Toast.LENGTH_SHORT).show()
-                        Log.e("HA", "Error saving : Err :" + it.message)
-                    }
-            }
 
         }
 
@@ -253,6 +285,27 @@ class PostFragmentLieuAnimal : Fragment(), OnMapReadyCallback,
         uptdateCoordinates()
     }
 
+    fun updatePic(img : Bitmap, id: String){
+        reloaded = true
+        // Update profil pic in db - New style
+        val storageReferenceu = FirebaseStorage.getInstance().getReference("articles_pics/$id")
+        var myUri = context?.let { getImageUri(it, img, "article_pic.$id") }!!
+        Log.d(ContentValues.TAG, myUri.toString())
+        storageReferenceu.putFile(myUri).addOnSuccessListener {
+            storageReferenceu.downloadUrl.addOnSuccessListener {}
+        }
+    }
+    fun getImageUri(inContext: Context, inImage: Bitmap, name : String): Uri? {
+        val bytes = ByteArrayOutputStream()
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path = MediaStore.Images.Media.insertImage(
+            inContext.contentResolver,
+            inImage,
+            name,
+            null
+        )
+        return Uri.parse(path)
+    }
 
 }
 
