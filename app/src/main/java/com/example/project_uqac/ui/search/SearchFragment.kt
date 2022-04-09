@@ -149,10 +149,11 @@ class SearchFragment  : Fragment()  {
         })
     }
 
-    fun setData(date : Int , lat : Double, lon : Double) {
+    fun setData(date : Int , lat : Double, lon : Double, radius : Int) {
         this.date = date
         this.lat = lat
         this.lon = lon
+        this.radius = radius
         loadData()
     }
 
@@ -261,7 +262,7 @@ class SearchFragment  : Fragment()  {
                 tasks.add(
                     q.get()
                         .addOnSuccessListener {
-                            if (it.isEmpty) {
+                            if (tasks.isEmpty()) {
                                 (activity as MainActivity).stopLoading()
                                 textNoArticle.text = "Aucun objet trouvé"
 
