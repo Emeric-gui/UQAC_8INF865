@@ -3,6 +3,7 @@ package com.example.project_uqac.ui.search.filter
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -12,10 +13,13 @@ import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.example.project_uqac.BuildConfig
 import com.example.project_uqac.MainActivity
 import com.example.project_uqac.R
 import com.example.project_uqac.ui.chat.ChatFragment.Companion.TAG
+import com.example.project_uqac.ui.search.SearchViewModel
 import com.firebase.ui.auth.AuthUI.getApplicationContext
 import com.google.android.datatransport.runtime.backends.BackendResponse
 import com.google.android.gms.common.api.Status
@@ -34,7 +38,7 @@ import java.util.*
 import javax.net.ssl.SSLEngineResult
 
 
-class FilterTabPosition : Fragment(),  GoogleMap.OnCameraMoveStartedListener,
+class FilterTabPosition(dialogueContext: DialogueFragmentFilter) : Fragment(),  GoogleMap.OnCameraMoveStartedListener,
     GoogleMap.OnCameraIdleListener, OnMapReadyCallback {
 
 
@@ -49,6 +53,9 @@ class FilterTabPosition : Fragment(),  GoogleMap.OnCameraMoveStartedListener,
     private lateinit var viewMap : MapView
     private lateinit var map: GoogleMap
     private lateinit var seekBarRadius : SeekBar
+    private lateinit var viewModel: SearchViewModel
+    private var dialogueContext : DialogueFragmentFilter = dialogueContext
+
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -205,12 +212,17 @@ class FilterTabPosition : Fragment(),  GoogleMap.OnCameraMoveStartedListener,
         )
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(positions, zoomLevel))
 
+        dialogueContext.setLat(this.lat)
+        dialogueContext.setLon(this.lon)
+
     }
 
 
     fun uptdateCoordinates() {
         latObject = map.cameraPosition.target.latitude
         lonObject = map.cameraPosition.target.longitude
+        dialogueContext.setLat(latObject)
+        dialogueContext.setLon(lonObject)
         Log.v(map.cameraPosition.target.toString(), "CAMERAAAAAAAA")
     }
 
