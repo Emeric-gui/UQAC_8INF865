@@ -80,8 +80,13 @@ class MainActivity : AppCompatActivity() {
         position.getLocation()
     }
 
-    fun  getCoordinate () {
+    fun  stopLoading () {
         progressBar2.visibility = GONE
+
+    }
+
+    fun  startLoading () {
+        progressBar2.visibility = VISIBLE
 
     }
 

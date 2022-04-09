@@ -52,11 +52,8 @@ class HomeFragment : Fragment() {
     private var lon : Double = 0.0
     private val executorService: ExecutorService = Executors.newFixedThreadPool(4)
     private val mainThreadHandler: Handler = HandlerCompat.createAsync(Looper.getMainLooper())
-
     private var db = Firebase.firestore
     private var articles = ArrayList<Article>()
-    // Create adapter passing in the sample user data
-
     // Lookup the recyclerview in activity layout
     private lateinit var rvArticles : RecyclerView
 
@@ -190,23 +187,19 @@ class HomeFragment : Fragment() {
         }else{
             Toast.makeText(activity,"file name cannot be blank",Toast.LENGTH_LONG).show()
         }
-
-
-
     }
 
     //for loading all articles from server
     fun loadData()
     {
+        textNoArticle.text = ""
+        //(activity as MainActivity).startLoading()
         readCoordinate()
-
         //Reset liste
         articles.clear()
-
         //Find day of choose periode
         val  cal : Calendar = GregorianCalendar . getInstance ()
         cal.time = Calendar.getInstance().time
-
         if (button1.isSelected) {
             cal.add(Calendar.DAY_OF_YEAR, -1)
         } else if (button3.isSelected){
@@ -214,7 +207,6 @@ class HomeFragment : Fragment() {
         } else if (button7.isSelected) {
             cal.add(Calendar.DAY_OF_YEAR, -7)
         }
-
         val daysBeforeDate : java.util.Date = cal.time
         val df = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
         val formattedDateBefore: String = df.format(daysBeforeDate)
@@ -245,23 +237,29 @@ class HomeFragment : Fragment() {
                 rvArticles.layoutManager = LinearLayoutManager(view?.context)
             }
  */
-
         // Find cities within 50km of the user position
         val center = GeoLocation(lat, lon)
         val radiusInM = (50 * 10000).toDouble()
-
-
 // Each item in 'bounds' represents a startAt/endAt pair. We have to issue
 // a separate query for each pair. There can be up to 9 pairs of bounds
 // depending on overlap, but in most cases there are 4.
         val bounds = GeoFireUtils.getGeoHashQueryBounds(center, radiusInM)
         val tasks: MutableList<Task<QuerySnapshot>> = ArrayList()
+        //(activity as MainActivity).stopLoading()
         for (b in bounds) {
             val q: Query = db.collection("Articles")
                 .orderBy("geoHash")
                 .startAt(b.startHash)
                 .endAt(b.endHash)
-            tasks.add(q.get())
+            tasks.add(q.get()
+                        .addOnSuccessListener {
+                            if (it.isEmpty) {
+                                (activity as MainActivity).stopLoading()
+                                Toast.makeText(context, "No article Found", Toast.LENGTH_SHORT).show()
+                                return@addOnSuccessListener
+                            }
+                        }
+            )
         }
         // Collect all the query results together into a single list
         Tasks.whenAllComplete(tasks)
@@ -291,17 +289,18 @@ class HomeFragment : Fragment() {
                                 }
                             }
                         }
+
+                    }
+                    (activity as MainActivity).stopLoading()
+                    if (articles.isEmpty()) {
+                        textNoArticle.text = "Aucun objet trouvé"
                     }
                 }
-
                 // Set layout manager to position the items
                 rvArticles.layoutManager = LinearLayoutManager(view?.context)
-
                 // matchingDocs contains the results
                 // ...
             }
-
-
     }
 
     private fun setAdapter(adapter: ArticlesAdapter) {

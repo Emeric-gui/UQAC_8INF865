@@ -54,6 +54,10 @@ class LocationGPS(mainActivity: MainActivity) : LocationListener {
 
     override fun onLocationChanged(location: Location) {
 
+        if (app != null){
+            app?.stopLoading()
+        }
+
         var lat = location.latitude
         var lon = location.longitude
        // this.lati = lat
@@ -82,10 +86,6 @@ class LocationGPS(mainActivity: MainActivity) : LocationListener {
             e.printStackTrace()
         }catch (e: Exception){
             e.printStackTrace()
-        }
-
-        if (app != null){
-            app?.getCoordinate()
         }
 
         //update database

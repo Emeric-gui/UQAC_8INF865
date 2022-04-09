@@ -7,10 +7,13 @@ import com.example.project_uqac.R
 import com.example.project_uqac.ui.my_account.tabs.MyAccountTabInformations
 
 class FiltreViewPager2FragmentAdapter (fa: Fragment): FragmentStateAdapter(fa) {
+
+    private lateinit var dialogueContext : DialogueFragmentFilter
+
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> FilterTabPosition()
-            1 -> FIlterTabCalendar()
+            0 -> FilterTabPosition(dialogueContext)
+            1 -> FIlterTabCalendar(dialogueContext)
             else -> MyAccountTabInformations()
         }
 
@@ -28,5 +31,9 @@ class FiltreViewPager2FragmentAdapter (fa: Fragment): FragmentStateAdapter(fa) {
         @StringRes
         private val TAB_TITLES = intArrayOf(R.string.tab_my_acc_1, R.string.tab_my_acc_2)
 
+    }
+
+    fun setData (context: DialogueFragmentFilter) {
+         dialogueContext = context
     }
 }

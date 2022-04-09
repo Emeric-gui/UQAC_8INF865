@@ -1,37 +1,44 @@
 package com.example.project_uqac.ui.search.filter
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.text.format.DateUtils.getMonthString
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.DialogFragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.project_uqac.R
-import com.example.project_uqac.ui.my_account.MyAccountViewPager2FragmentAdapter
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.example.project_uqac.ui.search.SearchFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.fragment_filter.view.*
-import kotlinx.android.synthetic.main.fragment_filter.view.button_valider
 
 
-class DialogueFragmentFilter:DialogFragment(){
+class DialogueFragmentFilter(searchFragment: SearchFragment) :DialogFragment(){
     private lateinit var viewFilter : ViewPager2
+    private var lat : Double = 0.0
+    private var lon : Double = 0.0
+    private var date :Int = 0
+    private var searchFragment : SearchFragment = searchFragment
 
      override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) :
    View? {
       var rootView : View = inflater.inflate(R.layout.fragment_filter, container, false)
 
          rootView.button_valider.setOnClickListener(){
-             dismiss()
+             if (date != 0 && lon != 0.0 && lat != 0.0) {
+                 searchFragment.setData(date, lat, lon)
+                 dismiss()
+             }
+             if (date == 0) {
+                 Toast.makeText(context, "Veuillez configurer la date ...", Toast.LENGTH_SHORT).show()
+             }
          }
          // Instantiate a ViewPager2 and a PagerAdapter.
          viewFilter = rootView.findViewById(R.id.filter_viewer)
@@ -39,6 +46,7 @@ class DialogueFragmentFilter:DialogFragment(){
 
          // The pager adapter, which provides the pages to the view pager widget.
          val pagerAdapter = FiltreViewPager2FragmentAdapter(this)
+         pagerAdapter.setData(this)
          viewFilter.adapter = pagerAdapter
 
          val TAB_TITLES = arrayOf("Où ?", "Quand ?")
@@ -66,5 +74,18 @@ class DialogueFragmentFilter:DialogFragment(){
             callback
         )
     }
+
+    fun setLat (lat : Double) {
+        this.lat = lat
+    }
+
+    fun setLon( lon : Double) {
+        this.lon = lon
+    }
+
+    fun setDate( date : Int) {
+        this.date = date
+    }
+
 
 }
