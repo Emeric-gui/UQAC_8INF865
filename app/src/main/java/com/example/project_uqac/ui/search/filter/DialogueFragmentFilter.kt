@@ -25,6 +25,7 @@ class DialogueFragmentFilter(searchFragment: SearchFragment) :DialogFragment(){
     private var lat : Double = 0.0
     private var lon : Double = 0.0
     private var date :Int = 0
+    private var radius : Int = 0
     private var searchFragment : SearchFragment = searchFragment
 
      override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) :
@@ -33,7 +34,7 @@ class DialogueFragmentFilter(searchFragment: SearchFragment) :DialogFragment(){
 
          rootView.button_valider.setOnClickListener(){
              if (date != 0 && lon != 0.0 && lat != 0.0) {
-                 searchFragment.setData(date, lat, lon)
+                 searchFragment.setData(date, lat, lon, radius)
                  dismiss()
              }
              if (date == 0) {
@@ -85,6 +86,10 @@ class DialogueFragmentFilter(searchFragment: SearchFragment) :DialogFragment(){
 
     fun setDate( date : Int) {
         this.date = date
+    }
+
+    fun setRadius(radius: Int) {
+        this.radius = radius
     }
 
 

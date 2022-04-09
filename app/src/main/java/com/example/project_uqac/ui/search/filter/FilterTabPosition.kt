@@ -1,10 +1,7 @@
 package com.example.project_uqac.ui.search.filter
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.ContentValues
-import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
@@ -13,29 +10,22 @@ import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import com.example.project_uqac.BuildConfig
 import com.example.project_uqac.MainActivity
 import com.example.project_uqac.R
 import com.example.project_uqac.ui.chat.ChatFragment.Companion.TAG
 import com.example.project_uqac.ui.search.SearchViewModel
-import com.firebase.ui.auth.AuthUI.getApplicationContext
-import com.google.android.datatransport.runtime.backends.BackendResponse
 import com.google.android.gms.common.api.Status
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.widget.Autocomplete
-import com.google.android.libraries.places.widget.AutocompleteActivity
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import java.io.BufferedReader
 import java.io.FileInputStream
 import java.io.InputStreamReader
 import java.util.*
-import javax.net.ssl.SSLEngineResult
 
 
 class FilterTabPosition(dialogueContext: DialogueFragmentFilter) : Fragment(),  GoogleMap.OnCameraMoveStartedListener,
@@ -48,8 +38,7 @@ class FilterTabPosition(dialogueContext: DialogueFragmentFilter) : Fragment(),  
     private var lon : Double = 0.0
     private var latObject : Double = 0.0
     private var lonObject : Double = 0.0
-    private var  radius  = 14.0
-    private var zoomMap = 0
+    private var  radius  = 14
     private lateinit var viewMap : MapView
     private lateinit var map: GoogleMap
     private lateinit var seekBarRadius : SeekBar
@@ -77,14 +66,18 @@ class FilterTabPosition(dialogueContext: DialogueFragmentFilter) : Fragment(),  
         seekBarRadius.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
 
-                zoomMap = i
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latObject, lonObject),(((1-(zoomMap.toFloat()/100))*5)+7)))
+                radius = i
 
-                if(zoomMap == 0){
+                if(radius == 0){
                     textSeekBarRadius.text = " 1"
+                    dialogueContext.setRadius(1)
+
                 } else {
-                textSeekBarRadius!!.text = " $zoomMap"
+                textSeekBarRadius!!.text = " $radius"
+                    dialogueContext.setRadius(radius)
                 }
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latObject, lonObject),(((1-(radius.toFloat()/100))*5)+7)))
+
 
             }
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
@@ -132,7 +125,7 @@ class FilterTabPosition(dialogueContext: DialogueFragmentFilter) : Fragment(),  
                 Log.i(TAG, "Place: ${place.name}, ${place.id}")
                 latObject = place.latLng.latitude
                 lonObject = place.latLng.longitude
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(place.latLng,(((1-(zoomMap.toFloat()/100))*5)+7)))
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(place.latLng,(((1-(radius.toFloat()/100))*5)+7)))
 
             }
         })
@@ -214,7 +207,6 @@ class FilterTabPosition(dialogueContext: DialogueFragmentFilter) : Fragment(),  
 
         dialogueContext.setLat(this.lat)
         dialogueContext.setLon(this.lon)
-
     }
 
 

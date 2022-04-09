@@ -253,7 +253,7 @@ class HomeFragment : Fragment() {
                 .endAt(b.endHash)
             tasks.add(q.get()
                         .addOnSuccessListener {
-                            if (it.isEmpty) {
+                            if (tasks.isEmpty()) {
                                 (activity as MainActivity).stopLoading()
                                 Toast.makeText(context, "No article Found", Toast.LENGTH_SHORT).show()
                                 return@addOnSuccessListener
