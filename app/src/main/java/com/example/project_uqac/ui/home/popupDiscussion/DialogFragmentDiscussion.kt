@@ -84,10 +84,6 @@ class DialogFragmentDiscussion:DialogFragment() {
                         user2ID?.let { it1 -> it.child("Users").child(it1).child("Conversations").children.forEach {
                             it.key?.let { it2 -> listIdConv2?.add(it2) }
                         }}
-                        //Log.i("TEST VALUE","TEST ${user1ID?.let { it1 -> it.child("Users").child(it1).child("Conversations").children.forEach{
-
-                        listIdConv1?.forEach { Log.i("VALUE CONV 1","ID CONV = $it") }
-                        listIdConv2?.forEach { Log.i("VALUE CONV 2","ID CONV = $it") }
 
                         //Find a conv already created
                         listIdConv1?.forEach {

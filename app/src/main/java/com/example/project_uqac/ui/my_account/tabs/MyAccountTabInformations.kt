@@ -17,6 +17,9 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_my_account_informations.*
 
@@ -24,6 +27,7 @@ class MyAccountTabInformations : Fragment() {
 
     lateinit var username : String
     lateinit var email : String
+    private lateinit var db: FirebaseDatabase
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -156,4 +160,6 @@ class MyAccountTabInformations : Fragment() {
                 }
         }
     }
+
+
 }

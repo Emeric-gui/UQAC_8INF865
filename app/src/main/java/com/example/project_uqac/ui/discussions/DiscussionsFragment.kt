@@ -77,6 +77,7 @@ class DiscussionsFragment : Fragment() {
             // Initialize Realtime Database and FirebaseRecyclerAdapter
             db = Firebase.database
 
+            // We get the ID of the user
             val userIDRef = db.reference.child("Users_ID").get().addOnSuccessListener {
                 it.getValue<Map<String,String>>()!!.forEach{
                     if(it.value==auth.currentUser?.email){
@@ -245,16 +246,6 @@ class DiscussionsFragment : Fragment() {
                     otherUserID = it.key
                 }
             }
-
-            /*setFragmentResult(
-                "SendInfoChat",
-                bundleOf(
-                    "IDChat" to listConversation?.get(listConversation!!.size- 1 - position)?.chat,
-                    "IDConv" to listIdConversation?.get(listConversation!!.size- 1 - position),
-                    "IDUser" to userID,
-                    "IDOtherUser" to otherUserID
-                )
-            )*/
 
             var chat = ChatFragment()
             var args = Bundle()

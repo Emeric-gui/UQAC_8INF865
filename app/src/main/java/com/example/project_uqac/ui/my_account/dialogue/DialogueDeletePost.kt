@@ -13,6 +13,9 @@ import com.example.project_uqac.ui.article.Article
 import com.example.project_uqac.ui.my_account.MyAccountLogged
 import com.example.project_uqac.ui.my_account.tabs.MyAccountTabMyPosts
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
