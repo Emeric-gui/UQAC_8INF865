@@ -103,6 +103,7 @@ class MyAccountTabInformations : Fragment() {
             val profileUpdates = userProfileChangeRequest {
                 displayName = username_textedit.text.toString()
             }
+            changeUserName(username_textedit.text.toString())
             user!!.updateProfile(profileUpdates)
                 .addOnCompleteListener { innerTask ->
                     if (innerTask.isSuccessful) {
@@ -129,6 +130,7 @@ class MyAccountTabInformations : Fragment() {
 //                }
             Log.d(TAG, email_textedit.text.toString())
             val user = Firebase.auth.currentUser
+            user?.email?.let { changeMail(it,email_textedit.text.toString()) }
             user!!.updateEmail(email_textedit.text.toString())
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
@@ -161,5 +163,84 @@ class MyAccountTabInformations : Fragment() {
         }
     }
 
+    private fun changeUserName( newUserName:String)
+    {
+        db = Firebase.database
+        var userID: String? = null
+        var oldUserName:String
+        var idChat : String
+
+        db.reference.get().addOnSuccessListener {
+            val root = it
+            // We get the ID of the user
+            root.child("Users_ID").getValue<Map<String, String>>()!!.forEach {
+                if (it.value == Firebase.auth.currentUser?.email) {
+                    userID = it.key
+                }
+            }
+            // We get the ID of the user's conversations
+            userID?.let { it1 ->
+                root.child("Users").child(it1).child("Conversations").children.forEach {
+                    it.key?.let {
+                        if(root.child("Conversations").child(it).child("user1Mail").getValue<String>()==Firebase.auth.currentUser?.email)
+                        {
+                            oldUserName= root.child("Conversations").child(it).child("user1").getValue<String>().toString()
+                            db.reference.child("Conversations").child(it).child("user1").setValue(newUserName)
+                        }else{
+                            oldUserName= root.child("Conversations").child(it).child("user2").getValue<String>().toString()
+                            db.reference.child("Conversations").child(it).child("user2").setValue(newUserName)
+                        }
+
+                        idChat = root.child("Conversations").child(it).child("chat").getValue<String>().toString()
+                        //Log.i("VAlue ","chat : $idChat, olUser : $oldUserName")
+                        root.child("Chat").child(idChat).child("Messages").children.forEach {
+                            //Log.i("TEST gsugdd","${it.child("messageUser").value} && $oldUserName")
+                            if(it.child("messageUser").getValue<String>()==oldUserName){
+                                Log.i("TEST UI","dduushidigd")
+                                it.key?.let { it2 ->
+                                    db.reference.child("Chat").child(idChat).child("Messages").child(it2).child("messageUser").setValue(newUserName)
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+
+    private fun changeMail(oldMail :String,newMail :String)
+    {
+        db = Firebase.database
+        var userID: String? = null
+
+        db.reference.get().addOnSuccessListener {
+            val root = it
+            // We get the ID of the user
+            root.child("Users_ID").getValue<Map<String, String>>()!!.forEach {
+                if (it.value == oldMail) {
+                    userID = it.key
+                }
+            }
+            //We change the value of the mail
+            userID?.let {
+                    it1 -> db.reference.child("Users_ID").child(it1).setValue(newMail)
+                    root.child("Users").child(it1).child("Conversations").children.forEach {
+                        it.key?.let {
+                            if (root.child("Conversations").child(it).child("user1Mail")
+                                    .getValue<String>() == oldMail
+                            ) {
+                                db.reference.child("Conversations").child(it).child("user1")
+                                    .setValue(newMail)
+                            } else {
+                                db.reference.child("Conversations").child(it).child("user2")
+                                    .setValue(newMail)
+                            }
+                        }
+                }
+            }
+        }
+
+    }
 
 }

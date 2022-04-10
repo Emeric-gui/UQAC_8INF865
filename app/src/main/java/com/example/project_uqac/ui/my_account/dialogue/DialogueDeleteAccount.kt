@@ -65,7 +65,6 @@ class DialogueDeleteAccount:DialogFragment() {
     }
 
     private fun removeDiscutions() {
-        Log.i("TEST REMOVE","YES")
         db = Firebase.database
         var userID: String? = null
         var otherUserID: String? = null
@@ -106,8 +105,6 @@ class DialogueDeleteAccount:DialogFragment() {
                                 otherUserID = it.key
                             }
                         }
-
-                        Log.i("TEST VALUES", "otherUserId : $otherUserID, Conv  : $it2")
 
                         //Remove the conversation to the other user
                         otherUserID?.let { it3 -> db.reference.child("Users").child(it3).child("Conversations").child(it2).removeValue() }
