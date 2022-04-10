@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.ContentValues.TAG
 import android.content.DialogInterface
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -34,7 +35,13 @@ class DialogueDeleteAccount:DialogFragment() {
             val user = Firebase.auth.currentUser!!
             val email : String? = user.email;
             // Delete profil pic in our storage
-            Firebase.storage.reference.child("profil_pics/" + user.email).delete()
+            if(user.photoUrl != null) {
+                try {
+                    Firebase.storage.reference.child("profil_pics/" + user.email).delete()
+                } catch (e: Exception) {
+
+                }
+            }
             // Delete user account
             user.delete()
                 .addOnCompleteListener { task ->
