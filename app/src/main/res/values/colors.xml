@@ -16,4 +16,5 @@
     <color name="colorBlue">#2962FF</color>
     <color name="colorGray">#dedede</color>
     <color name="colorTitle">#ffffff</color>
+    <color name="barStatus">#3F51B5</color>
 </resources>

@@ -116,7 +116,7 @@ class MySQL (context: Context) :
 
         val center = PointF(lat.toFloat(), lon.toFloat())
         val mult = 1.0 // mult = 1.1; is more reliable
-        val radius = 500.0
+        val radius = 10.0
         val p1 = calculateDerivedPosition(center, mult * radius, 0)
         val p2 = calculateDerivedPosition(center, mult * radius, 90)
         val p3 = calculateDerivedPosition(center, mult * radius, 180)

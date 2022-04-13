@@ -40,6 +40,8 @@ import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import android.content.Context
+import android.graphics.drawable.Drawable
+import androidx.core.content.ContextCompat
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 
@@ -59,15 +61,15 @@ class HomeFragment : Fragment() {
 
     private lateinit var textNoArticle : TextView
 
-    private lateinit var button1 : Button
-    private lateinit var button3 : Button
-    private lateinit var button7 : Button
+    private lateinit var button1 : TextView
+    private lateinit var button3 : TextView
+    private lateinit var button7 : TextView
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
 
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint("ClickableViewAccessibility", "UseCompatLoadingForDrawables")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -89,41 +91,41 @@ class HomeFragment : Fragment() {
 
         textNoArticle = root.findViewById<TextView>(R.id.textNoArticles)
 
-        button1 = root.findViewById<Button>(R.id.button1J)
+        button1 = root.findViewById<TextView>(R.id.button1J)
         button3 = root.findViewById<Button>(R.id.button3J)
-        button7 = root.findViewById<Button>(R.id.button7j)
+        button7 = root.findViewById<Button>(R.id.button7J)
         button1.isSelected = true
-        button1.setBackgroundColor(Color.parseColor("#FF919090"))
+        button1.setBackgroundResource(R.drawable.barckground_button_home)
         button3.isSelected = false
         button7.isSelected = false
 
         button1.setOnClickListener {
             button1.isSelected = true
-            button1.setBackgroundColor(Color.parseColor("#FF919090"))
+            button1.setBackgroundResource(R.drawable.barckground_button_home)
             button3.isSelected = false
-            button3.setBackgroundColor(Color.parseColor("#E0E0E0"))
+            button3.setBackgroundColor(Color.parseColor("#3F51B5"))
             button7.isSelected = false
-            button7.setBackgroundColor(Color.parseColor("#E0E0E0"))
+            button7.setBackgroundColor(Color.parseColor("#3F51B5"))
 
             loadData()
         }
         button3.setOnClickListener { // Perform action on click
             button3.isSelected = true
-            button3.setBackgroundColor(Color.parseColor("#FF919090"))
+            button3.setBackgroundResource(R.drawable.barckground_button_home)
             button1.isSelected = false
-            button1.setBackgroundColor(Color.parseColor("#E0E0E0"))
+            button1.setBackgroundColor(Color.parseColor("#3F51B5"))
             button7.isSelected = false
-            button7.setBackgroundColor(Color.parseColor("#E0E0E0"))
+            button7.setBackgroundColor(Color.parseColor("#3F51B5"))
 
             loadData()
         }
         button7.setOnClickListener {
             button7.isSelected = true
-            button7.setBackgroundColor(Color.parseColor("#FF919090"))
+            button7.setBackgroundResource(R.drawable.barckground_button_home)
             button3.isSelected = false
-            button3.setBackgroundColor(Color.parseColor("#E0E0E0"))
+            button3.setBackgroundColor(Color.parseColor("#3F51B5"))
             button1.isSelected = false
-            button1.setBackgroundColor(Color.parseColor("#E0E0E0"))
+            button1.setBackgroundColor(Color.parseColor("#3F51B5"))
 
             loadData()
         }
@@ -141,7 +143,7 @@ class HomeFragment : Fragment() {
 
         */
 
-        loadData()
+        //loadData()
 
         return root
     }
@@ -207,7 +209,7 @@ class HomeFragment : Fragment() {
         } else if (button7.isSelected) {
             cal.add(Calendar.DAY_OF_YEAR, -7)
         }
-        val daysBeforeDate : java.util.Date = cal.time
+        val daysBeforeDate : Date = cal.time
         val df = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
         val formattedDateBefore: String = df.format(daysBeforeDate)
         Log.v(formattedDateBefore.toInt().toString(),"7avant?")
@@ -291,7 +293,7 @@ class HomeFragment : Fragment() {
                         }
 
                     }
-                    (activity as MainActivity).stopLoading()
+                    //(activity as MainActivity).stopLoading()
                     if (articles.isEmpty()) {
                         textNoArticle.text = "Aucun objet trouvé"
                     }
