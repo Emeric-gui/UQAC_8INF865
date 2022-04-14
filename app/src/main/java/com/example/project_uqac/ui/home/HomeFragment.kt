@@ -1,6 +1,8 @@
 package com.example.project_uqac.ui.home
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -40,7 +42,12 @@ import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
+import android.view.View.GONE
+import android.view.View.VISIBLE
+import android.widget.ProgressBar
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
@@ -52,11 +59,12 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private var lat : Double = 0.0
     private var lon : Double = 0.0
+    private val locationPermissionCode = 2
     private val executorService: ExecutorService = Executors.newFixedThreadPool(4)
     private val mainThreadHandler: Handler = HandlerCompat.createAsync(Looper.getMainLooper())
     private var db = Firebase.firestore
     private var articles = ArrayList<Article>()
-    // Lookup the recyclerview in activity layout
+
     private lateinit var rvArticles : RecyclerView
 
     private lateinit var textNoArticle : TextView
@@ -64,6 +72,8 @@ class HomeFragment : Fragment() {
     private lateinit var button1 : TextView
     private lateinit var button3 : TextView
     private lateinit var button7 : TextView
+    private lateinit var loading : ProgressBar
+    private lateinit var buttonLocalisation : Button
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -77,89 +87,134 @@ class HomeFragment : Fragment() {
     ): View? {
 
         homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
-
+            ViewModelProvider(this)[HomeViewModel::class.java]
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         db = Firebase.firestore
         articles = ArrayList<Article>()
-        // Create adapter passing in the sample user data
-
         // Lookup the recyclerview in activity layout
         rvArticles = root.findViewById<View>(R.id.recyclerView) as RecyclerView
-
         textNoArticle = root.findViewById<TextView>(R.id.textNoArticles)
 
         button1 = root.findViewById<TextView>(R.id.button1J)
         button3 = root.findViewById<Button>(R.id.button3J)
         button7 = root.findViewById<Button>(R.id.button7J)
+        buttonLocalisation = root.findViewById(R.id.button2)
+        loading = root.findViewById(R.id.progressBar3)
         button1.isSelected = true
         button1.setBackgroundResource(R.drawable.barckground_button_home)
         button3.isSelected = false
         button7.isSelected = false
 
         button1.setOnClickListener {
-            button1.isSelected = true
-            button1.setBackgroundResource(R.drawable.barckground_button_home)
-            button3.isSelected = false
-            button3.setBackgroundColor(Color.parseColor("#3F51B5"))
-            button7.isSelected = false
-            button7.setBackgroundColor(Color.parseColor("#3F51B5"))
-
-            loadData()
+            if (getDataArticlesServer()) {
+                button1.isSelected = true
+                button1.setBackgroundResource(R.drawable.barckground_button_home)
+                button3.isSelected = false
+                button3.setBackgroundColor(Color.parseColor("#3F51B5"))
+                button7.isSelected = false
+                button7.setBackgroundColor(Color.parseColor("#3F51B5"))
+            }
         }
         button3.setOnClickListener { // Perform action on click
-            button3.isSelected = true
-            button3.setBackgroundResource(R.drawable.barckground_button_home)
-            button1.isSelected = false
-            button1.setBackgroundColor(Color.parseColor("#3F51B5"))
-            button7.isSelected = false
-            button7.setBackgroundColor(Color.parseColor("#3F51B5"))
-
-            loadData()
+            if (getDataArticlesServer()) {
+                button3.isSelected = true
+                button3.setBackgroundResource(R.drawable.barckground_button_home)
+                button1.isSelected = false
+                button1.setBackgroundColor(Color.parseColor("#3F51B5"))
+                button7.isSelected = false
+                button7.setBackgroundColor(Color.parseColor("#3F51B5"))
+            }
         }
         button7.setOnClickListener {
-            button7.isSelected = true
-            button7.setBackgroundResource(R.drawable.barckground_button_home)
-            button3.isSelected = false
-            button3.setBackgroundColor(Color.parseColor("#3F51B5"))
-            button1.isSelected = false
-            button1.setBackgroundColor(Color.parseColor("#3F51B5"))
-
-            loadData()
+            if (getDataArticlesServer()) {
+                button7.isSelected = true
+                button7.setBackgroundResource(R.drawable.barckground_button_home)
+                button3.isSelected = false
+                button3.setBackgroundColor(Color.parseColor("#3F51B5"))
+                button1.isSelected = false
+                button1.setBackgroundColor(Color.parseColor("#3F51B5"))
+            }
         }
-        // Initialize contacts
-        //var articles = Article.createContactsList(19)
 
-        val position =  LocationGPS(context as MainActivity)
-        //position.getLocationHome(this)
-        getPositionBackground(position, this)
-       /* Toast.makeText(
-            context,
-            "Home Fragment Ecriture data",
-            Toast.LENGTH_SHORT
-        ).show()
+        buttonLocalisation.setOnClickListener {
+            ActivityCompat.requestPermissions(
+                context as Activity,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                2
+            )
+        }
 
-        */
+        loading.visibility = VISIBLE
+        if (!getPositionBackground()){
+            loading.visibility = GONE
+            textNoArticle.text = "Veuillez Activer la localisation..."
+            //Rendre visible le boutton d'activation de la localisation
+            buttonLocalisation.visibility = VISIBLE
 
-        //loadData()
 
+        } else {
+            textNoArticle.text = ""
+            buttonLocalisation.visibility = GONE
+        }
         return root
     }
 
-    fun getPositionBackground(
-        position: LocationGPS,
-        homeFragment: HomeFragment
-    ) {
+    override fun onStart() {
+        super.onStart()
+        getPositionBackground()
+        getDataArticlesServer()
+    }
 
-        executorService.execute {
-            try {
+    fun getDataArticlesServer  () : Boolean {
+        if (context?.let {
+                ActivityCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            } != PackageManager.PERMISSION_GRANTED && context?.let {
+                ActivityCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            } != PackageManager.PERMISSION_GRANTED
+        ) {
+            Toast.makeText(activity,"Vous devez activez ou autoriser la localisation",Toast.LENGTH_LONG).show()
+            return false
+        } else {
+            loadData()
+            return true
+        }
+    }
 
-                mainThreadHandler.post {  position.getLocation() }
-            } catch (e: Exception) {
+    fun getPositionBackground() : Boolean {
+        if (context?.let {
+                ActivityCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            } != PackageManager.PERMISSION_GRANTED && context?.let {
+                ActivityCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            } != PackageManager.PERMISSION_GRANTED
+        ) {
+            return false
+        } else {
+            val position =  LocationGPS(context as MainActivity)
+            executorService.execute {
+                try {
 
+                    mainThreadHandler.post {
+                        position.getLocation()
+                    }
+
+                } catch (e: Exception) {
+                }
             }
+            return true
         }
     }
 
@@ -168,7 +223,7 @@ class HomeFragment : Fragment() {
         val filename = "Coordinates"
         if(filename!=null && filename.trim()!=""){
             var fileInputStream: FileInputStream? =
-                activity?.applicationContext?.openFileInput(filename)//activity?.applicationContext?.openFileInput(filename)
+                activity?.applicationContext?.openFileInput(filename)
             var inputStreamReader: InputStreamReader = InputStreamReader(fileInputStream)
             val bufferedReader: BufferedReader = BufferedReader(inputStreamReader)
             val stringBuilder: StringBuilder = StringBuilder()
@@ -183,9 +238,6 @@ class HomeFragment : Fragment() {
             val coordinates = stringBuilder.split("=")
             this.lat = coordinates[0].toDouble()
             this.lon = coordinates[1].toDouble()
-            //Toast.makeText(activity,"STRING"+stringBuilder,Toast.LENGTH_LONG).show()
-            //Toast.makeText(activity,"LAAAAAAAA"+ coordinates[0] + " / " + coordinates[1] + "FINI",Toast.LENGTH_LONG).show()
-            //fileData.setText(stringBuilder.toString()).toString()
         }else{
             Toast.makeText(activity,"file name cannot be blank",Toast.LENGTH_LONG).show()
         }
@@ -195,7 +247,7 @@ class HomeFragment : Fragment() {
     fun loadData()
     {
         textNoArticle.text = ""
-        //(activity as MainActivity).startLoading()
+        loading.visibility = VISIBLE
         readCoordinate()
         //Reset liste
         articles.clear()
@@ -214,54 +266,26 @@ class HomeFragment : Fragment() {
         val formattedDateBefore: String = df.format(daysBeforeDate)
         Log.v(formattedDateBefore.toInt().toString(),"7avant?")
 
-/*
- var ref = db.collection("Articles")
-        ref.whereGreaterThanOrEqualTo("date", formattedDateBefore.toInt() /*formattedDateBefore.toInt()*/)
-        //ref.whereIn()
-        //db.collection("Articles")
-            .get()
-            .addOnSuccessListener {
-                if (it.isEmpty) {
-                    textNoArticle.text ="Aucun objet trouvé"
-                    Toast.makeText(context, "No article Found", Toast.LENGTH_SHORT).show()
-                    return@addOnSuccessListener
-                }
-                for (doc in it) {
-                    val article = doc.toObject(Article::class.java)
-                    Log.v(article.date.toString(), "article")
-                    articles.add(article)
-                }
-                textNoArticle.text =""
-                // Attach the adapter to the recyclerview to populate items
-                rvArticles.adapter = adapter
-                setAdapter(adapter)
-                // Set layout manager to position the items
-                rvArticles.layoutManager = LinearLayoutManager(view?.context)
-            }
- */
         // Find cities within 50km of the user position
         val center = GeoLocation(lat, lon)
         val radiusInM = (50 * 10000).toDouble()
-// Each item in 'bounds' represents a startAt/endAt pair. We have to issue
-// a separate query for each pair. There can be up to 9 pairs of bounds
-// depending on overlap, but in most cases there are 4.
+        // Each item in 'bounds' represents a startAt/endAt pair. We have to issue
+        // a separate query for each pair. There can be up to 9 pairs of bounds
+        // depending on overlap, but in most cases there are 4.
         val bounds = GeoFireUtils.getGeoHashQueryBounds(center, radiusInM)
         val tasks: MutableList<Task<QuerySnapshot>> = ArrayList()
-        //(activity as MainActivity).stopLoading()
         for (b in bounds) {
             val q: Query = db.collection("Articles")
                 .orderBy("geoHash")
                 .startAt(b.startHash)
                 .endAt(b.endHash)
-            tasks.add(q.get()
-                        .addOnSuccessListener {
-                            if (tasks.isEmpty()) {
-                                (activity as MainActivity).stopLoading()
-                                Toast.makeText(context, "No article Found", Toast.LENGTH_SHORT).show()
-                                return@addOnSuccessListener
-                            }
-                        }
+            tasks.add(
+                q.get()
             )
+        }
+        if (tasks.isEmpty()) {
+            loading.visibility = GONE
+            textNoArticle.text = "Aucun objet trouvé"
         }
         // Collect all the query results together into a single list
         Tasks.whenAllComplete(tasks)
@@ -269,7 +293,6 @@ class HomeFragment : Fragment() {
                 val adapter = ArticlesAdapter(articles)
                 rvArticles.adapter = adapter
                 setAdapter(adapter)
-                //val matchingDocs: MutableList<DocumentSnapshot> = ArrayList()
                 for (task in tasks) {
                     val snap = task.result
                     for (doc in snap.documents) {
@@ -285,23 +308,19 @@ class HomeFragment : Fragment() {
                         if (article != null) {
                             if (distanceInM <= radiusInM && formattedDateBefore.toInt() <= article.date) {
                                 if (article != null && article.author != Firebase.auth.currentUser?.email) {
-                                    Log.v(article.title,"articleeeeee22222222" +
-                                            "eeeeeeeee")
                                     articles.add(article)
                                 }
                             }
                         }
-
                     }
-                    //(activity as MainActivity).stopLoading()
+                    loading.visibility = GONE
                     if (articles.isEmpty()) {
                         textNoArticle.text = "Aucun objet trouvé"
                     }
                 }
                 // Set layout manager to position the items
                 rvArticles.layoutManager = LinearLayoutManager(view?.context)
-                // matchingDocs contains the results
-                // ...
+
             }
     }
 

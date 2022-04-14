@@ -27,6 +27,14 @@ class LocationGPS(mainActivity: MainActivity) : LocationListener {
     private lateinit var locationManager: LocationManager
     private val locationPermissionCode = 2
     private var app = mainActivity
+    private var activityLunching = false
+
+    fun getLocationActivity() {
+
+        getLocation()
+        activityLunching = true
+
+    }
 
     fun getLocation() {
 
@@ -46,17 +54,16 @@ class LocationGPS(mainActivity: MainActivity) : LocationListener {
                 locationPermissionCode
             )
 
+            app.start()
+
         } else {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 5f, this)
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1, 5f, this)
         }
     }
 
-    override fun onLocationChanged(location: Location) {
 
-        if (app != null){
-            app?.stopLoading()
-        }
+    override fun onLocationChanged(location: Location) {
 
         var lat = location.latitude
         var lon = location.longitude
@@ -90,6 +97,12 @@ class LocationGPS(mainActivity: MainActivity) : LocationListener {
 
         //update database
         updateDB(lat, lon)
+
+
+        if (activityLunching){
+            app.start()
+            activityLunching = false
+        }
 
     }
 

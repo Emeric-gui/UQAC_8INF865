@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
@@ -39,60 +40,32 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        supportActionBar?.hide()
+
         val window: Window = this@MainActivity.window
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.statusBarColor = ContextCompat.getColor(this@MainActivity, R.color.barStatus)
 
-        navView = binding.navView
-        appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_home, R.id.navigation_search, R.id.navigation_post, R.id.navigation_discussions, R.id.navigation_my_account
-            )
-        )
-        supportActionBar?.hide()
-
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
-
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
-
-        progressBar2.visibility = VISIBLE
-        //Get the localization of the phone NETWORK/GPS
-        getLocation ()
-        /*Toast.makeText(
-            this,
-            "MainActivity Ecriture data",
-            Toast.LENGTH_SHORT
-        ).show()
-
-         */
-
+        getParametersForLunching ()
 
         //val br: BroadcastReceiver = LocationProviderChangedReceiver()
         //val filter = IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION)
         //registerReceiver(br, filter)
 
-        /*
-        val intentFilter = IntentFilter(
-            Intent.ACTION_CAMERA_BUTTON)
-        intentFilter.addAction(Intent.ACTION_PACKAGE_ADDED)
-        registerReceiver(intentReceiver, intentFilter)
-        */
-
-
-
 
     }
 
-    fun  getLocation () {
+    fun  getParametersForLunching () {
+        //Get the localization of the phone NETWORK/GPS
         val position =  LocationGPS(this)
-        position.getLocation()
+        position.getLocationActivity()
     }
 
+    fun start() {
+        setNavView()
+    }
+/*
     fun  stopLoading () {
         progressBar2.visibility = GONE
 
@@ -101,6 +74,27 @@ class MainActivity : AppCompatActivity() {
     fun  startLoading () {
         progressBar2.visibility = VISIBLE
 
+    }
+*/
+    fun setNavView() {
+
+        navView = binding.navView
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.navigation_home, R.id.navigation_search, R.id.navigation_post, R.id.navigation_discussions, R.id.navigation_my_account
+            )
+        )
+
+        navView.visibility = VISIBLE
+
+        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
+
+        navController.navigate(R.id.navigation_home)
     }
 
 

@@ -1,5 +1,7 @@
 package com.example.project_uqac.ui.post
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -7,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.core.os.HandlerCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -73,9 +76,7 @@ class PostFragment : Fragment() {
         }
 
        // childFragmentManager.beginTransaction().replace(R.id.post_fragment_navigation,PostFragmentNature()).commit()
-
-        val position =  LocationGPS(context as MainActivity)
-        getPositionBackground(position, this)
+        getPositionBackground( )
         Toast.makeText(
             context,
             "PostFragment Ecriture data",
@@ -85,17 +86,33 @@ class PostFragment : Fragment() {
         return root
     }
 
-    private fun getPositionBackground(
-        position: LocationGPS,
-        postFragment: PostFragment
-    ) {
-        executorService.execute {
-            try {
+    fun getPositionBackground() : Boolean {
+        if (context?.let {
+                ActivityCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            } != PackageManager.PERMISSION_GRANTED && context?.let {
+                ActivityCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            } != PackageManager.PERMISSION_GRANTED
+        ) {
+            return false
+        } else {
+            val position =  LocationGPS(context as MainActivity)
+            executorService.execute {
+                try {
 
-                mainThreadHandler.post {  position.getLocation() }
-            } catch (e: Exception) {
+                    mainThreadHandler.post {
+                        position.getLocation()
+                    }
 
+                } catch (e: Exception) {
+                }
             }
+            return true
         }
     }
 

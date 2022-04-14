@@ -1,9 +1,11 @@
 package com.example.project_uqac.ui.post
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
@@ -15,6 +17,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.example.project_uqac.BuildConfig
 import com.example.project_uqac.MainActivity
@@ -51,8 +54,8 @@ class PostFragmentLieuAnimal : Fragment(), OnMapReadyCallback,
 
     private var reloaded : Boolean = false
 
-    private var lat : Double = 0.0
-    private var lon : Double = 0.0
+    private var lat : Double = 37.406474
+    private var lon : Double = -122.078184
     private var latObject : Double = 0.0
     private var lonObject : Double = 0.0
     private var  radius  = 14.0
@@ -205,31 +208,47 @@ class PostFragmentLieuAnimal : Fragment(), OnMapReadyCallback,
         return view
     }
 
-
     private fun readCoordinate() {
 
-        val filename = "Coordinates"
-        if(filename!=null && filename.trim()!=""){
-            var fileInputStream: FileInputStream? = (activity as MainActivity).openFileInput(filename)
-            var inputStreamReader: InputStreamReader = InputStreamReader(fileInputStream)
-            val bufferedReader: BufferedReader = BufferedReader(inputStreamReader)
-            val stringBuilder: StringBuilder = StringBuilder()
-            var text: String? = null
-            while (run {
-                    text = bufferedReader.readLine()
-                    text
-                } != null) {
-                stringBuilder.append(text)
+        if (context?.let {
+                ActivityCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            } != PackageManager.PERMISSION_GRANTED && context?.let {
+                ActivityCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            } != PackageManager.PERMISSION_GRANTED
+        ) {
+            Toast.makeText(activity,"Vous devriez activer ou autoriser la localsation pour un meilleurs service...",Toast.LENGTH_LONG).show()
+        } else {
+
+            val filename = "Coordinates"
+            if (filename != null && filename.trim() != "") {
+                var fileInputStream: FileInputStream? =
+                    (activity as MainActivity).openFileInput(filename)
+                var inputStreamReader: InputStreamReader = InputStreamReader(fileInputStream)
+                val bufferedReader: BufferedReader = BufferedReader(inputStreamReader)
+                val stringBuilder: StringBuilder = StringBuilder()
+                var text: String? = null
+                while (run {
+                        text = bufferedReader.readLine()
+                        text
+                    } != null) {
+                    stringBuilder.append(text)
+                }
+                //Displaying data on EditText
+                val coordinates = stringBuilder.split("=")
+                this.lat = coordinates[0].toDouble()
+                this.lon = coordinates[1].toDouble()
+            } else {
+                Toast.makeText(activity, "file name cannot be blank", Toast.LENGTH_LONG).show()
             }
-            //Displaying data on EditText
-            val coordinates = stringBuilder.split("=")
-            this.lat = coordinates[0].toDouble()
-            this.lon = coordinates[1].toDouble()
-        }else{
-            Toast.makeText(activity,"file name cannot be blank",Toast.LENGTH_LONG).show()
+
         }
     }
-
     @SuppressLint("ClickableViewAccessibility")
     override fun onMapReady(googleMap: GoogleMap) {
         val lat = this.lat

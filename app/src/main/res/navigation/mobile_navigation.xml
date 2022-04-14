@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@id/lunching">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -34,4 +34,9 @@
         android:name="com.example.project_uqac.ui.my_account.MyAccountFragment"
         android:label="@string/title_my_account"
         tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/lunching"
+        android:name="com.example.project_uqac.Lunching"
+        android:label="fragment_lunching"
+        tools:layout="@layout/fragment_lunching" />
 </navigation>
