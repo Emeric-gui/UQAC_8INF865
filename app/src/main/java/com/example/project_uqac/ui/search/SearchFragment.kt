@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
@@ -56,7 +57,7 @@ class SearchFragment  : Fragment()  {
     // Lookup the recyclerview in activity layout
     private lateinit var rvArticles : RecyclerView
     private lateinit var textNoArticle : TextView
-    private lateinit var inputSearch : TextInputEditText
+    private lateinit var inputSearch : EditText
 
 
 
@@ -92,7 +93,7 @@ class SearchFragment  : Fragment()  {
         // Lookup the recyclerview in activity layout
         rvArticles = root.findViewById<View>(R.id.recyclerView) as RecyclerView
         textNoArticle = root.findViewById<TextView>(R.id.textNoArticles2)
-        inputSearch = root.findViewById<TextInputEditText>(R.id.Search)
+        inputSearch = root.findViewById<EditText>(R.id.Search)
         inputSearch.setText("")
         val buttonSearch = root.findViewById<ImageButton>(R.id.button_search)
         loadData()

@@ -28,7 +28,11 @@
                 android:layout_height="wrap_content"
                 android:background="#EFF1F1"
                 android:minDate="01/01/2019"
-                android:selectedWeekBackgroundColor="#857700FF" />
+                android:selectedWeekBackgroundColor="#FFC107"
+                android:dateTextAppearance="@style/CalenderViewDateCustomText"
+                android:theme="@style/CalenderViewCustom"
+                android:weekDayTextAppearance="@style/CalenderViewWeekCustomText"
+                />
         </androidx.cardview.widget.CardView>
     </LinearLayout>
 

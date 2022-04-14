@@ -35,7 +35,7 @@
                     android:layout_width="250dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:progressTint="@color/purple_500" />
+                    android:progressTint="#FFC107" />
 
                 <LinearLayout
                     android:layout_width="300dp"
@@ -56,28 +56,28 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
                             android:layout_marginEnd="8dp"
+                            android:gravity="center"
                             android:text="De quel  animal s'agit-il ? "
                             android:textAlignment="center"
                             android:textSize="20sp" />
 
-                        <com.google.android.material.textfield.TextInputLayout
+                        <EditText
+                            android:id="@+id/textSpecie"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:textColorHint="#515050"
-                            app:boxCornerRadiusBottomEnd="10dp"
-                            app:boxCornerRadiusBottomStart="10dp"
-                            app:boxCornerRadiusTopEnd="10dp"
-                            app:boxCornerRadiusTopStart="10dp"
-                            app:boxStrokeWidth="0dp"
-                            app:boxStrokeWidthFocused="0dp">
+                            android:background="@drawable/background_edit_text_post"
+                            android:hint="Chien, hamster... etc"
+                            android:includeFontPadding="true"
+                            android:inputType="textPersonName"
+                            android:padding="10dp"
+                            android:paddingHorizontal="5dp"
+                            android:textColor="#7A7A7A"
+                            android:textColorHighlight="#E8E8E8"
+                            android:textColorHint="#787878"
+                            android:textColorLink="#6C6C6C"
+                            android:textCursorDrawable="@drawable/cursor_color" />
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/textSpecie"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="..." />
-                        </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 
                     <LinearLayout
@@ -93,27 +93,28 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
                             android:layout_marginEnd="8dp"
+                            android:gravity="center"
                             android:text="Race ?"
                             android:textAlignment="center"
                             android:textSize="20sp" />
 
-                        <com.google.android.material.textfield.TextInputLayout
+                        <EditText
+                            android:id="@+id/textRace"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            app:boxCornerRadiusBottomEnd="10dp"
-                            app:boxCornerRadiusBottomStart="10dp"
-                            app:boxCornerRadiusTopEnd="10dp"
-                            app:boxCornerRadiusTopStart="10dp"
-                            app:boxStrokeWidth="0dp"
-                            app:boxStrokeWidthFocused="0dp">
+                            android:background="@drawable/background_edit_text_post"
+                            android:hint="Caniche, chiwawa... etc"
+                            android:includeFontPadding="true"
+                            android:inputType="textPersonName"
+                            android:padding="10dp"
+                            android:paddingHorizontal="5dp"
+                            android:textColor="#7A7A7A"
+                            android:textColorHighlight="#E8E8E8"
+                            android:textColorHint="#787878"
+                            android:textColorLink="#6C6C6C"
+                            android:textCursorDrawable="@drawable/cursor_color" />
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/textRace"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="..." />
-                        </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 
                 </LinearLayout>

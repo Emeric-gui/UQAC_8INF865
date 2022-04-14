@@ -4,7 +4,122 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
+    android:background="#99E0E0E0"
     tools:context=".ui.search.SearchFragment">
+
+    <LinearLayout
+        android:id="@+id/linearLayout_search"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:background="#3F51B5"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:foregroundGravity="center_vertical|center_horizontal"
+        app:cardBackgroundColor="#FFC107"
+        app:cardCornerRadius="20dp"
+        app:contentPadding="3dp"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout_search"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="300dp"
+            android:layout_height="70dp"
+            android:foregroundGravity="center_vertical|center_horizontal"
+            app:cardBackgroundColor="#FFC107"
+            app:cardCornerRadius="18dp">
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="300dp"
+                android:layout_height="70dp"
+                android:background="#FFC107"
+                android:foregroundGravity="center_horizontal"
+                android:gravity="center|center_horizontal"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginBottom="1.5dp"
+                    android:background="#E0E0E0"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/Search"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#FFFFFF"
+                        android:hint="Rechercher"
+                        android:includeFontPadding="true"
+                        android:inputType="textPersonName"
+                        android:paddingHorizontal="5dp"
+                        android:text="Rechercher"
+                        android:textColor="#7A7A7A"
+                        android:textColorHighlight="#E8E8E8"
+                        android:textColorHint="#787878"
+                        android:textColorLink="#6C6C6C"
+                        android:textCursorDrawable="@drawable/cursor_color" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="1.5dp"
+                    android:background="#FFC107"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="#FFFFFF"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:id="@+id/button_search"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="#00E0E0E0"
+                            android:src="@drawable/ic_action_search" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="3dp"
+                        android:layout_weight="1"
+                        android:background="#FFFFFF"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:id="@+id/button_filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="#00E0E0E0"
+                            android:minHeight="48dp"
+                            android:src="@drawable/ic_action_filter" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/textNoArticles2"
@@ -21,79 +136,15 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:id="@+id/linearLayout_search"
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="wrap_content"
-            android:layout_height="45dp"
-            android:layout_weight="1"
-            app:boxCornerRadiusBottomEnd="35dp"
-            app:boxCornerRadiusBottomStart="35dp"
-            app:boxCornerRadiusTopEnd="35dp"
-            app:boxCornerRadiusTopStart="35dp"
-            app:boxStrokeWidth="0dp"
-            app:boxStrokeWidthFocused="0dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/Search"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Rechercher" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <ImageButton
-            android:id="@+id/button_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="15dp"
-            android:minHeight="48dp"
-            android:src="@drawable/ic_action_search" />
-
-        <ImageButton
-            android:id="@+id/button_filter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:src="@drawable/ic_action_filter" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/linearLayout_result_search"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout_search">
-
-        <View
-            android:id="@+id/view2"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#3D00BB"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout_search" />
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/linearLayout_result_search"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="25dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout_search">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
