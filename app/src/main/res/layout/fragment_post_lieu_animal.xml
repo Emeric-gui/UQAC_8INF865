@@ -38,7 +38,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
-                    android:progressTint="@color/purple_500" />
+                    android:progressTint="#FFC107" />
 
                 <LinearLayout
                     android:layout_width="300dp"
@@ -144,7 +144,7 @@
                             android:layout_height="35dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_action_target"
-                            android:tint="#6C00F8" />
+                            android:tint="#FFC107" />
 
                     </androidx.cardview.widget.CardView>
 
@@ -174,8 +174,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="20dp"
-                            android:background="@drawable/round_button"
-                            android:backgroundTint="#DBDBDB"
+                            android:backgroundTint="#3F51B5"
                             android:text="Publier" />
                     </LinearLayout>
 

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
@@ -20,8 +21,8 @@ class PostFragmentType : Fragment() {
         // Inflate the layout for this fragment
         val view =  inflater.inflate(R.layout.fragment_post_type, container, false)
 
-        val textModel : TextInputEditText = view.findViewById(R.id.textModele)
-        val textMarque : TextInputEditText = view.findViewById(R.id.textMarque)
+        val textModel : EditText = view.findViewById(R.id.textModele)
+        val textMarque : EditText = view.findViewById(R.id.textMarque)
         var progressBar : ProgressBar = view.findViewById(R.id.progressBar)
         progressBar.progress = 34
         val args = Bundle()

@@ -34,7 +34,7 @@
                     android:layout_width="250dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:progressTint="@color/purple_500" />
+                    android:progressTint="#FFC107" />
 
                 <LinearLayout
                     android:layout_width="300dp"
@@ -49,20 +49,28 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
+                        android:gravity="center"
                         android:text="Description briève.."
                         android:textAlignment="center"
                         android:textSize="20sp" />
 
-                    <com.google.android.material.textfield.TextInputLayout
+                    <EditText
+                        android:id="@+id/textDescriptionObjet"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/textDescriptionObjet"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="..." />
-                    </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_height="150dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/background_edit_text_post"
+                        android:gravity="top"
+                        android:hint="Ex: Blanc, légèrement rayé sur le bord... "
+                        android:includeFontPadding="true"
+                        android:inputType="textMultiLine"
+                        android:padding="10dp"
+                        android:paddingHorizontal="5dp"
+                        android:textColor="#7A7A7A"
+                        android:textColorHighlight="#E8E8E8"
+                        android:textColorHint="#787878"
+                        android:textColorLink="#6C6C6C"
+                        android:textCursorDrawable="@drawable/cursor_color" />
 
                 </LinearLayout>
 

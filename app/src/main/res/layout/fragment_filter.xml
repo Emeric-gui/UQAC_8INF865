@@ -20,7 +20,7 @@
             android:id="@+id/LinearLayout"
             android:layout_width="match_parent"
             android:layout_height="85dp"
-            android:background="#6C00F8"
+            android:background="#3F51B5"
             android:gravity="fill"
             android:orientation="vertical">
 
@@ -68,7 +68,8 @@
                 android:id="@+id/filter_tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorLightGrey" />
+                android:background="@color/colorLightGrey"
+                app:tabIndicatorColor="#3F51B5"/>
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/filter_viewer"
@@ -93,6 +94,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
+                android:backgroundTint="#3F51B5"
+                android:backgroundTintMode="src_over"
                 android:text="Valider" />
 
         </LinearLayout>

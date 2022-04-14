@@ -3,6 +3,7 @@ package com.example.project_uqac.ui.search.filter
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.text.format.DateUtils.getMonthString
 import android.util.Log
@@ -53,6 +54,7 @@ class DialogueFragmentFilter(searchFragment: SearchFragment) :DialogFragment(){
          val TAB_TITLES = arrayOf("Où ?", "Quand ?")
 
          val tabLayout : TabLayout = rootView.findViewById(R.id.filter_tabs)
+         tabLayout.setTabTextColors(Color.parseColor("#888888"), Color.parseColor("#3F51B5"))
          TabLayoutMediator(tabLayout, viewFilter) { tab, position ->
              tab.text = TAB_TITLES[position]
          }.attach()

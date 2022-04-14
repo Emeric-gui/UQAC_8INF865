@@ -36,7 +36,7 @@
                     android:layout_width="250dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:progressTint="@color/purple_500" />
+                    android:progressTint="#FFC107" />
 
                 <LinearLayout
                     android:layout_width="300dp"
@@ -57,27 +57,28 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
                             android:layout_marginEnd="8dp"
-                            android:text="Quel est la marque ?"
+                            android:gravity="center"
+                            android:text="Quel est l'objet ?"
                             android:textAlignment="center"
                             android:textSize="20sp" />
 
-                        <com.google.android.material.textfield.TextInputLayout
+                        <EditText
+                            android:id="@+id/textMarque"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            app:boxCornerRadiusBottomEnd="10dp"
-                            app:boxCornerRadiusBottomStart="10dp"
-                            app:boxCornerRadiusTopEnd="10dp"
-                            app:boxCornerRadiusTopStart="10dp"
-                            app:boxStrokeWidth="0dp"
-                            app:boxStrokeWidthFocused="0dp">
+                            android:background="@drawable/background_edit_text_post"
+                            android:hint="Montre, téléphone... etc"
+                            android:includeFontPadding="true"
+                            android:inputType="textPersonName"
+                            android:padding="10dp"
+                            android:paddingHorizontal="5dp"
+                            android:textColor="#7A7A7A"
+                            android:textColorHighlight="#E8E8E8"
+                            android:textColorHint="#787878"
+                            android:textColorLink="#6C6C6C"
+                            android:textCursorDrawable="@drawable/cursor_color" />
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/textMarque"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="..." />
-                        </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 
                     <LinearLayout
@@ -93,27 +94,28 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
                             android:layout_marginEnd="8dp"
-                            android:text="Modèle ?"
+                            android:gravity="center"
+                            android:text="Modèle, marque ?"
                             android:textAlignment="center"
                             android:textSize="20sp" />
 
-                        <com.google.android.material.textfield.TextInputLayout
+                        <EditText
+                            android:id="@+id/textModele"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginTop="10dp"
-                            app:boxCornerRadiusBottomEnd="10dp"
-                            app:boxCornerRadiusBottomStart="10dp"
-                            app:boxCornerRadiusTopEnd="10dp"
-                            app:boxCornerRadiusTopStart="10dp"
-                            app:boxStrokeWidth="0dp"
-                            app:boxStrokeWidthFocused="0dp">
+                            android:background="@drawable/background_edit_text_post"
+                            android:hint="Iphone 4, Rolex... etc"
+                            android:includeFontPadding="true"
+                            android:inputType="textPersonName"
+                            android:padding="10dp"
+                            android:paddingHorizontal="5dp"
+                            android:textColor="#7A7A7A"
+                            android:textColorHighlight="#E8E8E8"
+                            android:textColorHint="#787878"
+                            android:textColorLink="#6C6C6C"
+                            android:textCursorDrawable="@drawable/cursor_color" />
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/textModele"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="..." />
-                        </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 
                 </LinearLayout>

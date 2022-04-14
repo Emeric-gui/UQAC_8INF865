@@ -91,7 +91,7 @@
                 android:layout_height="35dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_action_target"
-                app:tint="#6C00F8" />
+                app:tint="#FFC107" />
 
         </androidx.cardview.widget.CardView>
 
