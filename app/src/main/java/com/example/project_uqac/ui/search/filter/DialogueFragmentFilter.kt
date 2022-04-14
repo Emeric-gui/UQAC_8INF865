@@ -23,8 +23,8 @@ import kotlinx.android.synthetic.main.fragment_filter.view.*
 
 class DialogueFragmentFilter(searchFragment: SearchFragment) :DialogFragment(){
     private lateinit var viewFilter : ViewPager2
-    private var lat : Double = 0.0
-    private var lon : Double = 0.0
+    private var lat : Double = 37.406474
+    private var lon : Double = -122.078184
     private var date :Int = 0
     private var radius : Int = 0
     private var searchFragment : SearchFragment = searchFragment

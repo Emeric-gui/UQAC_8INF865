@@ -60,7 +60,7 @@
         <entry key="app/src/main/res/drawable/rounded_message_blue.xml" value="0.104" />
         <entry key="app/src/main/res/drawable/status_bar_color.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/targetcircle.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.182518115942029" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_chat.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_discussions.xml" value="0.18714555765595464" />
         <entry key="app/src/main/res/layout/fragment_filter.xml" value="0.33518005540166207" />
@@ -68,6 +68,7 @@
         <entry key="app/src/main/res/layout/fragment_filter_map.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.21257476806640627" />
+        <entry key="app/src/main/res/layout/fragment_lunching.xml" value="0.10740740740740741" />
         <entry key="app/src/main/res/layout/fragment_my_account.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_my_account_delete_item.xml" value="0.13728470111448834" />
         <entry key="app/src/main/res/layout/fragment_my_account_home.xml" value="0.1" />
