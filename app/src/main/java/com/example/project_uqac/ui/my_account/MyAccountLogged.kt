@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -109,6 +110,10 @@ class MyAccountLogged : Fragment() {
         val TAB_TITLES = arrayOf("Home", "Informations", "My Posts")
 
         val tabLayout : TabLayout = view.findViewById(R.id.my_account_logged_tabs)
+
+        tabLayout.setTabTextColors(Color.parseColor("#888888"), Color.parseColor("#3F51B5"))
+
+
         TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
             tab.text = TAB_TITLES[position]
         }.attach()

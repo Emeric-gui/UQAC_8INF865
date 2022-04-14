@@ -67,7 +67,7 @@
         android:id="@+id/linearLayout_result_search"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#99E0E0E0"
+        android:background="#80E0E0E0"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -69,7 +69,12 @@
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.21257476806640627" />
         <entry key="app/src/main/res/layout/fragment_my_account.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_my_account_logged.xml" value="0.13247213779128672" />
+        <entry key="app/src/main/res/layout/fragment_my_account_delete_item.xml" value="0.13728470111448834" />
+        <entry key="app/src/main/res/layout/fragment_my_account_home.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_my_account_informations.xml" value="0.13728470111448834" />
+        <entry key="app/src/main/res/layout/fragment_my_account_logged.xml" value="0.39373970345963755" />
+        <entry key="app/src/main/res/layout/fragment_my_account_my_posts.xml" value="0.13728470111448834" />
+        <entry key="app/src/main/res/layout/fragment_my_account_sign_up.xml" value="0.13728470111448834" />
         <entry key="app/src/main/res/layout/fragment_post.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_post_date.xml" value="0.291198617612458" />
         <entry key="app/src/main/res/layout/fragment_post_date_animal.xml" value="0.1" />
@@ -89,8 +94,8 @@
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.11029411764705882" />
         <entry key="app/src/main/res/layout/fragment_test.xml" value="0.1" />
         <entry key="app/src/main/res/layout/frame_textview.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/item_article.xml" value="0.1685821533203125" />
-        <entry key="app/src/main/res/layout/item_conversation.xml" value="0.2599304767869274" />
+        <entry key="app/src/main/res/layout/item_article.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_conversation.xml" value="0.37589574778302115" />
         <entry key="app/src/main/res/layout/item_search.xml" value="0.38364410400390625" />
         <entry key="app/src/main/res/layout/place_prediction_item.xml" value="0.12760416666666666" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.1537037037037037" />
