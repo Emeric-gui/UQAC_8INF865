@@ -108,33 +108,36 @@ class HomeFragment : Fragment() {
         button7.isSelected = false
 
         button1.setOnClickListener {
-            if (getDataArticlesServer()) {
+            if (checkPermissions()) {
                 button1.isSelected = true
                 button1.setBackgroundResource(R.drawable.barckground_button_home)
                 button3.isSelected = false
                 button3.setBackgroundColor(Color.parseColor("#3F51B5"))
                 button7.isSelected = false
                 button7.setBackgroundColor(Color.parseColor("#3F51B5"))
+                getDataArticlesServer()
             }
         }
         button3.setOnClickListener { // Perform action on click
-            if (getDataArticlesServer()) {
+            if (checkPermissions()) {
                 button3.isSelected = true
                 button3.setBackgroundResource(R.drawable.barckground_button_home)
                 button1.isSelected = false
                 button1.setBackgroundColor(Color.parseColor("#3F51B5"))
                 button7.isSelected = false
                 button7.setBackgroundColor(Color.parseColor("#3F51B5"))
+                getDataArticlesServer()
             }
         }
         button7.setOnClickListener {
-            if (getDataArticlesServer()) {
+            if (checkPermissions()) {
                 button7.isSelected = true
                 button7.setBackgroundResource(R.drawable.barckground_button_home)
                 button3.isSelected = false
                 button3.setBackgroundColor(Color.parseColor("#3F51B5"))
                 button1.isSelected = false
                 button1.setBackgroundColor(Color.parseColor("#3F51B5"))
+                getDataArticlesServer()
             }
         }
 
@@ -167,42 +170,32 @@ class HomeFragment : Fragment() {
         getDataArticlesServer()
     }
 
+    fun checkPermissions () : Boolean {
+        return !(context?.let {
+            ActivityCompat.checkSelfPermission(
+                it,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+        } != PackageManager.PERMISSION_GRANTED && context?.let {
+            ActivityCompat.checkSelfPermission(
+                it,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+        } != PackageManager.PERMISSION_GRANTED)
+    }
+
     fun getDataArticlesServer  () : Boolean {
-        if (context?.let {
-                ActivityCompat.checkSelfPermission(
-                    it,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                )
-            } != PackageManager.PERMISSION_GRANTED && context?.let {
-                ActivityCompat.checkSelfPermission(
-                    it,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                )
-            } != PackageManager.PERMISSION_GRANTED
-        ) {
-            Toast.makeText(activity,"Vous devez activez ou autoriser la localisation",Toast.LENGTH_LONG).show()
-            return false
-        } else {
+        return if (checkPermissions ()) {
             loadData()
-            return true
+            true
+        } else {
+            Toast.makeText(activity,"Vous devez activez ou autoriser la localisation",Toast.LENGTH_LONG).show()
+            false
         }
     }
 
     fun getPositionBackground() : Boolean {
-        if (context?.let {
-                ActivityCompat.checkSelfPermission(
-                    it,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                )
-            } != PackageManager.PERMISSION_GRANTED && context?.let {
-                ActivityCompat.checkSelfPermission(
-                    it,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                )
-            } != PackageManager.PERMISSION_GRANTED
-        ) {
-            return false
-        } else {
+        if (checkPermissions ()) {
             val position =  LocationGPS(context as MainActivity)
             executorService.execute {
                 try {
@@ -215,6 +208,8 @@ class HomeFragment : Fragment() {
                 }
             }
             return true
+        } else {
+            return false
         }
     }
 
@@ -288,10 +283,10 @@ class HomeFragment : Fragment() {
             textNoArticle.text = "Aucun objet trouvé"
         }
         // Collect all the query results together into a single list
-        val adapter = ArticlesAdapter(articles)
-        rvArticles.adapter = adapter
         Tasks.whenAllComplete(tasks)
             .addOnCompleteListener {
+                val adapter = ArticlesAdapter(articles)
+                rvArticles.adapter = adapter
                 setAdapter(adapter)
                 for (task in tasks) {
                     val snap = task.result
@@ -318,9 +313,10 @@ class HomeFragment : Fragment() {
                         textNoArticle.text = "Aucun objet trouvé"
                     }
                 }
+                // Set layout manager to position the items
+                rvArticles.layoutManager = LinearLayoutManager(view?.context)
+
             }
-        // Set layout manager to position the items
-        rvArticles.layoutManager = LinearLayoutManager(view?.context)
     }
 
     private fun setAdapter(adapter: ArticlesAdapter) {
