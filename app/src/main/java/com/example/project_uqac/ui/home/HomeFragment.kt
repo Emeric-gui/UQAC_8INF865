@@ -288,10 +288,10 @@ class HomeFragment : Fragment() {
             textNoArticle.text = "Aucun objet trouvé"
         }
         // Collect all the query results together into a single list
+        val adapter = ArticlesAdapter(articles)
+        rvArticles.adapter = adapter
         Tasks.whenAllComplete(tasks)
             .addOnCompleteListener {
-                val adapter = ArticlesAdapter(articles)
-                rvArticles.adapter = adapter
                 setAdapter(adapter)
                 for (task in tasks) {
                     val snap = task.result
@@ -318,10 +318,9 @@ class HomeFragment : Fragment() {
                         textNoArticle.text = "Aucun objet trouvé"
                     }
                 }
-                // Set layout manager to position the items
-                rvArticles.layoutManager = LinearLayoutManager(view?.context)
-
             }
+        // Set layout manager to position the items
+        rvArticles.layoutManager = LinearLayoutManager(view?.context)
     }
 
     private fun setAdapter(adapter: ArticlesAdapter) {
