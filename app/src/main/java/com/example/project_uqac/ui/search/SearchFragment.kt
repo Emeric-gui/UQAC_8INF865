@@ -99,7 +99,6 @@ class SearchFragment  : Fragment()  {
         val buttonSearch = root.findViewById<ImageButton>(R.id.button_search)
         buttonSearch.setOnClickListener {
            loadData()
-
         }
         return root
     }
@@ -254,7 +253,7 @@ class SearchFragment  : Fragment()  {
                         val article = doc.toObject(Article::class.java)
                         Log.v(article.date.toString(), "article")
                         if( article.author != Firebase.auth.currentUser?.email){
-                            if (distanceInM <= radiusInM && date <= article.date) {
+                            if (distanceInM <= 5000000) {
                                 articles.add(article)
                             }
                         }
