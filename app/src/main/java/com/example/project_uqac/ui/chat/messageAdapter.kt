@@ -1,20 +1,12 @@
 package com.example.project_uqac.ui.chat
 
-import android.app.Activity
-import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
 import com.example.project_uqac.R
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
@@ -26,10 +18,6 @@ import com.bumptech.glide.Glide
 
 import com.example.project_uqac.databinding.ImageMessageBinding
 import com.example.project_uqac.databinding.MessageBinding
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.ktx.storage
-
-
 import com.google.firebase.storage.ktx.storage
 
 
@@ -99,7 +87,7 @@ class MessageAdapter(
 
             binding.messengerTextView.text = if (item.messageUser == null) ANONYMOUS else item.messageUser
             if (item.photoUrl != null) {
-                var a = item.photoUrl
+                val a = item.photoUrl
                 Log.d(ChatFragment.TAG, "url: $a")
                 loadImageIntoView(binding.messengerImageView, item.photoUrl!!)
             } else {

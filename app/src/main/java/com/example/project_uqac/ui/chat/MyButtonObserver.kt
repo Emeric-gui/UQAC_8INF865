@@ -17,7 +17,6 @@ package com.example.project_uqac.ui.chat
 
 import android.text.Editable
 import android.text.TextWatcher
-import android.widget.Button
 import android.widget.ImageView
 import com.example.project_uqac.R
 
