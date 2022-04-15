@@ -94,7 +94,6 @@ class SearchFragment  : Fragment()  {
         }
 
         loading.visibility = VISIBLE
-        loadData()
 
         val buttonSearch = root.findViewById<ImageButton>(R.id.button_search)
         buttonSearch.setOnClickListener {
