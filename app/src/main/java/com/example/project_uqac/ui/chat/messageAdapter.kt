@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -82,9 +83,11 @@ class MessageAdapter(
             if (userName != ANONYMOUS && currentUserName == userName && userName != null) {
                 textView.setBackgroundResource(R.drawable.rounded_message_blue)
                 textView.setTextColor(Color.WHITE)
+                textView.gravity= Gravity.RIGHT
             } else {
                 textView.setBackgroundResource(R.drawable.rounded_message_gray)
                 textView.setTextColor(Color.BLACK)
+                textView.gravity= Gravity.LEFT
             }
         }
     }

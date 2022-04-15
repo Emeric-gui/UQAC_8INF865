@@ -131,17 +131,19 @@ class MyAccountTabInformations : Fragment() {
 //                }
             Log.d(TAG, email_textedit.text.toString())
             val user = Firebase.auth.currentUser
-            user?.email?.let { changeMail(it,email_textedit.text.toString()) }
+
             user!!.updateEmail(email_textedit.text.toString())
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         email = email_textedit.text.toString()
+
                         Log.d(TAG, "User email address updated.")
                         upPassword()
                     } else {
                         Log.d(TAG, "User email address not updated.")
                     }
                 }
+            user?.email?.let { changeMail(it,email_textedit.text.toString()) }
         } else {
             upPassword()
         }
