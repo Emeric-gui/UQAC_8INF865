@@ -45,6 +45,7 @@
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/menu/bottom_nav_menu.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.24739583333333334" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.24739583333333334" />
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.105" />
         <entry key="app/src/main/res/drawable-xxxhdpi/ic_search_black_24dp.xml" value="0.138" />
         <entry key="app/src/main/res/drawable/background_button.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/background_edit_text_post.xml" value="0.1" />
@@ -53,6 +54,9 @@
         <entry key="app/src/main/res/drawable/cursor_color.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/customborder.xml" value="0.201" />
         <entry key="app/src/main/res/drawable/ic_information.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_launcher_2_background.xml" value="0.105" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.105" />
+        <entry key="app/src/main/res/drawable/ic_launcher_logo2_background.xml" value="0.105" />
         <entry key="app/src/main/res/drawable/icone_bottom_bar.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/post_border_custom.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/post_gradient_background.xml" value="0.1" />
@@ -68,7 +72,7 @@
         <entry key="app/src/main/res/layout/fragment_filter_map.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.21257476806640627" />
-        <entry key="app/src/main/res/layout/fragment_lunching.xml" value="0.10740740740740741" />
+        <entry key="app/src/main/res/layout/fragment_lunching.xml" value="0.2159706398292824" />
         <entry key="app/src/main/res/layout/fragment_my_account.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_my_account_delete_item.xml" value="0.13728470111448834" />
         <entry key="app/src/main/res/layout/fragment_my_account_home.xml" value="0.1" />
@@ -101,6 +105,11 @@
         <entry key="app/src/main/res/layout/place_prediction_item.xml" value="0.12760416666666666" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.1537037037037037" />
         <entry key="app/src/main/res/menu/menu.xml" value="0.12760416666666666" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.105" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_2.xml" value="0.105" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_2_round.xml" value="0.105" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_logo2.xml" value="0.105" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_logo2_round.xml" value="0.105" />
       </map>
     </option>
   </component>
