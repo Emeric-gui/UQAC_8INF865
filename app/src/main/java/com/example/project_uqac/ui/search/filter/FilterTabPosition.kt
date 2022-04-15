@@ -41,7 +41,7 @@ class FilterTabPosition(dialogueContext: DialogueFragmentFilter) : Fragment(),  
     private var lon : Double = -122.078184
     private var latObject : Double = 0.0
     private var lonObject : Double = 0.0
-    private var  radius  = 14
+    private var  radius  = (((1-(1/100))*5)+7)
     private lateinit var viewMap : MapView
     private lateinit var map: GoogleMap
     private lateinit var seekBarRadius : SeekBar

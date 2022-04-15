@@ -79,7 +79,7 @@ class PostFragmentLieuObjet : Fragment(), OnMapReadyCallback,
     private var lonObject : Double = 0.0
     private var  radius  = 14.0
     private lateinit var map: GoogleMap
-    private var zoomMap = 0
+    private var zoomMap = (((1-(1/100))*5)+7)
     private lateinit var seekBarRadius : SeekBar
 
     override fun onCreateView(
