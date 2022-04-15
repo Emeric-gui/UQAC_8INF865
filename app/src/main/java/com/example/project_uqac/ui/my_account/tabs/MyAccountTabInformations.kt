@@ -230,10 +230,10 @@ class MyAccountTabInformations : Fragment() {
                             if (root.child("Conversations").child(it).child("user1Mail")
                                     .getValue<String>() == oldMail
                             ) {
-                                db.reference.child("Conversations").child(it).child("user1")
+                                db.reference.child("Conversations").child(it).child("user1Mail")
                                     .setValue(newMail)
                             } else {
-                                db.reference.child("Conversations").child(it).child("user2")
+                                db.reference.child("Conversations").child(it).child("user2Mail")
                                     .setValue(newMail)
                             }
                         }

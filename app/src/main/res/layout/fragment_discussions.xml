@@ -6,37 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.discussions.DiscussionsFragment">
 
-    <LinearLayout
-        android:id="@+id/linearLayout_search"
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="15dp"
-            android:layout_weight="1"
-            app:boxCornerRadiusBottomEnd="35dp"
-            app:boxCornerRadiusBottomStart="35dp"
-            app:boxCornerRadiusTopEnd="35dp"
-            app:boxCornerRadiusTopStart="35dp"
-            app:boxStrokeWidth="0dp"
-            app:boxStrokeWidthFocused="0dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/Search_discussions"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:hint="Rechercher" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-    </LinearLayout>
-
     <ListView
         android:id="@+id/recipe_list_view"
         android:layout_width="0dp"
