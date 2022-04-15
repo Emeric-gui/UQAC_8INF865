@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.project_uqac.R
@@ -38,8 +39,8 @@ class MyAccountTabInformations : Fragment() {
         val view =  inflater.inflate(R.layout.fragment_my_account_informations, container, false)
 
         var user = Firebase.auth.currentUser
-        val usernameInput : TextInputEditText = view.findViewById(R.id.username_textedit)
-        val emailInput : TextInputEditText = view.findViewById(R.id.email_textedit)
+        val usernameInput : EditText = view.findViewById(R.id.username_textedit)
+        val emailInput : EditText = view.findViewById(R.id.email_textedit)
         if (user != null) {
             usernameInput.setText(user.displayName.toString())
             username = user.displayName.toString()
