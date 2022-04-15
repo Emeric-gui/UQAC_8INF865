@@ -77,8 +77,8 @@
         <entry key="app/src/main/res/layout/fragment_my_account.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_my_account_delete_item.xml" value="0.13728470111448834" />
         <entry key="app/src/main/res/layout/fragment_my_account_home.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_my_account_informations.xml" value="0.13728470111448834" />
-        <entry key="app/src/main/res/layout/fragment_my_account_logged.xml" value="0.39373970345963755" />
+        <entry key="app/src/main/res/layout/fragment_my_account_informations.xml" value="0.1955778529699571" />
+        <entry key="app/src/main/res/layout/fragment_my_account_logged.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_my_account_my_posts.xml" value="0.13728470111448834" />
         <entry key="app/src/main/res/layout/fragment_my_account_sign_up.xml" value="0.13728470111448834" />
         <entry key="app/src/main/res/layout/fragment_post.xml" value="0.1" />
