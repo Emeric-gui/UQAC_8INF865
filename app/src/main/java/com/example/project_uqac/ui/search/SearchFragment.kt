@@ -111,20 +111,7 @@ class SearchFragment  : Fragment()  {
     }
 
     fun getPositionBackground() : Boolean {
-        if (context?.let {
-                ActivityCompat.checkSelfPermission(
-                    it,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                )
-            } != PackageManager.PERMISSION_GRANTED && context?.let {
-                ActivityCompat.checkSelfPermission(
-                    it,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                )
-            } != PackageManager.PERMISSION_GRANTED
-        ) {
-            return false
-        } else {
+        if (checkPermissions ()) {
             val position =  LocationGPS(context as MainActivity)
             executorService.execute {
                 try {
@@ -137,6 +124,8 @@ class SearchFragment  : Fragment()  {
                 }
             }
             return true
+        } else {
+            return false
         }
     }
 
@@ -255,8 +244,6 @@ class SearchFragment  : Fragment()  {
                     if (it.isEmpty) {
                         loading.visibility = GONE
                         textNoArticle.text = "Aucun objet trouvé"
-                        // Set layout manager to position the items
-                        rvArticles.layoutManager = LinearLayoutManager(view?.context)
                         return@addOnSuccessListener
                     }
                     for (doc in it) {
@@ -287,23 +274,23 @@ class SearchFragment  : Fragment()  {
         }
     }
 
+    fun checkPermissions () : Boolean {
+        return !(context?.let {
+            ActivityCompat.checkSelfPermission(
+                it,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+        } != PackageManager.PERMISSION_GRANTED && context?.let {
+            ActivityCompat.checkSelfPermission(
+                it,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+        } != PackageManager.PERMISSION_GRANTED)
+    }
+
     private fun readCoordinate() {
 
-        if (context?.let {
-                ActivityCompat.checkSelfPermission(
-                    it,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                )
-            } != PackageManager.PERMISSION_GRANTED && context?.let {
-                ActivityCompat.checkSelfPermission(
-                    it,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                )
-            } != PackageManager.PERMISSION_GRANTED
-        ) {
-            Toast.makeText(activity,"Vous devriez activer ou autoriser la localsation pour un meilleurs service...",Toast.LENGTH_LONG).show()
-        } else {
-
+        if (checkPermissions ()) {
             val filename = "Coordinates"
             if (filename != null && filename.trim() != "") {
                 var fileInputStream: FileInputStream? =
@@ -325,7 +312,8 @@ class SearchFragment  : Fragment()  {
             } else {
                 Toast.makeText(activity, "file name cannot be blank", Toast.LENGTH_LONG).show()
             }
-
+        } else {
+            Toast.makeText(activity,"Vous devriez activer ou autoriser la localsation pour un meilleurs service...",Toast.LENGTH_LONG).show()
         }
     }
 
