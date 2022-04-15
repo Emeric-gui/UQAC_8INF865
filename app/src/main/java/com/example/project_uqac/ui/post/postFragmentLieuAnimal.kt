@@ -58,7 +58,6 @@ class PostFragmentLieuAnimal : Fragment(), OnMapReadyCallback,
     private var lon : Double = -122.078184
     private var latObject : Double = 0.0
     private var lonObject : Double = 0.0
-    private var  radius  = 14.0
     private var zoomMap = (((1-(1/100))*5)+7)
     private lateinit var viewMap : MapView
     private lateinit var map: GoogleMap
@@ -98,11 +97,27 @@ class PostFragmentLieuAnimal : Fragment(), OnMapReadyCallback,
         seekBarRadius = view.findViewById(R.id.seekBar)
         val textSeekBarRadius : TextView = view.findViewById(R.id.var_progress)
 
+        textSeekBarRadius.text = " 1"
         seekBarRadius!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
-                zoomMap = i
+               /* zoomMap = i
                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latObject, lonObject),(((1-(zoomMap.toFloat()/100))*5)+7)))
                 textSeekBarRadius!!.text = " $zoomMap"
+
+                */
+                zoomMap = i
+
+                if(zoomMap == 0){
+                    textSeekBarRadius.text = " 1"
+                    zoomMap = 1
+
+                } else {
+                    textSeekBarRadius!!.text = " $zoomMap"
+
+                }
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latObject, lonObject),(((1-(zoomMap.toFloat()/100))*5)+7)))
+
+
             }
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
             override fun onStopTrackingTouch(seekBar: SeekBar) {}
@@ -254,7 +269,7 @@ class PostFragmentLieuAnimal : Fragment(), OnMapReadyCallback,
         val lat = this.lat
         val lng = this.lon
         var positions = LatLng(lat, lng)
-        val zoomLevel = radius.toFloat()
+        val zoomLevel = zoomMap.toFloat()
         map = googleMap
         map.setOnCameraMoveStartedListener(this);
         map.setOnCameraIdleListener(this);
