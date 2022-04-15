@@ -88,11 +88,11 @@
 
                     <SeekBar
                         android:id="@+id/seekBar"
-                        android:layout_width="200dp"
+                        android:layout_width="195dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
                         android:max="100"
-                        android:min="0"
+                        android:min="1"
                         android:progress="1"
                         android:progressTint="#7700FF"
                         android:thumbTint="#AAAAAA" />
