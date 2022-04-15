@@ -59,7 +59,7 @@ class PostFragmentLieuAnimal : Fragment(), OnMapReadyCallback,
     private var latObject : Double = 0.0
     private var lonObject : Double = 0.0
     private var  radius  = 14.0
-    private var zoomMap = 0
+    private var zoomMap = (((1-(1/100))*5)+7)
     private lateinit var viewMap : MapView
     private lateinit var map: GoogleMap
     private lateinit var seekBarRadius : SeekBar
