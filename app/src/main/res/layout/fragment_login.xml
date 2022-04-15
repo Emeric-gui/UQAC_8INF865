@@ -29,19 +29,40 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/logintext">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <EditText
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/background_edit_text_post"
+            android:gravity="top"
             android:hint="@string/email"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:includeFontPadding="true"
+            android:padding="10dp"
+            android:paddingHorizontal="5dp"
+            android:textColor="#7A7A7A"
+            android:textColorHighlight="#E8E8E8"
+            android:textColorHint="#787878"
+            android:textColorLink="#6C6C6C"
+            android:textCursorDrawable="@drawable/cursor_color" />
 
-        <com.google.android.material.textfield.TextInputEditText
+        <EditText
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/background_edit_text_post"
+            android:gravity="top"
             android:hint="@string/password"
-            android:inputType="textPassword" />
+            android:includeFontPadding="true"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:paddingHorizontal="5dp"
+            android:textColor="#7A7A7A"
+            android:textColorHighlight="#E8E8E8"
+            android:textColorHint="#787878"
+            android:textColorLink="#6C6C6C"
+            android:textCursorDrawable="@drawable/cursor_color" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -65,11 +86,12 @@
         </LinearLayout>
 
         <Button
-            android:layout_marginTop="25dp"
             android:id="@+id/log_in"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Log In"/>
+            android:layout_marginTop="25dp"
+            android:backgroundTint="#3F51B5"
+            android:text="Log In" />
 
     </LinearLayout>
 

@@ -42,24 +42,55 @@
             android:id="@+id/sign_up_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/background_edit_text_post"
+            android:gravity="top"
             android:hint="@string/username"
-            android:inputType="text"/>
+            android:inputType="text"
+            android:includeFontPadding="true"
+            android:padding="10dp"
+            android:paddingHorizontal="5dp"
+            android:textColor="#7A7A7A"
+            android:textColorHighlight="#E8E8E8"
+            android:textColorHint="#787878"
+            android:textColorLink="#6C6C6C"
+            android:textCursorDrawable="@drawable/cursor_color" />
 
         <EditText
             android:layout_marginTop="25dp"
             android:id="@+id/sign_up_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/background_edit_text_post"
+            android:gravity="top"
             android:hint="@string/email"
-            android:inputType="textEmailAddress"/>
+            android:inputType="textEmailAddress"
+            android:includeFontPadding="true"
+            android:padding="10dp"
+            android:paddingHorizontal="5dp"
+            android:textColor="#7A7A7A"
+            android:textColorHighlight="#E8E8E8"
+            android:textColorHint="#787878"
+            android:textColorLink="#6C6C6C"
+            android:textCursorDrawable="@drawable/cursor_color" />
+
 
         <EditText
             android:layout_marginTop="25dp"
             android:id="@+id/sign_up_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/background_edit_text_post"
+            android:gravity="top"
             android:hint="@string/password"
-            android:inputType="textPassword"/>
+            android:inputType="textPassword"
+            android:includeFontPadding="true"
+            android:padding="10dp"
+            android:paddingHorizontal="5dp"
+            android:textColor="#7A7A7A"
+            android:textColorHighlight="#E8E8E8"
+            android:textColorHint="#787878"
+            android:textColorLink="#6C6C6C"
+            android:textCursorDrawable="@drawable/cursor_color" />
 
 <!--        <LinearLayout-->
 <!--            android:layout_width="match_parent"-->
@@ -76,11 +107,12 @@
 <!--            android:text="Take Photo"/>-->
 
         <Button
-            android:layout_marginTop="25dp"
             android:id="@+id/sign_up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Log In"/>
+            android:layout_marginTop="25dp"
+            android:backgroundTint="#3F51B5"
+            android:text="Log In" />
 <!--        </LinearLayout>-->
     </LinearLayout>
 
