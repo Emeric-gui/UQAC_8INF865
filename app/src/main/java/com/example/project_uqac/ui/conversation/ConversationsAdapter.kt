@@ -6,9 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import com.example.project_uqac.R
-import com.squareup.picasso.Picasso
 
 
 import android.widget.BaseAdapter
@@ -17,8 +15,6 @@ import android.widget.TextView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.ktx.storage
-import org.w3c.dom.Text
 
 class ConversationsAdapter(context:Context, private val discussionsList:ArrayList<Conversation>?) : BaseAdapter()
 {
@@ -38,11 +34,11 @@ class ConversationsAdapter(context:Context, private val discussionsList:ArrayLis
         val imageObject :ImageView
 
         txtTitle = view?.findViewById(R.id.itemTitreObjectConversation) as TextView
-        txtName = view?.findViewById(R.id.itemNameConversation) as TextView
-        txtLastMessage = view?.findViewById(R.id.itemLastMessageConversation) as TextView
-        imageObject = view?.findViewById(R.id.imageViewConversation) as ImageView
+        txtName = view.findViewById(R.id.itemNameConversation) as TextView
+        txtLastMessage = view.findViewById(R.id.itemLastMessageConversation) as TextView
+        imageObject = view.findViewById(R.id.imageViewConversation) as ImageView
 
-        var conversation : Conversation
+        val conversation : Conversation
 
         conversation=getItem(position)!!
 

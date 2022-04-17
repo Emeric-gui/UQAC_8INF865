@@ -8,13 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.project_uqac.R
 import com.example.project_uqac.ui.my_account.MyAccountLogged
 import com.example.project_uqac.ui.my_account.dialogue.DialogueDeleteAccount
-import com.google.android.material.textfield.TextInputEditText
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.database.FirebaseDatabase
@@ -37,9 +36,9 @@ class MyAccountTabInformations : Fragment() {
 //        view?.findViewById<TabLayout?>(R.id.my_account_logged_tabs)?.setupWithViewPager(viewPager)
         val view =  inflater.inflate(R.layout.fragment_my_account_informations, container, false)
 
-        var user = Firebase.auth.currentUser
-        val usernameInput : TextInputEditText = view.findViewById(R.id.username_textedit)
-        val emailInput : TextInputEditText = view.findViewById(R.id.email_textedit)
+        val user = Firebase.auth.currentUser
+        val usernameInput : EditText = view.findViewById(R.id.username_textedit)
+        val emailInput : EditText = view.findViewById(R.id.email_textedit)
         if (user != null) {
             usernameInput.setText(user.displayName.toString())
             username = user.displayName.toString()
@@ -130,17 +129,19 @@ class MyAccountTabInformations : Fragment() {
 //                }
             Log.d(TAG, email_textedit.text.toString())
             val user = Firebase.auth.currentUser
-            user?.email?.let { changeMail(it,email_textedit.text.toString()) }
+
             user!!.updateEmail(email_textedit.text.toString())
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         email = email_textedit.text.toString()
+
                         Log.d(TAG, "User email address updated.")
                         upPassword()
                     } else {
                         Log.d(TAG, "User email address not updated.")
                     }
                 }
+            user.email?.let { changeMail(it,email_textedit.text.toString()) }
         } else {
             upPassword()
         }

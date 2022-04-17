@@ -36,7 +36,7 @@ class DialogueDeleteAccount:DialogFragment() {
         builder.setPositiveButton(getString(R.string.confirmer)) { _: DialogInterface, _: Int ->
 
             // TODO Delete Account here
-            removeDiscutions()
+            //removeDiscutions()
             val user = Firebase.auth.currentUser!!
             val email : String? = user.email;
             // Delete profil pic in our storage

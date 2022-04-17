@@ -93,22 +93,22 @@ class DiscussionsFragment : Fragment() {
                     }
 
                     override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                        Log.i("Child ", "onChildChanged ${snapshot.child("timestamp").value}, name = ${snapshot.key}")
+                        //Log.i("Child ", "onChildChanged ${snapshot.child("timestamp").value}, name = ${snapshot.key}")
                         snapshot.key?.let { it1 -> refreshConversation(it1, snapshot.child("timestamp").getValue<Double>()) }
                     }
 
                     override fun onChildRemoved(snapshot: DataSnapshot) {
-                        Log.i("Child ", "onChildRemoved ")
+                        //Log.i("Child ", "onChildRemoved ")
                         snapshot.key?.let { it1 -> removeConversation(it1) }
                     }
 
                     override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-                        Log.i("Child ", "onChildMoved ")
+                        //Log.i("Child ", "onChildMoved ")
                         //refreshConversation()
                     }
 
                     override fun onCancelled(error: DatabaseError) {
-                        Log.i("Child ", "onCancelled ")
+                        //Log.i("Child ", "onCancelled ")
                     }
                 })
             }

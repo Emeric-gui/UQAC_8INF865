@@ -57,7 +57,7 @@
                             android:layout_marginTop="8dp"
                             android:layout_marginEnd="8dp"
                             android:gravity="center"
-                            android:text="De quel  animal s'agit-il ? "
+                            android:text="@string/de_quel_animal_s_agit_il"
                             android:textAlignment="center"
                             android:textSize="20sp" />
 
@@ -67,7 +67,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:background="@drawable/background_edit_text_post"
-                            android:hint="Chien, hamster... etc"
+                            android:hint="@string/chien_hamster_etc"
                             android:includeFontPadding="true"
                             android:inputType="textPersonName"
                             android:padding="10dp"
@@ -76,7 +76,9 @@
                             android:textColorHighlight="#E8E8E8"
                             android:textColorHint="#787878"
                             android:textColorLink="#6C6C6C"
-                            android:textCursorDrawable="@drawable/cursor_color" />
+                            android:textCursorDrawable="@drawable/cursor_color"
+                            tools:ignore="TouchTargetSizeCheck,TextContrastCheck"
+                            android:importantForAutofill="no" />
 
                     </LinearLayout>
 
@@ -94,7 +96,7 @@
                             android:layout_marginTop="8dp"
                             android:layout_marginEnd="8dp"
                             android:gravity="center"
-                            android:text="Race ?"
+                            android:text="@string/race"
                             android:textAlignment="center"
                             android:textSize="20sp" />
 
@@ -104,7 +106,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:background="@drawable/background_edit_text_post"
-                            android:hint="Caniche, chiwawa... etc"
+                            android:hint="@string/caniche_chiwawa_etc"
                             android:includeFontPadding="true"
                             android:inputType="textPersonName"
                             android:padding="10dp"
@@ -113,7 +115,9 @@
                             android:textColorHighlight="#E8E8E8"
                             android:textColorHint="#787878"
                             android:textColorLink="#6C6C6C"
-                            android:textCursorDrawable="@drawable/cursor_color" />
+                            android:textCursorDrawable="@drawable/cursor_color"
+                            tools:ignore="TouchTargetSizeCheck,TextContrastCheck"
+                            android:importantForAutofill="no" />
 
                     </LinearLayout>
 
@@ -137,7 +141,9 @@
                             android:layout_width="35dp"
                             android:layout_height="35dp"
                             android:background="@drawable/round_button"
-                            android:src="@drawable/ic_action_arrows_left" />
+                            android:contentDescription="@string/Rien"
+                            android:src="@drawable/ic_action_arrows_left"
+                            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
 
                         <ImageButton
                             android:id="@+id/imageButtonnextespece"
@@ -145,7 +151,9 @@
                             android:layout_height="35dp"
                             android:layout_marginLeft="15dp"
                             android:background="@drawable/round_button"
-                            android:src="@drawable/ic_action_arrows_right" />
+                            android:contentDescription="@string/Rien"
+                            android:src="@drawable/ic_action_arrows_right"
+                            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
                     </LinearLayout>
 

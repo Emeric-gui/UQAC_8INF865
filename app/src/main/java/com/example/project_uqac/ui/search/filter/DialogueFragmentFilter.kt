@@ -26,7 +26,7 @@ class DialogueFragmentFilter(searchFragment: SearchFragment) :DialogFragment(){
     private var lat : Double = 37.406474
     private var lon : Double = -122.078184
     private var date :Int = 0
-    private var radius : Int = 0
+    private var radius : Int = 1
     private var searchFragment : SearchFragment = searchFragment
 
      override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) :

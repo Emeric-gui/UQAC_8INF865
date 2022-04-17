@@ -2,13 +2,13 @@
 
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 <androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -28,11 +28,24 @@
             android:layout_height="wrap_content"
             android:text="@string/username"/>
 
-        <com.google.android.material.textfield.TextInputEditText
+        <EditText
             android:id="@+id/username_textedit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="MonNom MonPrenom" />
+            android:background="@drawable/background_edit_text_post"
+            android:gravity="top"
+            android:includeFontPadding="true"
+            android:inputType="text"
+            android:padding="10dp"
+            android:paddingHorizontal="5dp"
+            android:text="@string/monnom_monprenom"
+            android:textColor="#7A7A7A"
+            android:textColorHighlight="#E8E8E8"
+            android:textColorHint="#787878"
+            android:textColorLink="#6C6C6C"
+            android:textCursorDrawable="@drawable/cursor_color"
+            tools:ignore="TouchTargetSizeCheck,TextContrastCheck"
+            android:importantForAutofill="no" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -40,10 +53,24 @@
             android:layout_marginTop="15dp"
             android:text="@string/email"/>
 
-        <com.google.android.material.textfield.TextInputEditText
+        <EditText
             android:id="@+id/email_textedit"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_edit_text_post"
+            android:gravity="top"
+            android:includeFontPadding="true"
+            android:inputType="textEmailAddress"
+            android:padding="10dp"
+            android:paddingHorizontal="5dp"
+            android:textColor="#7A7A7A"
+            android:textColorHighlight="#E8E8E8"
+            android:textColorHint="#787878"
+            android:textColorLink="#6C6C6C"
+            android:textCursorDrawable="@drawable/cursor_color"
+            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck"
+            android:importantForAutofill="no" />
+
 
         <TextView
             android:layout_width="wrap_content"
@@ -51,19 +78,33 @@
             android:layout_marginTop="15dp"
             android:text="@string/password"/>
 
-        <com.google.android.material.textfield.TextInputEditText
+        <EditText
             android:id="@+id/password_textedit"
             android:layout_width="wrap_content"
-            android:inputType="textPassword"
             android:layout_height="wrap_content"
-            android:hint="Password Here" />
+            android:background="@drawable/background_edit_text_post"
+            android:gravity="top"
+            android:hint="@string/password_here"
+            android:includeFontPadding="true"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:paddingHorizontal="5dp"
+            android:textColor="#7A7A7A"
+            android:textColorHighlight="#E8E8E8"
+            android:textColorHint="#787878"
+            android:textColorLink="#6C6C6C"
+            android:textCursorDrawable="@drawable/cursor_color"
+            tools:ignore="TouchTargetSizeCheck,TextContrastCheck"
+            android:importantForAutofill="no" />
+
 
         <Button
             android:id="@+id/update_account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:text="Valider les modifications" />
+            android:backgroundTint="#3F51B5"
+            android:text="@string/valider_les_modifications" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -76,6 +117,7 @@
                 android:id="@+id/delete_account"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="#3F51B5"
                 android:text="@string/delete_account" />
         </LinearLayout>
 

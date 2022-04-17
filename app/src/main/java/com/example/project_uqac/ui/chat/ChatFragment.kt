@@ -1,10 +1,6 @@
 package com.example.project_uqac.ui.chat
 
-import android.content.BroadcastReceiver
 import android.content.Context
-import android.content.Intent
-import android.content.Intent.getIntent
-import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -12,17 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
-//import androidx.fragment.app.testing.FragmentScenario
 import androidx.lifecycle.ViewModelProvider
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.project_uqac.R
 import com.example.project_uqac.databinding.FragmentChatBinding
-import com.example.project_uqac.ui.discussions.DiscussionsFragment
 import com.example.project_uqac.ui.my_account.MyAccountLogin
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
