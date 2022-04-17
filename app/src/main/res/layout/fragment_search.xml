@@ -74,16 +74,18 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="#FFFFFF"
-                        android:hint="Rechercher"
+                        android:hint="@string/rechercher"
                         android:includeFontPadding="true"
                         android:inputType="textPersonName"
                         android:paddingHorizontal="5dp"
-                        android:text="Rechercher"
+                        android:text="@string/rechercher"
                         android:textColor="#7A7A7A"
                         android:textColorHighlight="#E8E8E8"
                         android:textColorHint="#787878"
                         android:textColorLink="#6C6C6C"
-                        android:textCursorDrawable="@drawable/cursor_color" />
+                        android:textCursorDrawable="@drawable/cursor_color"
+                        tools:ignore="TouchTargetSizeCheck,TextContrastCheck"
+                        android:importantForAutofill="no" />
 
                 </LinearLayout>
 
@@ -92,7 +94,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="1.5dp"
                     android:background="#FFC107"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:baselineAligned="false">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -107,7 +110,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:backgroundTint="#00E0E0E0"
-                            android:src="@drawable/ic_action_search" />
+                            android:contentDescription="@string/Rien"
+                            android:src="@drawable/ic_action_search"
+                            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
 
                     </LinearLayout>
 
@@ -125,8 +130,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:backgroundTint="#00E0E0E0"
+                            android:contentDescription="@string/Rien"
                             android:minHeight="48dp"
-                            android:src="@drawable/ic_action_filter" />
+                            android:src="@drawable/ic_action_filter"
+                            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
                     </LinearLayout>
 

@@ -52,7 +52,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
-                        android:text="Quand l'avez vous trouvé?"
+                        android:text="@string/quand_l_avez_vous_trouv"
                         android:textAlignment="center"
                         android:textSize="20sp" />
 
@@ -97,7 +97,9 @@
                             android:layout_width="35dp"
                             android:layout_height="35dp"
                             android:background="@drawable/round_button"
-                            android:src="@drawable/ic_action_arrows_left" />
+                            android:contentDescription="@string/Rien"
+                            android:src="@drawable/ic_action_arrows_left"
+                            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
                         <ImageButton
                             android:id="@+id/imageButtonnextDateAnimal"
@@ -105,7 +107,9 @@
                             android:layout_height="35dp"
                             android:layout_marginLeft="15dp"
                             android:background="@drawable/round_button"
-                            android:src="@drawable/ic_action_arrows_right" />
+                            android:contentDescription="@string/Rien"
+                            android:src="@drawable/ic_action_arrows_right"
+                            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
                     </LinearLayout>
 

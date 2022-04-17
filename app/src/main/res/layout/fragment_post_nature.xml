@@ -50,7 +50,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
-                        android:text="Quel est la nature de ce que vous avez trouvé? "
+                        android:text="@string/quel_est_la_nature_de_ce_que_vous_avez_trouv"
                         android:textAlignment="center"
                         android:textSize="20sp" />
 
@@ -70,7 +70,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="#3F51B5"
-                        android:text="Objet" />
+                        android:text="@string/objet" />
 
                     <Button
                         android:id="@+id/buttonAnimal"
@@ -78,25 +78,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:backgroundTint="#3F51B5"
-                        android:text="Animal" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:orientation="vertical">
-
-                    </LinearLayout>
+                        android:text="@string/animal" />
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="bottom"
-                    android:orientation="vertical">
-
-                </LinearLayout>
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>

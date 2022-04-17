@@ -55,7 +55,7 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
                         android:gravity="center"
-                        android:text="Où l'avez vous trouvé?"
+                        android:text="@string/o_l_avez_vous_trouv"
                         android:textAlignment="center"
                         android:textSize="20sp" />
 
@@ -85,7 +85,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="Rayon" />
+                        android:text="@string/rayon" />
 
                     <SeekBar
                         android:id="@+id/seekBar"
@@ -104,7 +104,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="0" />
+                        android:text="@string/_0" />
 
                     <TextView
                         android:id="@+id/textView6"
@@ -112,7 +112,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="km" />
+                        android:text="@string/km" />
 
                 </LinearLayout>
 
@@ -132,7 +132,8 @@
                         <com.google.android.gms.maps.MapView
                             android:id="@+id/mapView"
                             android:layout_width="300dp"
-                            android:layout_height="400dp" />
+                            android:layout_height="400dp"
+                            tools:ignore="SpeakableTextPresentCheck" />
 
                         <View
                             android:id="@+id/view3"
@@ -146,8 +147,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="35dp"
                             android:layout_gravity="center"
+                            android:contentDescription="@string/Rien"
                             android:src="@drawable/ic_action_target"
-                            app:tint="#FFC107" />
+                            app:tint="#FFC107"
+                            tools:ignore="ImageContrastCheck" />
 
                     </androidx.cardview.widget.CardView>
 
@@ -170,7 +173,9 @@
                             android:layout_width="35dp"
                             android:layout_height="35dp"
                             android:background="@drawable/round_button"
-                            android:src="@drawable/ic_action_arrows_left" />
+                            android:contentDescription="@string/Rien"
+                            android:src="@drawable/ic_action_arrows_left"
+                            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
 
                         <Button
                             android:id="@+id/buttonPublier"
@@ -178,7 +183,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="20dp"
                             android:backgroundTint="#3F51B5"
-                            android:text="Publier" />
+                            android:text="@string/publier" />
                     </LinearLayout>
 
                 </LinearLayout>

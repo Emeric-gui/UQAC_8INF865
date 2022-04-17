@@ -34,16 +34,18 @@
             android:layout_height="wrap_content"
             android:background="@drawable/background_edit_text_post"
             android:gravity="top"
-            android:text="MonNom MonPrenom"
-            android:inputType="text"
             android:includeFontPadding="true"
+            android:inputType="text"
             android:padding="10dp"
             android:paddingHorizontal="5dp"
+            android:text="@string/monnom_monprenom"
             android:textColor="#7A7A7A"
             android:textColorHighlight="#E8E8E8"
             android:textColorHint="#787878"
             android:textColorLink="#6C6C6C"
-            android:textCursorDrawable="@drawable/cursor_color" />
+            android:textCursorDrawable="@drawable/cursor_color"
+            tools:ignore="TouchTargetSizeCheck,TextContrastCheck"
+            android:importantForAutofill="no" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -57,15 +59,17 @@
             android:layout_height="wrap_content"
             android:background="@drawable/background_edit_text_post"
             android:gravity="top"
-            android:inputType="text"
             android:includeFontPadding="true"
+            android:inputType="textEmailAddress"
             android:padding="10dp"
             android:paddingHorizontal="5dp"
             android:textColor="#7A7A7A"
             android:textColorHighlight="#E8E8E8"
             android:textColorHint="#787878"
             android:textColorLink="#6C6C6C"
-            android:textCursorDrawable="@drawable/cursor_color" />
+            android:textCursorDrawable="@drawable/cursor_color"
+            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck"
+            android:importantForAutofill="no" />
 
 
         <TextView
@@ -80,16 +84,18 @@
             android:layout_height="wrap_content"
             android:background="@drawable/background_edit_text_post"
             android:gravity="top"
-            android:inputType="textPassword"
-            android:hint="Password Here"
+            android:hint="@string/password_here"
             android:includeFontPadding="true"
+            android:inputType="textPassword"
             android:padding="10dp"
             android:paddingHorizontal="5dp"
             android:textColor="#7A7A7A"
             android:textColorHighlight="#E8E8E8"
             android:textColorHint="#787878"
             android:textColorLink="#6C6C6C"
-            android:textCursorDrawable="@drawable/cursor_color" />
+            android:textCursorDrawable="@drawable/cursor_color"
+            tools:ignore="TouchTargetSizeCheck,TextContrastCheck"
+            android:importantForAutofill="no" />
 
 
         <Button
@@ -98,7 +104,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:backgroundTint="#3F51B5"
-            android:text="Valider les modifications" />
+            android:text="@string/valider_les_modifications" />
 
         <LinearLayout
             android:layout_width="match_parent"
