@@ -7,17 +7,18 @@
     tools:context=".ui.my_account.MyAccountFragment">
 
     <TextView
+        android:id="@+id/logintext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingTop="150dp"
         android:text="@string/login"
         android:textSize="50sp"
-        android:paddingTop="150dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        android:id="@+id/logintext"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
+        android:id="@+id/linearLayout4"
         android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -47,29 +48,46 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Don't have an account ?" />
 
-        <Button
-            android:id="@+id/btn_sign_up"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:text="Register"
-            android:textColor="@color/black"
-            android:textSize="8sp"
-            android:padding="0dp"
-            android:backgroundTint="#FFFFFF"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Don't have an account ?" />
+
+            <Button
+                android:id="@+id/btn_sign_up"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:backgroundTint="#FFFFFF"
+                android:padding="0dp"
+                android:text="@string/register"
+                android:textColor="@color/black"
+                android:textSize="8sp" />
 
         </LinearLayout>
 
         <Button
-            android:layout_marginTop="25dp"
             android:id="@+id/log_in"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Log In"/>
+            android:layout_marginTop="25dp"
+            android:text="@string/log_in" />
+
+
+        <LinearLayout
+            android:layout_marginTop="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/googleSignInButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
 
     </LinearLayout>
 

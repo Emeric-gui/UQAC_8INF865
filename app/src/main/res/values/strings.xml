@@ -40,4 +40,6 @@
     <string name="verification_suppression_post">Vouulez-vous vraiment supprimer cette publication ?</string>
     <string name="my_account_no_post">Vous n\'avez pas de publication en ligne.</string>
     <string name="my_account_no_post_descr">Vous pouvez en créer une en cliquant sur le + dans la barre de navigation !</string>
+    <string name="log_in">Log In</string>
+    <string name="register">Register</string>
 </resources>

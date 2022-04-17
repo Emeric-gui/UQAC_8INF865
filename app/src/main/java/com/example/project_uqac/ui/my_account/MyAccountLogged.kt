@@ -25,6 +25,7 @@ import androidx.cardview.widget.CardView
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
 import com.example.project_uqac.R
 import com.example.project_uqac.ui.article.Article
 import com.example.project_uqac.ui.home.popupDiscussion.DialogFragmentDiscussion
@@ -79,7 +80,7 @@ class MyAccountLogged : Fragment() {
             if(user.photoUrl != null){
                 try {
                     val storageRef = Firebase.storage.getReferenceFromUrl(user.photoUrl.toString())
-                    Log.d("Lets gowwww", user.photoUrl.toString())
+//                    Log.d("Lets gowwww", user.photoUrl.toString())
 //            var islandRef = storageRef.child("profil_pics/myImage")
 
                     val ONE_MEGABYTE: Long = 1024 * 1024
@@ -91,7 +92,12 @@ class MyAccountLogged : Fragment() {
 //                    Log.d("MyAccountLogged : ", "No profil pic in database")
                     }
                 } catch (e: Exception) {
-                    imageView.setImageResource(R.drawable.ic_account_circle_black_36dp)
+//                    imageView.setImageResource(R.drawable.ic_account_circle_black_36dp)
+                    try {
+                        Glide.with(this).load(user.photoUrl).into(imageView);
+                    } catch (e: Exception) {
+                        imageView.setImageResource(R.drawable.ic_account_circle_black_36dp)
+                    }
                 }
 
             } else {
@@ -138,9 +144,9 @@ class MyAccountLogged : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        Log.d("TAG", "azseghjk")
+//        Log.d("TAG", "azseghjk")
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            Log.d("TAG", "I was here")
+//            Log.d("TAG", "I was here")
             val imageBitmap = data?.extras?.get("data") as Bitmap
 
             // Crop the image to have a square

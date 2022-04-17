@@ -37,7 +37,6 @@ android {
 
 apply plugin: 'com.google.gms.google-services'
 
-
 dependencies {
     implementation 'com.google.maps.android:places-ktx:0.4.0'
     implementation("androidx.hilt:hilt-navigation-fragment:1.0.0")
@@ -98,6 +97,12 @@ dependencies {
     // Declare the dependency for the Firebase Authentication library
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-auth-ktx'
+
+    // Also declare the dependency for the Google Play services library and specify its version
+    implementation 'com.google.android.gms:play-services-auth:20.1.0'
+
+
+    implementation 'com.github.bumptech.glide:glide:4.4.0'
 }
 
 apply plugin: 'kotlin-android-extensions'
