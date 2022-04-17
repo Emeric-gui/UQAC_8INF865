@@ -11,13 +11,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:padding="10dp"
         android:adjustViewBounds="true"
-        android:maxHeight="200dp"
+        android:contentDescription="@string/Rien"
         android:maxWidth="300dp"
+        android:maxHeight="200dp"
+        android:padding="10dp"
         android:scaleType="fitCenter"
         app:layout_constraintStart_toEndOf="@id/messengerImageView"
         app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ImageContrastCheck"
         tools:srcCompat="@android:drawable/ic_menu_gallery" />
 
     <TextView

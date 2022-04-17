@@ -45,13 +45,13 @@
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/menu/bottom_nav_menu.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.24739583333333334" />
         <entry key="..\:/Users/Gogob/AndroidStudioProjects/Project_UQAC/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.24739583333333334" />
-        <entry key="..\:/Users/thoma/UQAC/UQAC_8INF865/app/src/main/res/layout/fragment_discussions.xml" value="0.1" />
-        <entry key="..\:/Users/thoma/UQAC/UQAC_8INF865/app/src/main/res/layout/message.xml" value="0.1" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.105" />
         <entry key="app/src/main/res/drawable-xxxhdpi/ic_search_black_24dp.xml" value="0.138" />
         <entry key="app/src/main/res/drawable/background_button.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/background_edit_text_post.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/background_information_fragment.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/barckground_button_home.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/button_selector.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/circle.xml" value="0.201" />
         <entry key="app/src/main/res/drawable/cursor_color.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/customborder.xml" value="0.201" />
@@ -73,6 +73,7 @@
         <entry key="app/src/main/res/layout/fragment_filter_calendrier.xml" value="0.13017883300781252" />
         <entry key="app/src/main/res/layout/fragment_filter_map.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_home_information.xml" value="0.30077819824218754" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.21257476806640627" />
         <entry key="app/src/main/res/layout/fragment_lunching.xml" value="0.2159706398292824" />
         <entry key="app/src/main/res/layout/fragment_my_account.xml" value="0.1" />
@@ -82,16 +83,17 @@
         <entry key="app/src/main/res/layout/fragment_my_account_logged.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_my_account_my_posts.xml" value="0.13728470111448834" />
         <entry key="app/src/main/res/layout/fragment_my_account_sign_up.xml" value="0.13728470111448834" />
+        <entry key="app/src/main/res/layout/fragment_popup_home.xml" value="0.13055555555555556" />
         <entry key="app/src/main/res/layout/fragment_post.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_post_date.xml" value="0.291198617612458" />
         <entry key="app/src/main/res/layout/fragment_post_date_animal.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_post_date_objet.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_post_description.xml" value="0.1328125" />
-        <entry key="app/src/main/res/layout/fragment_post_description_animal.xml" value="0.3646055437100213" />
-        <entry key="app/src/main/res/layout/fragment_post_description_objet.xml" value="0.40096435546875003" />
+        <entry key="app/src/main/res/layout/fragment_post_description_animal.xml" value="0.35877862595419846" />
+        <entry key="app/src/main/res/layout/fragment_post_description_objet.xml" value="0.325635103926097" />
         <entry key="app/src/main/res/layout/fragment_post_espece.xml" value="0.26851851851851855" />
         <entry key="app/src/main/res/layout/fragment_post_lieu.xml" value="0.1342451874366768" />
-        <entry key="app/src/main/res/layout/fragment_post_lieu_animal.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_post_lieu_animal.xml" value="0.3533834586466165" />
         <entry key="app/src/main/res/layout/fragment_post_lieu_objet.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_post_nature.xml" value="0.13247213779128672" />
         <entry key="app/src/main/res/layout/fragment_post_photo_animal.xml" value="0.1" />
@@ -101,10 +103,14 @@
         <entry key="app/src/main/res/layout/fragment_search.xml" value="0.11029411764705882" />
         <entry key="app/src/main/res/layout/fragment_test.xml" value="0.1" />
         <entry key="app/src/main/res/layout/frame_textview.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/image_message.xml" value="0.11574074074074074" />
         <entry key="app/src/main/res/layout/item_article.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/item_conversation.xml" value="0.37589574778302115" />
+        <entry key="app/src/main/res/layout/item_conversation.xml" value="0.3078817733990148" />
         <entry key="app/src/main/res/layout/item_search.xml" value="0.38364410400390625" />
+        <entry key="app/src/main/res/layout/message.xml" value="0.11574074074074074" />
+        <entry key="app/src/main/res/layout/my_message.xml" value="0.11574074074074074" />
         <entry key="app/src/main/res/layout/place_prediction_item.xml" value="0.12760416666666666" />
+        <entry key="app/src/main/res/layout/their_message.xml" value="0.11574074074074074" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.1537037037037037" />
         <entry key="app/src/main/res/menu/menu.xml" value="0.12760416666666666" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.105" />

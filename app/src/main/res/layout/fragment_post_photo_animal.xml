@@ -49,7 +49,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
-                        android:text="Prendre une photo"
+                        android:text="@string/prendre_une_photo"
                         android:textAlignment="center"
                         android:textSize="20sp" />
 
@@ -58,6 +58,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:background="@drawable/edit_border"
+                        android:contentDescription="@string/Rien"
                         app:srcCompat="@drawable/ic_baseline_pets_24_black" />
 
                     <ImageButton
@@ -65,9 +66,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="#FFFFFF"
+                        android:contentDescription="@string/Rien"
                         android:minHeight="48dp"
                         android:scaleType="centerInside"
                         app:srcCompat="@drawable/ic_baseline_photo_camera_24_black"
+                        tools:ignore="SpeakableTextPresentCheck,DuplicateSpeakableTextCheck"
                         tools:visibility="visible" />
 
 
@@ -85,7 +88,9 @@
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:background="@drawable/round_button"
-                        android:src="@drawable/ic_action_arrows_left" />
+                        android:contentDescription="@string/Rien"
+                        android:src="@drawable/ic_action_arrows_left"
+                        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
 
                     <ImageButton
                         android:id="@+id/imageButtonnextPhotoAnimal"
@@ -93,7 +98,9 @@
                         android:layout_height="35dp"
                         android:layout_marginLeft="15dp"
                         android:background="@drawable/round_button"
-                        android:src="@drawable/ic_action_arrows_right" />
+                        android:contentDescription="@string/Rien"
+                        android:src="@drawable/ic_action_arrows_right"
+                        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
                 </LinearLayout>
 

@@ -41,7 +41,7 @@
             android:layout_height="28dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="1 jour"
+            android:text="@string/_1_jour"
             android:textColor="#FFFFFF"
             android:textSize="16sp" />
 
@@ -51,7 +51,7 @@
             android:layout_height="28dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="3 jours"
+            android:text="@string/_3_jours"
             android:textColor="#FFFFFF"
             android:textSize="16sp" />
 
@@ -61,7 +61,7 @@
             android:layout_height="28dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="7 jours"
+            android:text="@string/_7_jours"
             android:textColor="#FFFFFF"
             android:textSize="16sp" />
 
@@ -69,12 +69,14 @@
             android:id="@+id/imageButtonInformation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginHorizontal="10dp"
             android:background="#3F51B5"
             android:backgroundTintMode="add"
+            android:contentDescription="@string/Rien"
             android:hapticFeedbackEnabled="false"
             android:src="@drawable/ic_action_information"
-            android:tint="#FFFFFF" />
+            app:tint="#FFC107"
+            tools:ignore="ImageContrastCheck,TouchTargetSizeCheck" />
 
     </LinearLayout>
 
@@ -114,16 +116,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#FFC107"
-        android:text="Activer"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textNoArticles" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
