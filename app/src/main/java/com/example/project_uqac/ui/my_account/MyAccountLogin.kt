@@ -22,9 +22,12 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_chat.*
 import kotlinx.android.synthetic.main.fragment_login.*
+import kotlinx.android.synthetic.main.fragment_my_account_sign_up.*
 
 class MyAccountLogin : Fragment() {
 
@@ -108,6 +111,18 @@ class MyAccountLogin : Fragment() {
                 Log.d(TAG, "firebaseAuthWithGoogleAccount: Uid: $uid")
                 Log.d(TAG, "firebaseAuthWithGoogleAccount: Email: $email")
 
+                //Add user to the bdd
+                var mailAlreadyExists:Boolean=false
+                Firebase.database.reference.child("Users_ID").get().addOnSuccessListener {
+                    it.getValue<Map<String, String>>()!!.forEach {
+                        if (it.value == email) {
+                            mailAlreadyExists=true
+                        }
+                    }
+                    if(!mailAlreadyExists){
+                        Firebase.database.reference.child("Users_ID").push().setValue(email)
+                    }
+                }
                 val fragment = MyAccountLogged()
                 val transaction = fragmentManager?.beginTransaction()
                 transaction?.replace(R.id.my_account_fragment_navigation, fragment)?.commit()

@@ -78,7 +78,7 @@ class DiscussionsFragment : Fragment() {
             db = Firebase.database
 
             // We get the ID of the user
-            val userIDRef = db.reference.child("Users_ID").get().addOnSuccessListener {
+            db.reference.child("Users_ID").get().addOnSuccessListener {
                 it.getValue<Map<String,String>>()!!.forEach{
                     if(it.value==auth.currentUser?.email){
                         userID=it.key
@@ -151,7 +151,7 @@ class DiscussionsFragment : Fragment() {
         if(listIdConversation?.contains(id) == false)
         {
             listIdConversation?.add(id)
-            db.getReference().child("Conversations").child(id).get().addOnSuccessListener {
+            db.reference.child("Conversations").child(id).get().addOnSuccessListener {
                 if(it.exists()){
                    // Log.i("Error","$it")
                     val conv = it.getValue<Conversation>()!!
@@ -205,7 +205,7 @@ class DiscussionsFragment : Fragment() {
                 i++
             }
         }
-        if(b == true)
+        if(b)
         {
             listIdConversation?.add(idChangedConv)
         }
@@ -214,7 +214,7 @@ class DiscussionsFragment : Fragment() {
 
         listIdConversation?.forEach {
             var id = it
-            db.getReference().child("Conversations").child(id).get().addOnSuccessListener {
+            db.reference.child("Conversations").child(id).get().addOnSuccessListener {
                 if(it.exists()){
                     val conv = it.getValue<Conversation>()!!
                     if(listConversation?.contains(conv) == false){
