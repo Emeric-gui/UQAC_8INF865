@@ -11,6 +11,7 @@ import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
 import androidx.core.app.NotificationCompat
+import com.example.project_uqac.MainActivity
 import com.example.project_uqac.R
 import com.example.project_uqac.ui.chat.ChatFragment
 import com.example.project_uqac.ui.chat.Message
@@ -92,7 +93,7 @@ class FirebaseNotificationService : FirebaseMessagingService() {
         val manager : NotificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         manager.createNotificationChannel(channel)
 
-        val intent = Intent(this, ChatFragment::class.java)
+        val intent = Intent(this, MainActivity::class.java)
         intent.putExtra("hisId", hisId)
         intent.putExtra("chatId", chatId)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
