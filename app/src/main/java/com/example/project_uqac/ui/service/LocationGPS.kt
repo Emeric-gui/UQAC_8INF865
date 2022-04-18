@@ -108,7 +108,7 @@ class LocationGPS(mainActivity: MainActivity) : LocationListener {
 
     fun updateDB(lat: Double, lon: Double) {
         // checking input text should not be null
-        Toast.makeText(app, "UPDATEDB", Toast.LENGTH_LONG).show()
+//        Toast.makeText(app, "UPDATEDB", Toast.LENGTH_LONG).show()
 
 
         //init db
@@ -139,7 +139,7 @@ class LocationGPS(mainActivity: MainActivity) : LocationListener {
             success = dbHandler!!.addCoordinates(coordinates)
 
             if (success) {
-                Toast.makeText(app, "Saved Successfully", Toast.LENGTH_LONG).show()
+//                Toast.makeText(app, "Saved Successfully", Toast.LENGTH_LONG).show()
             }
         }
     }

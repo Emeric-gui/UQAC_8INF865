@@ -15,6 +15,8 @@ import androidx.fragment.app.Fragment
 import com.example.project_uqac.R
 import com.example.project_uqac.ui.my_account.MyAccountLogged
 import com.example.project_uqac.ui.my_account.dialogue.DialogueDeleteAccount
+import com.google.firebase.auth.EmailAuthProvider
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.database.FirebaseDatabase
@@ -70,22 +72,40 @@ class MyAccountTabInformations : Fragment() {
 //        var toastTriggered : Boolean = false
         val buttonUpdateAccount : Button = view.findViewById(R.id.update_account)
         buttonUpdateAccount.setOnClickListener(){
-            upUsername()
-            Toast.makeText(context, "Vos informations ont ét mises à jour.", Toast.LENGTH_SHORT).show()
+            if (otherTypeOfAcc){
+                upUsernameGoogleAcc()
+            } else {
+                if (password_textedit.text.toString().isNotEmpty()){
+                    upUsername()
+                } else {
+                    Toast.makeText(
+                        context,
+                        "Vous devez indiquer votre mot de passe.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                password_textedit.setText("")
+//            Toast.makeText(context, "Vos informations ont été mises à jour.", Toast.LENGTH_SHORT).show()
+            }
         }
 
         val buttonDeleteAccount : Button = view.findViewById(R.id.delete_account)
         buttonDeleteAccount.setOnClickListener(){
-            //creation du fragment de dialogue
-            val dialogPage = DialogueDeleteAccount()
+            if (password_textedit.text.toString().isNotEmpty()){
+                deleteAcc()
+            } else {
+                Toast.makeText(
+                    context,
+                    "Vous devez indiquer votre mot de passe.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
 
-            //ajout des infos dans le dialog
-            dialogPage.arguments(this.parentFragment as MyAccountLogged)
-
-            dialogPage.show(childFragmentManager, "Custom Dialog")
         }
 
         if (otherTypeOfAcc){
+            val myAccMyInfUsername : TextView = view.findViewById(R.id.my_acc_my_inf_username)
+            myAccMyInfUsername.setText(getString(R.string.nom_d_utilisateur))
             emailInput.visibility = View.GONE
             val passwordInputTextView : TextView = view.findViewById(R.id.password_textedit_textview)
             passwordInputTextView.visibility = View.GONE
@@ -93,10 +113,15 @@ class MyAccountTabInformations : Fragment() {
             emailInputTextView.visibility = View.GONE
             val passwordInput : EditText = view.findViewById(R.id.password_textedit)
             passwordInput.visibility = View.GONE
+            val passwordNewInput : EditText = view.findViewById(R.id.password_new_textedit)
+            passwordNewInput.visibility = View.GONE
+            val passwordNewInputTextView : TextView = view.findViewById(R.id.password_new_textedit_textview)
+            passwordNewInputTextView.visibility = View.GONE
 //            email_textedit.visibility = View.GONE
 //            password_textedit.isVisible = false
 //            email_textedit.isVisible = false
         }
+
 
 //        val buttonDeleteAccount : Button = view.findViewById(R.id.delete_account)
 //        buttonDeleteAccount.setOnClickListener(){
@@ -122,76 +147,213 @@ class MyAccountTabInformations : Fragment() {
         return view
     }
 
-    fun upUsername(){
+    fun deleteAcc(){
         val user = Firebase.auth.currentUser
-        // Up username
+        val credential = EmailAuthProvider
+            .getCredential(user?.email.toString(), password_textedit.text.toString())
+
+// Prompt the user to re-provide their sign-in credentials
+        user?.reauthenticate(credential)?.addOnSuccessListener {
+            Log.d(TAG, "User re-authenticated.")
+            //creation du fragment de dialogue
+            val dialogPage = DialogueDeleteAccount()
+
+            //ajout des infos dans le dialog
+            dialogPage.arguments(this.parentFragment as MyAccountLogged)
+
+            dialogPage.show(childFragmentManager, "Custom Dialog")
+        }?.addOnFailureListener(){
+            password_textedit.setText("")
+            Toast.makeText(
+                context,
+                "Votre mot de passe est erroné.",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun upUsernameGoogleAcc(){
+        val user = Firebase.auth.currentUser
         if(username_textedit.text.toString() != username){
-//                if(!toastTriggered){
-//                    toastTriggered = true
-//                }
             val profileUpdates = userProfileChangeRequest {
                 displayName = username_textedit.text.toString()
             }
             changeUserName(username_textedit.text.toString())
-            user!!.updateProfile(profileUpdates)
-                .addOnCompleteListener { innerTask ->
-                    if (innerTask.isSuccessful) {
-                        username = username_textedit.text.toString()
-                        val frag: MyAccountLogged? = this.parentFragment as MyAccountLogged?
-                        frag?.updateUsername(username)
-                        upEmail()
-                    } else {
-                        Log.d(ContentValues.TAG, "Error with username.")
-                    }
+            user?.updateProfile(profileUpdates)?.addOnCompleteListener { innerTask ->
+                if (innerTask.isSuccessful) {
+                    username = username_textedit.text.toString()
+                    val frag: MyAccountLogged? = this.parentFragment as MyAccountLogged?
+                    frag?.updateUsername(username)
+                    Toast.makeText(
+                        context,
+                        "Votre nom d'utilisateur a été mis à jour.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    upEmail()
+                } else {
+                    Log.d(ContentValues.TAG, "Error with username.")
                 }
+            }
+        }
+    }
+
+    private fun upUsername(){
+        val user = Firebase.auth.currentUser
+        // Up username
+        if(username_textedit.text.toString() != username && password_textedit.text.toString().isNotEmpty()){
+//                if(!toastTriggered){
+//                    toastTriggered = true
+//                }
+            val credential = EmailAuthProvider
+                .getCredential(user?.email.toString(), password_textedit.text.toString())
+
+// Prompt the user to re-provide their sign-in credentials
+            user?.reauthenticate(credential)?.addOnSuccessListener {
+                val profileUpdates = userProfileChangeRequest {
+                    displayName = username_textedit.text.toString()
+                }
+                changeUserName(username_textedit.text.toString())
+                user.updateProfile(profileUpdates)
+                    .addOnCompleteListener { innerTask ->
+                        if (innerTask.isSuccessful) {
+                            username = username_textedit.text.toString()
+                            val frag: MyAccountLogged? = this.parentFragment as MyAccountLogged?
+                            frag?.updateUsername(username)
+                            Toast.makeText(
+                                context,
+                                "Votre nom d'utilisateur a été mis à jour.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            upEmail()
+                        } else {
+                            Log.d(ContentValues.TAG, "Error with username.")
+                        }
+                    }
+            }?.addOnFailureListener(){
+                password_textedit.setText("")
+                Toast.makeText(
+                    context,
+                    "Votre mot de passe est erroné.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         } else {
             upEmail()
         }
     }
 
-    fun upEmail(){
-
+    private fun upEmail(){
+        val user = Firebase.auth.currentUser
         // Up email
-        if(email_textedit.text.toString() != email){
+        if(email_textedit.text.toString() != email && password_textedit.text.toString().isNotEmpty()){
+            var credential = EmailAuthProvider
+                .getCredential(user?.email.toString(), password_textedit.text.toString())
+
+// Prompt the user to re-provide their sign-in credentials
+            user?.reauthenticate(credential)?.addOnSuccessListener {
+//                Log.d(TAG, "User re-authenticated.")
 //                if(!toastTriggered){
 //                    toastTriggered = true
 //                    Toast.makeText(context, "Vos informations ont ét mises à jour.", Toast.LENGTH_SHORT).show()
 //                }
-            Log.d(TAG, email_textedit.text.toString())
-            val user = Firebase.auth.currentUser
+//                Log.d(TAG, email_textedit.text.toString())
 
-            user!!.updateEmail(email_textedit.text.toString())
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        email = email_textedit.text.toString()
 
-                        Log.d(TAG, "User email address updated.")
-                        upPassword()
-                    } else {
-                        Log.d(TAG, "User email address not updated.")
+                user.updateEmail(email_textedit.text.toString())
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            email = email_textedit.text.toString()
+
+                            // Relog with new mail
+                            credential = EmailAuthProvider
+                                .getCredential(user.email.toString(), password_textedit.text.toString())
+                            user.reauthenticate(credential)
+
+// Prompt the user to re-provide their sign-in credentials
+                            Toast.makeText(
+                                context,
+                                "Votre email a été mis à jour.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            Log.d(TAG, "User email address updated.")
+                            upPassword()
+                        } else {
+                            Log.d(TAG, "User email address not updated.")
+                            upPassword()
+                        }
                     }
-                }
-            user.email?.let { changeMail(it,email_textedit.text.toString()) }
+                user.email?.let { changeMail(it, email_textedit.text.toString()) }
+            }?.addOnFailureListener(){
+                password_textedit.setText("")
+                Toast.makeText(
+                    context,
+                    "Votre mot de passe est erroné.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         } else {
             upPassword()
         }
     }
 
-    fun upPassword(){
+    private fun upPassword() {
         val user = Firebase.auth.currentUser
-        // Up password
         if(password_textedit.text.toString() != ""){
+        val credential = EmailAuthProvider
+            .getCredential(user?.email.toString(), password_textedit.text.toString())
+
+// Prompt the user to re-provide their sign-in credentials
+        user?.reauthenticate(credential)?.addOnSuccessListener {
+            Log.d(TAG, "User re-authenticated.")
+            // Up password
+            if (password_new_textedit.text.toString() != "") {
 //                if(!toastTriggered){
 //                    toastTriggered = true
 //                    Toast.makeText(context, "Vos informations ont ét mises à jour.", Toast.LENGTH_SHORT).show()
 //                }
-            user!!.updatePassword(password_textedit.text.toString())
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Log.d(TAG, "User password updated.")
+                user.updatePassword(password_new_textedit.text.toString())
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Toast.makeText(
+                                context,
+                                "Votre mot de passe a été mis à jour.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            Log.d(TAG, "User password updated.")
+                        }
+                    }.addOnFailureListener() {
+                        Toast.makeText(
+                            context,
+                            "Le nouveau mot de passe trop court.",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
-                }
+            } else {
+//                Toast.makeText(
+//                    context,
+//                    "Le nouveau mot de passe ne peut pas être vide.",
+//                    Toast.LENGTH_SHORT
+//                ).show()
+            }
         }
+            ?.addOnFailureListener {
+                Log.d(TAG, "wrong pw")
+                Toast.makeText(
+                    context,
+                    "Mot de passe non mis à jour, l'ancien mot de passe est erroné",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+    } else {
+//            Toast.makeText(
+//                context,
+//                "L'ancien mot de passe ne peut pas être vide.",
+//                Toast.LENGTH_SHORT
+//            ).show()
+        }
+
+
+
     }
 
     private fun changeUserName( newUserName:String)

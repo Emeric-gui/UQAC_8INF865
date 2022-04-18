@@ -8,7 +8,11 @@
     <string name="login">Login</string>
     <string name="name">Nom et Prénom</string>
     <string name="email">Email</string>
+    <string name="email_facultatif">Email (facultatif)</string>
     <string name="password">Password</string>
+    <string name="current_password">Password (obligatoire)</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password (facultatif)</string>
     <string name="tab_my_acc_0">Home</string>
     <string name="tab_my_acc_1">Inforamtions</string>
     <string name="tab_my_acc_2">My Posts</string>
@@ -24,7 +28,7 @@
     <string name="delete_item">Voulez-vous vraiment supprimer l\'annonce ?</string>
     <string name="delete_account">Supprimer mon compte</string>
     <string name="sign_up">S\'inscrire</string>
-    <string name="username">Nom d\'utilisateur</string>
+    <string name="username">Nom d\'utilisateur (facultatif)</string>
     <string name="confirmer">Confirmer</string>
     <string name="verification_suppression">Suppression compte</string>
     <string name="verification_suppression_message">Voulez-vous vraiment supprimer votre compte ?\n\n<b>Attention</b>, toutes vos publications seront supprimées.</string>
@@ -55,6 +59,8 @@
     <string name="register">Register</string>
     <string name="valider_les_modifications">Valider les modifications</string>
     <string name="password_here">Password Here</string>
+    <string name="current_password_here">Current Password Here</string>
+    <string name="new_password_here">New Password Here</string>
     <string name="monnom_monprenom">MonNom MonPrenom</string>
     <string name="quand_l_avez_vous_trouv">Quand l\'avez vous trouvé?</string>
     <string name="description_bri_ve">Description briève..</string>
@@ -86,4 +92,5 @@
     <string name="titreobjet">TitreObjet</string>
     <string name="namepersonne">NamePersonne :</string>
     <string name="derni_re_phrase">Dernière phrase</string>
+    <string name="nom_d_utilisateur">Nom d\'utilisateur</string>
 </resources>

@@ -339,7 +339,7 @@ class ChatFragment : Fragment(){
         const val ANONYMOUS = "anonymous"
         private const val LOADING_IMAGE_URL = "https://www.google.com/images/spin-32.gif"
         const val NOTIFICATION_URL = "https://fcm.googleapis.com/fcm/send"
-        const val SERVER_KEY = "AAAA-jjmDXE:APA91bEpEHq8ue7lyWxLIPWTW5C1_P74F_DZY-gZeo99_xB4prNDcKHp8F1dIlwZbDt99RsBld8EHOZM_cYyk6I54IuzfsqFJrxJTGFSt8bngvaB2acXNa4P_ATlCWtko_bxmgNCVcvl"
+        const val SERVER_KEY = "AAAAmc-rc2k:APA91bGgLf81cX6oQbbYbUeATvKpMzaA-iRUe5aKO7GzUkYJcOEbbBVJtYqP798KVZQcIOujqJpoiDJUHqxgvM2aAVhnD5To_W9XaxcKmHvSORlc5Q-wsom9AdJqKUF3jv3hEQX7BoX-"
     }
 
 }
