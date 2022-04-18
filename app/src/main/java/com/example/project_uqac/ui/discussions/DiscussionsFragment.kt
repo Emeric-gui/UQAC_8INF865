@@ -53,7 +53,7 @@ class DiscussionsFragment : Fragment() {
     private var listConversation: ArrayList<Conversation>?= ArrayList()
     private var mapIDConv: MutableMap<String,Conversation>? = mutableMapOf<String, Conversation>()
     private var mapIDTimestamp: MutableMap<String,Long?>? = mutableMapOf<String, Long?>()
-    private  var userID: String? = null
+    private var userID: String? = null
 
 
     override fun onCreateView(
@@ -78,7 +78,7 @@ class DiscussionsFragment : Fragment() {
             db = Firebase.database
 
             // We get the ID of the user
-            val userIDRef = db.reference.child("Users_ID").get().addOnSuccessListener {
+            db.reference.child("Users_ID").get().addOnSuccessListener {
                 it.getValue<Map<String,String>>()!!.forEach{
                     if(it.value==auth.currentUser?.email){
                         userID=it.key

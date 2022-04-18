@@ -38,6 +38,13 @@
             android:enabled="true"
             android:exported="true"
             tools:ignore="Instantiatable" />
+        <service
+            android:name=".ui.services.FirebaseNotificationService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

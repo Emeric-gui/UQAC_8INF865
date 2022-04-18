@@ -1,30 +1,29 @@
 package com.example.project_uqac
 
 import android.annotation.SuppressLint
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
-import android.location.LocationManager
 import android.os.Bundle
-import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.Window
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.project_uqac.databinding.ActivityMainBinding
 import com.example.project_uqac.ui.service.LocationGPS
-import com.example.project_uqac.ui.service.LocationProviderChangedReceiver
-import com.google.android.libraries.places.api.Places
+import com.example.project_uqac.ui.services.AppUtil
+import com.example.project_uqac.ui.services.FirebaseNotificationService
+import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.android.synthetic.main.activity_main.*
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,9 +32,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navView: BottomNavigationView
     private lateinit var appBarConfiguration : AppBarConfiguration
+    private lateinit var appUtil: AppUtil
 
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
+        appUtil = AppUtil()
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -49,6 +50,23 @@ class MainActivity : AppCompatActivity() {
 
         getParametersForLunching ()
 
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task: Task<String> ->
+            println(
+                "Token : " + task.result
+            )
+            val db = Firebase.database
+            val auth = Firebase.auth
+            var userID : String? = null
+            db.reference.child("Users_ID").get().addOnSuccessListener {
+                it.getValue<Map<String, String>>()!!.forEach {
+                    if (it.value == auth.currentUser?.email) {
+                        userID = it.key
+                    }
+                }
+                //Ajout du token dans firebase
+                FirebaseDatabase.getInstance().getReference("Users").child(userID!!).child("token").setValue(task.result)
+            }
+        }
         //val br: BroadcastReceiver = LocationProviderChangedReceiver()
         //val filter = IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION)
         //registerReceiver(br, filter)

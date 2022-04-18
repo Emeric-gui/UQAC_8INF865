@@ -3,6 +3,7 @@ package com.example.project_uqac.ui.chat
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,19 +12,26 @@ import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.volley.DefaultRetryPolicy
+import com.android.volley.RequestQueue
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.example.project_uqac.R
 import com.example.project_uqac.databinding.FragmentChatBinding
 import com.example.project_uqac.ui.my_account.MyAccountLogin
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import org.json.JSONObject
 import java.util.*
+import kotlin.collections.HashMap
 
 
 class ChatFragment : Fragment(){
@@ -248,6 +256,7 @@ class ChatFragment : Fragment(){
         idConv.let { it1 ->
             db.reference.child("Conversations").child(it1).child("lastMessage").setValue(binding.messageEditText.text.toString())
         }
+        getToken(friendlyMessage.messageText!!)
     }
 
     fun arguments(args: Bundle) {
@@ -257,10 +266,82 @@ class ChatFragment : Fragment(){
         idOtherUser = args.getString("IDOtherUser").toString()
     }
 
+    private fun getToken(message: String) {
+        val friendlyMessage = Message(
+            binding.messageEditText.text.toString(),
+            getUserName(),
+            getPhotoUrl(),
+            null /* no image */
+        )
+        val databaseReference : DatabaseReference = FirebaseDatabase.getInstance().getReference("Users").child(idOtherUser)
+        databaseReference.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(snapshot : DataSnapshot){
+                if(snapshot.exists()){
+                    val token = snapshot.child("token").value.toString()
+                    //val name = snapshot.child("name").value.toString()
+                    val to = JSONObject()
+                    val data = JSONObject()
+
+                    data.put("title", friendlyMessage.messageUser)
+                    data.put("message", friendlyMessage.messageText)
+                    data.put("hisId", idUser)
+                    data.put("chatId", idConv)
+
+                    to.put("to", token)
+                    to.put("data", data)
+                    sendNotification(to)
+
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
+
+    }
+
+    private fun sendNotification(to : JSONObject){
+        val request : JsonObjectRequest = object : JsonObjectRequest(
+            Method.POST,
+            NOTIFICATION_URL,
+            to,
+            Response.Listener { response : JSONObject ->
+
+                Log.d("TAG", "onResponse: $response")
+            },
+            Response.ErrorListener {
+                Log.d("TAG", "onError: $it")
+            }){
+            override fun getHeaders() : MutableMap<String,String> {
+                val map: MutableMap<String,String> = HashMap()
+
+                map["Authorization"] = "key=" + SERVER_KEY
+                map["Content-type"] = "application/json"
+                return map
+            }
+
+            override fun getBodyContentType(): String {
+                return "application/json"
+            }
+        }
+
+        val requestQueue : RequestQueue = Volley.newRequestQueue(context)
+        request.retryPolicy = DefaultRetryPolicy(
+            30000,
+            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+        )
+
+        requestQueue.add(request)
+    }
+
     companion object {
         const val TAG = "MainActivity"
         const val ANONYMOUS = "anonymous"
         private const val LOADING_IMAGE_URL = "https://www.google.com/images/spin-32.gif"
+        const val NOTIFICATION_URL = "https://fcm.googleapis.com/fcm/send"
+        const val SERVER_KEY = "AAAA-jjmDXE:APA91bEpEHq8ue7lyWxLIPWTW5C1_P74F_DZY-gZeo99_xB4prNDcKHp8F1dIlwZbDt99RsBld8EHOZM_cYyk6I54IuzfsqFJrxJTGFSt8bngvaB2acXNa4P_ATlCWtko_bxmgNCVcvl"
     }
 
 }

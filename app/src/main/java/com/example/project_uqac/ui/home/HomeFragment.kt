@@ -50,7 +50,9 @@ import android.widget.ProgressBar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
+import com.google.firebase.messaging.FirebaseMessaging
 
 
 class HomeFragment : Fragment() {
