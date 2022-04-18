@@ -7,17 +7,22 @@
     tools:context=".ui.my_account.MyAccountFragment">
 
     <TextView
+        android:id="@+id/logintext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:paddingTop="150dp"
+        android:paddingBottom="0dp"
         android:text="@string/login"
         android:textSize="50sp"
-        android:paddingTop="150dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        android:id="@+id/logintext"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:id="@+id/linearLayout4"
         android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -36,15 +41,17 @@
             android:background="@drawable/background_edit_text_post"
             android:gravity="top"
             android:hint="@string/email"
-            android:inputType="textEmailAddress"
             android:includeFontPadding="true"
+            android:inputType="textEmailAddress"
             android:padding="10dp"
             android:paddingHorizontal="5dp"
             android:textColor="#7A7A7A"
             android:textColorHighlight="#E8E8E8"
             android:textColorHint="#787878"
             android:textColorLink="#6C6C6C"
-            android:textCursorDrawable="@drawable/cursor_color" />
+            android:textCursorDrawable="@drawable/cursor_color"
+            tools:ignore="TouchTargetSizeCheck,TextContrastCheck"
+            android:importantForAutofill="no" />
 
         <EditText
             android:id="@+id/password"
@@ -62,26 +69,29 @@
             android:textColorHighlight="#E8E8E8"
             android:textColorHint="#787878"
             android:textColorLink="#6C6C6C"
-            android:textCursorDrawable="@drawable/cursor_color" />
+            android:textCursorDrawable="@drawable/cursor_color"
+            tools:ignore="TouchTargetSizeCheck,TextContrastCheck"
+            android:importantForAutofill="no" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Don't have an account ?" />
 
-        <Button
-            android:id="@+id/btn_sign_up"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:text="Register"
-            android:textColor="@color/black"
-            android:textSize="8sp"
-            android:padding="0dp"
-            android:backgroundTint="#FFFFFF"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Don't have an account ?" />
+
+            <Button
+                android:id="@+id/btn_sign_up"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:backgroundTint="#FFFFFF"
+                android:padding="0dp"
+                android:text="@string/register"
+                android:textColor="@color/black"
+                android:textSize="8sp" />
 
         </LinearLayout>
 
@@ -91,7 +101,23 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
             android:backgroundTint="#3F51B5"
-            android:text="Log In" />
+            android:text="@string/log_in" />
+
+
+        <LinearLayout
+            android:layout_marginTop="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/googleSignInButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
 
     </LinearLayout>
 

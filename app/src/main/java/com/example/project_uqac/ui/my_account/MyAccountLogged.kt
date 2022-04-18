@@ -25,6 +25,7 @@ import androidx.cardview.widget.CardView
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
 import com.example.project_uqac.R
 import com.example.project_uqac.ui.article.Article
 import com.example.project_uqac.ui.home.popupDiscussion.DialogFragmentDiscussion
@@ -40,6 +41,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_my_account_sign_up.*
 import java.io.ByteArrayOutputStream
 
@@ -50,6 +52,7 @@ class MyAccountLogged : Fragment() {
     private lateinit var viewee : View
     private lateinit var imageView: ImageView
     private var reloaded : Boolean = false
+//    private var otherTypeOfAcc : Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,12 +77,28 @@ class MyAccountLogged : Fragment() {
             username.text = "Error"
         }
 
+//        user?.let {
+//            var triggered: Boolean = false
+//            for (profile in it.providerData) {
+//                // Id of the provider (ex: google.com)
+//                if(triggered){
+//                    val providerId = profile.providerId.toString()
+//                    if (providerId != "password"){
+//                        otherTypeOfAcc = true
+//                    }
+//                    break
+////                    Log.w(TAG, "provider $providerId")
+//                }
+//                triggered = true
+//            }
+//        }
+
         if (user != null && !reloaded) {
             // Create a storage reference from our app
             if(user.photoUrl != null){
                 try {
                     val storageRef = Firebase.storage.getReferenceFromUrl(user.photoUrl.toString())
-                    Log.d("Lets gowwww", user.photoUrl.toString())
+//                    Log.d("Lets gowwww", user.photoUrl.toString())
 //            var islandRef = storageRef.child("profil_pics/myImage")
 
                     val ONE_MEGABYTE: Long = 1024 * 1024
@@ -91,7 +110,12 @@ class MyAccountLogged : Fragment() {
 //                    Log.d("MyAccountLogged : ", "No profil pic in database")
                     }
                 } catch (e: Exception) {
-                    imageView.setImageResource(R.drawable.ic_account_circle_black_36dp)
+//                    imageView.setImageResource(R.drawable.ic_account_circle_black_36dp)
+                    try {
+                        Glide.with(this).load(user.photoUrl).into(imageView);
+                    } catch (e: Exception) {
+                        imageView.setImageResource(R.drawable.ic_account_circle_black_36dp)
+                    }
                 }
 
             } else {
@@ -138,9 +162,9 @@ class MyAccountLogged : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        Log.d("TAG", "azseghjk")
+//        Log.d("TAG", "azseghjk")
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            Log.d("TAG", "I was here")
+//            Log.d("TAG", "I was here")
             val imageBitmap = data?.extras?.get("data") as Bitmap
 
             // Crop the image to have a square
