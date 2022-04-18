@@ -31,7 +31,6 @@ class FirebaseNotificationService : FirebaseMessagingService() {
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
-        println("AAAA")
 
         if(message.data.isNotEmpty()){
             val map : Map<String,String> = message.data
@@ -62,7 +61,6 @@ class FirebaseNotificationService : FirebaseMessagingService() {
     @SuppressLint("UnspecifiedImmutableFlag")
     private fun createNormalNotification(title:String, message:String, hisId:String, chatId:String){
         val uri: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-
         val builder = NotificationCompat.Builder(this, "Message Channel")
         builder.setContentTitle(title)
             .setContentText(message)
