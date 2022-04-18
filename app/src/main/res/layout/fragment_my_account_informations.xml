@@ -48,6 +48,7 @@
             android:importantForAutofill="no" />
 
         <TextView
+            android:id="@+id/email_textedit_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
@@ -73,6 +74,7 @@
 
 
         <TextView
+            android:id="@+id/password_textedit_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"

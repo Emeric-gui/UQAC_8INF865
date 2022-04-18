@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.project_uqac.R
@@ -27,6 +28,7 @@ class MyAccountTabInformations : Fragment() {
     lateinit var username : String
     lateinit var email : String
     private lateinit var db: FirebaseDatabase
+    private var otherTypeOfAcc : Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,6 +51,21 @@ class MyAccountTabInformations : Fragment() {
             emailInput.setText("Error")
         }
 
+        user?.let {
+            var triggered: Boolean = false
+            for (profile in it.providerData) {
+                // Id of the provider (ex: google.com)
+                if(triggered){
+                    val providerId = profile.providerId.toString()
+                    if (providerId != "password"){
+                        otherTypeOfAcc = true
+                    }
+                    break
+//                    Log.w(TAG, "provider $providerId")
+                }
+                triggered = true
+            }
+        }
 
 //        var toastTriggered : Boolean = false
         val buttonUpdateAccount : Button = view.findViewById(R.id.update_account)
@@ -66,6 +83,19 @@ class MyAccountTabInformations : Fragment() {
             dialogPage.arguments(this.parentFragment as MyAccountLogged)
 
             dialogPage.show(childFragmentManager, "Custom Dialog")
+        }
+
+        if (otherTypeOfAcc){
+            emailInput.visibility = View.GONE
+            val passwordInputTextView : TextView = view.findViewById(R.id.password_textedit_textview)
+            passwordInputTextView.visibility = View.GONE
+            val emailInputTextView : TextView = view.findViewById(R.id.email_textedit_textview)
+            emailInputTextView.visibility = View.GONE
+            val passwordInput : EditText = view.findViewById(R.id.password_textedit)
+            passwordInput.visibility = View.GONE
+//            email_textedit.visibility = View.GONE
+//            password_textedit.isVisible = false
+//            email_textedit.isVisible = false
         }
 
 //        val buttonDeleteAccount : Button = view.findViewById(R.id.delete_account)

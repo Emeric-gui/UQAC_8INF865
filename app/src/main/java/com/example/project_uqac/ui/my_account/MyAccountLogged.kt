@@ -41,6 +41,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_my_account_sign_up.*
 import java.io.ByteArrayOutputStream
 
@@ -51,6 +52,7 @@ class MyAccountLogged : Fragment() {
     private lateinit var viewee : View
     private lateinit var imageView: ImageView
     private var reloaded : Boolean = false
+//    private var otherTypeOfAcc : Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,6 +76,22 @@ class MyAccountLogged : Fragment() {
         } else {
             username.text = "Error"
         }
+
+//        user?.let {
+//            var triggered: Boolean = false
+//            for (profile in it.providerData) {
+//                // Id of the provider (ex: google.com)
+//                if(triggered){
+//                    val providerId = profile.providerId.toString()
+//                    if (providerId != "password"){
+//                        otherTypeOfAcc = true
+//                    }
+//                    break
+////                    Log.w(TAG, "provider $providerId")
+//                }
+//                triggered = true
+//            }
+//        }
 
         if (user != null && !reloaded) {
             // Create a storage reference from our app
