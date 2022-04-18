@@ -3,7 +3,6 @@ package com.example.project_uqac.ui.chat
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -25,7 +24,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
-import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
@@ -102,7 +100,7 @@ class ChatFragment : Fragment(){
         binding.progressBar.visibility = ProgressBar.INVISIBLE
         manager = LinearLayoutManager(_context)
         manager.stackFromEnd = true
-        binding.messageRecyclerView.itemAnimator=null;
+        binding.messageRecyclerView.itemAnimator=null
         binding.messageRecyclerView.layoutManager = manager
         binding.messageRecyclerView.adapter = adapter
 
@@ -144,12 +142,12 @@ class ChatFragment : Fragment(){
     }
 
 
-    public override fun onPause() {
+    override fun onPause() {
         super.onPause()
         adapter?.stopListening()
     }
 
-    public override fun onResume() {
+    override fun onResume() {
         super.onResume()
         adapter?.startListening()
     }
@@ -239,7 +237,7 @@ class ChatFragment : Fragment(){
         )
         idChat.let { db.reference.child("Chat").child(it).child("Messages").push().setValue(friendlyMessage)}
 
-        var timestamp = Date().time
+        val timestamp = Date().time
         idConv.let { it1 -> db.reference.child("Conversations").child(it1).child("timestamp").setValue(timestamp) }
         idUser.let { it1 ->
             idConv.let { it2 ->
