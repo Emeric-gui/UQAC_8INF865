@@ -49,6 +49,8 @@ import android.view.View.VISIBLE
 import android.widget.ProgressBar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.project_uqac.ui.home.information.DialogueFragmentHome
+import com.example.project_uqac.ui.search.filter.DialogueFragmentFilter
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
@@ -75,7 +77,6 @@ class HomeFragment : Fragment() {
     private lateinit var button3 : TextView
     private lateinit var button7 : TextView
     private lateinit var loading : ProgressBar
-    private lateinit var buttonLocalisation : Button
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -102,7 +103,6 @@ class HomeFragment : Fragment() {
         button1 = root.findViewById<TextView>(R.id.button1J)
         button3 = root.findViewById<Button>(R.id.button3J)
         button7 = root.findViewById<Button>(R.id.button7J)
-        buttonLocalisation = root.findViewById(R.id.button2)
         loading = root.findViewById(R.id.progressBar3)
         button1.isSelected = true
         button1.setBackgroundResource(R.drawable.barckground_button_home)
@@ -143,25 +143,18 @@ class HomeFragment : Fragment() {
             }
         }
 
-        buttonLocalisation.setOnClickListener {
-            ActivityCompat.requestPermissions(
-                context as Activity,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                2
-            )
+        val buttonInformation = root.findViewById<View>(R.id.imageButtonInformation)
+        buttonInformation.setOnClickListener(){
+            var dialogFragInformation = DialogueFragmentHome()
+            dialogFragInformation.show(childFragmentManager, "customDialog")
         }
 
         loading.visibility = VISIBLE
         if (!getPositionBackground()){
             loading.visibility = GONE
             textNoArticle.text = "Veuillez Activer la localisation..."
-            //Rendre visible le boutton d'activation de la localisation
-            buttonLocalisation.visibility = VISIBLE
-
-
         } else {
             textNoArticle.text = ""
-            buttonLocalisation.visibility = GONE
         }
         return root
     }

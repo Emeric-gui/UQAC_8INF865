@@ -36,7 +36,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="26dp"
                     android:foregroundGravity="left"
-                    android:text="Filter"
+                    android:text="@string/Dialogue_name_filter"
                     android:textColor="#FFFFFF"
                     android:textSize="24sp"
                     android:textStyle="bold"
@@ -52,7 +52,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_action_filter"
-                    app:tint="#FFFFFF" />
+                    app:tint="#FFFFFF"
+                    android:contentDescription="@string/Rien" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
@@ -96,7 +97,7 @@
                 android:layout_marginBottom="10dp"
                 android:backgroundTint="#3F51B5"
                 android:backgroundTintMode="src_over"
-                android:text="Valider" />
+                android:text="@string/Dialogue_button_name_filter" />
 
         </LinearLayout>
 
