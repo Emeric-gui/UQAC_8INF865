@@ -50,23 +50,6 @@ class MainActivity : AppCompatActivity() {
 
         getParametersForLunching ()
 
-        FirebaseMessaging.getInstance().token.addOnCompleteListener { task: Task<String> ->
-            println(
-                "Token : " + task.result
-            )
-            val db = Firebase.database
-            val auth = Firebase.auth
-            var userID : String? = null
-            db.reference.child("Users_ID").get().addOnSuccessListener {
-                it.getValue<Map<String, String>>()!!.forEach {
-                    if (it.value == auth.currentUser?.email) {
-                        userID = it.key
-                    }
-                }
-                //Ajout du token dans firebase
-                FirebaseDatabase.getInstance().getReference("Users").child(userID!!).child("token").setValue(task.result)
-            }
-        }
         //val br: BroadcastReceiver = LocationProviderChangedReceiver()
         //val filter = IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION)
         //registerReceiver(br, filter)

@@ -54,6 +54,7 @@ import com.example.project_uqac.ui.search.filter.DialogueFragmentFilter
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.messaging.FirebaseMessaging
 
 
@@ -155,6 +156,26 @@ class HomeFragment : Fragment() {
             textNoArticle.text = "Veuillez Activer la localisation..."
         } else {
             textNoArticle.text = ""
+        }
+        if(Firebase.auth.currentUser != null) {
+            FirebaseMessaging.getInstance().token.addOnCompleteListener { task: Task<String> ->
+                println(
+                    "Token : " + task.result
+                )
+                val db = Firebase.database
+                val auth = Firebase.auth
+                var userID: String? = null
+                db.reference.child("Users_ID").get().addOnSuccessListener {
+                    it.getValue<Map<String, String>>()!!.forEach {
+                        if (it.value == auth.currentUser?.email) {
+                            userID = it.key
+                        }
+                    }
+                    //Ajout du token dans firebase
+                    FirebaseDatabase.getInstance().getReference("Users").child(userID!!)
+                        .child("token").setValue(task.result)
+                }
+            }
         }
         return root
     }
