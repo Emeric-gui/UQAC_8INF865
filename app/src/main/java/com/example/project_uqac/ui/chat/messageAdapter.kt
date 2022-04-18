@@ -71,11 +71,11 @@ class MessageAdapter(
             if (userName != ANONYMOUS && currentUserName == userName && userName != null) {
                 textView.setBackgroundResource(R.drawable.rounded_message_blue)
                 textView.setTextColor(Color.WHITE)
-                textView.gravity= Gravity.RIGHT
+                //textView.gravity= Gravity.RIGHT
             } else {
                 textView.setBackgroundResource(R.drawable.rounded_message_gray)
                 textView.setTextColor(Color.BLACK)
-                textView.gravity= Gravity.LEFT
+                //textView.gravity= Gravity.LEFT
             }
         }
     }
