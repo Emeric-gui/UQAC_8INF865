@@ -81,11 +81,6 @@ class ChatFragment : Fragment(){
         // Initialize Realtime Database and FirebaseRecyclerAdapter
         db = Firebase.database
 
-        /*idChat = bundle.getString("IDChat") // may change by the data
-        idConv = bundle.getString("IDConv")
-        idUser = bundle.getString("IDUser")
-        idOtherUser = bundle.getString("IDOtherUser")*/
-
         val messagesRef = idChat.let { db.reference.child("Chat").child(it).child("Messages") }
 
         // The FirebaseRecyclerAdapter class and options come from the FirebaseUI library
