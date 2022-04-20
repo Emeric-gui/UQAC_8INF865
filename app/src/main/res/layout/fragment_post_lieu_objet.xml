@@ -132,7 +132,7 @@
                         <com.google.android.gms.maps.MapView
                             android:id="@+id/mapView"
                             android:layout_width="300dp"
-                            android:layout_height="400dp"
+                            android:layout_height="380dp"
                             tools:ignore="SpeakableTextPresentCheck" />
 
                         <View
