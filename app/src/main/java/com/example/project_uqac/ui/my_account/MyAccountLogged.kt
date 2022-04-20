@@ -131,7 +131,7 @@ class MyAccountLogged : Fragment() {
         val pagerAdapter = MyAccountViewPager2FragmentAdapter(this)
         viewPager2.adapter = pagerAdapter
 
-        val TAB_TITLES = arrayOf("Home", "Informations", "My Posts")
+        val TAB_TITLES = arrayOf("Moi", "Informations", "Mes publications")
 
         val tabLayout : TabLayout = view.findViewById(R.id.my_account_logged_tabs)
 
