@@ -293,7 +293,7 @@ class ChatFragment : Fragment(){
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+
             }
         })
 
@@ -339,7 +339,7 @@ class ChatFragment : Fragment(){
         const val ANONYMOUS = "anonymous"
         private const val LOADING_IMAGE_URL = "https://www.google.com/images/spin-32.gif"
         const val NOTIFICATION_URL = "https://fcm.googleapis.com/fcm/send"
-        const val SERVER_KEY = "AAAA-jjmDXE:APA91bEpEHq8ue7lyWxLIPWTW5C1_P74F_DZY-gZeo99_xB4prNDcKHp8F1dIlwZbDt99RsBld8EHOZM_cYyk6I54IuzfsqFJrxJTGFSt8bngvaB2acXNa4P_ATlCWtko_bxmgNCVcvl"
+        const val SERVER_KEY = "AAAAjSZbcsc:APA91bHpfAKw-GJrVwl_G_HmzvwZXvBMec2MkAIRhoT65DWvSZZTK65eCcevBy7PuMc8J7fvhjN7gRy5DTtPNfAy-yqUmxLOdyhFx3JJ1JRXfMyTeZdwkj2xXhgqfIfaXtIzrxlfyBxD"
     }
 
 }
