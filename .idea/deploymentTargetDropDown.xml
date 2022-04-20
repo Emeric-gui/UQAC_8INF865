@@ -27,10 +27,11 @@
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="C:\Users\Gogob\.android\avd\Pixel_5_API_30.avd" />
+            <value value="C:\Users\Gogob\.android\avd\Copy_of_Pixel_5_API_32.avd" />
           </Key>
         </deviceKey>
       </Target>
-    </targetsSelectedWithDialog>
+    </targetSelectedWithDropDown>
+    <timeTargetWasSelectedWithDropDown value="2022-04-19T21:55:25.458597900Z" />
   </component>
 </project>

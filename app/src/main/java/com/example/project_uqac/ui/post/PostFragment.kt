@@ -77,11 +77,11 @@ class PostFragment : Fragment() {
 
        // childFragmentManager.beginTransaction().replace(R.id.post_fragment_navigation,PostFragmentNature()).commit()
         getPositionBackground( )
-        Toast.makeText(
-            context,
-            "PostFragment Ecriture data",
-            Toast.LENGTH_SHORT
-        ).show()
+//        Toast.makeText(
+//            context,
+//            "PostFragment Ecriture data",
+//            Toast.LENGTH_SHORT
+//        ).show()
 
         return root
     }

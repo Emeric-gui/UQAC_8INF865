@@ -14,7 +14,7 @@
 
     <LinearLayout
         android:id="@+id/my_account_informations"
-        android:layout_height="440dp"
+        android:layout_height="480dp"
         android:layout_width="300dp"
         android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,6 +23,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/my_acc_my_inf_username"
             android:layout_marginTop="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:text="@string/email"/>
+            android:text="@string/email_facultatif"/>
 
         <EditText
             android:id="@+id/email_textedit"
@@ -72,32 +73,79 @@
             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck"
             android:importantForAutofill="no" />
 
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal">-->
 
-        <TextView
-            android:id="@+id/password_textedit_textview"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/password_new_textedit_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/new_password"/>
+
+                <EditText
+                    android:id="@+id/password_new_textedit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_edit_text_post"
+                    android:gravity="top"
+                    android:hint="@string/new_password_here"
+                    android:includeFontPadding="true"
+                    android:inputType="textPassword"
+                    android:padding="10dp"
+                    android:paddingHorizontal="5dp"
+                    android:textColor="#7A7A7A"
+                    android:textColorHighlight="#E8E8E8"
+                    android:textColorHint="#787878"
+                    android:textColorLink="#6C6C6C"
+                    android:textCursorDrawable="@drawable/cursor_color"
+                    tools:ignore="TouchTargetSizeCheck,TextContrastCheck"
+                    android:importantForAutofill="no" />
+
+            </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="@string/password"/>
+            android:orientation="vertical"
+            android:layout_marginTop="20dp">
 
-        <EditText
-            android:id="@+id/password_textedit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/background_edit_text_post"
-            android:gravity="top"
-            android:hint="@string/password_here"
-            android:includeFontPadding="true"
-            android:inputType="textPassword"
-            android:padding="10dp"
-            android:paddingHorizontal="5dp"
-            android:textColor="#7A7A7A"
-            android:textColorHighlight="#E8E8E8"
-            android:textColorHint="#787878"
-            android:textColorLink="#6C6C6C"
-            android:textCursorDrawable="@drawable/cursor_color"
-            tools:ignore="TouchTargetSizeCheck,TextContrastCheck"
-            android:importantForAutofill="no" />
+            <TextView
+                android:id="@+id/password_textedit_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/current_password"/>
+
+            <EditText
+                android:id="@+id/password_textedit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_edit_text_post"
+                android:gravity="top"
+                android:hint="@string/current_password_here"
+                android:includeFontPadding="true"
+                android:inputType="textPassword"
+                android:padding="10dp"
+                android:paddingHorizontal="5dp"
+                android:textColor="#7A7A7A"
+                android:textColorHighlight="#E8E8E8"
+                android:textColorHint="#787878"
+                android:textColorLink="#6C6C6C"
+                android:textCursorDrawable="@drawable/cursor_color"
+                tools:ignore="TouchTargetSizeCheck,TextContrastCheck"
+                android:importantForAutofill="no" />
+
+        </LinearLayout>
+
+<!--        </LinearLayout>-->
 
 
         <Button
