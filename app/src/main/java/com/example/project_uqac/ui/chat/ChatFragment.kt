@@ -300,7 +300,6 @@ class ChatFragment : Fragment(){
             NOTIFICATION_URL,
             to,
             Response.Listener { response : JSONObject ->
-
                 Log.d("TAG", "onResponse: $response")
             },
             Response.ErrorListener {

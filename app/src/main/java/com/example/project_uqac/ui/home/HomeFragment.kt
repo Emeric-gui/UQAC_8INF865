@@ -172,7 +172,7 @@ class HomeFragment : Fragment() {
                         }
                     }
                     //Ajout du token dans firebase
-                    // FirebaseDatabase.getInstance().getReference("Users").child(userID!!).child("token").setValue(task.result)
+                    FirebaseDatabase.getInstance().getReference("Users").child(userID!!).child("token").setValue(task.result)
                 }
             }
         }

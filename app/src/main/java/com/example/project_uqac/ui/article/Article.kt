@@ -12,22 +12,5 @@ class Article(
 
     companion object {
         private var objectId = 0
-        /*
-        fun createContactsList(numObject: Int) : ArrayList<Article> {
-            val articles = ArrayList<Article>()
-            for (i in 1..numObject) {
-                ++objectId
-                articles.add(
-
-                    Article("Objet $objectId", "Lieu $objectId", 0,
-                        "Description $objectId", "https://picsum.photos/600/300?random&$i",
-                        "Nom&Prenom $objectId")
-
-                )
-            }
-            return articles
-        }
-        */
-
     }
 }

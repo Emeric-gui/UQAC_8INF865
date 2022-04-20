@@ -12,6 +12,7 @@ import com.example.project_uqac.R
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -28,19 +29,12 @@ class ConversationsAdapter(context:Context, private val discussionsList:ArrayLis
         var view:View?=null
         view = inflator?.inflate(R.layout.item_conversation,parent,false)
 
-        val txtTitle: TextView
-        val txtName : TextView
-        val txtLastMessage : TextView
-        val imageObject :ImageView
+        val txtTitle: TextView = view?.findViewById(R.id.itemTitreObjectConversation) as TextView
+        val txtName : TextView = view.findViewById(R.id.itemNameConversation) as TextView
+        val txtLastMessage : TextView = view.findViewById(R.id.itemLastMessageConversation) as TextView
+        val imageObject :ImageView = view.findViewById(R.id.imageViewConversation) as ImageView
 
-        txtTitle = view?.findViewById(R.id.itemTitreObjectConversation) as TextView
-        txtName = view.findViewById(R.id.itemNameConversation) as TextView
-        txtLastMessage = view.findViewById(R.id.itemLastMessageConversation) as TextView
-        imageObject = view.findViewById(R.id.imageViewConversation) as ImageView
-
-        val conversation : Conversation
-
-        conversation=getItem(position)!!
+        val conversation : Conversation = getItem(position)!!
 
         txtTitle.setText(conversation.titleObject)
         if(conversation.user1Mail == Firebase.auth.currentUser?.email.toString())
@@ -56,7 +50,7 @@ class ConversationsAdapter(context:Context, private val discussionsList:ArrayLis
 
         txtLastMessage.setText(conversation.lastMessage)
 
-        return view!!
+        return view
     }
 
     override fun getCount(): Int {
@@ -64,7 +58,7 @@ class ConversationsAdapter(context:Context, private val discussionsList:ArrayLis
     }
 
     override fun getItem(position: Int): Conversation? {
-        return discussionsList?.get(getCount() - 1 - position)
+        return discussionsList?.get(count - 1 - position)
         //return getItem(getCount() - 1 - position)
     }
 
