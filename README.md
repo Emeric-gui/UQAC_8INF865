@@ -3,8 +3,8 @@ Projet réalisé dans le cadre d'un cours de l'UQAC. Il s'agit d'une application
 
 
 ## Auteurs
-  Hugo BOURREAU
-  Emeric GUICHET
-  Thomas GOUYET
-  Lucas VAILLANT
+  Hugo BOURREAU<br>
+  Emeric GUICHET<br>
+  Thomas GOUYET<br>
+  Lucas VAILLANT<br>
   Gael LECONTE
